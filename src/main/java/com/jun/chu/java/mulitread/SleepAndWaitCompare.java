@@ -1,12 +1,13 @@
 package com.jun.chu.java.mulitread;
 
 /**
- * Created by chujun on 17/2/10.、
+ * Created by chujun on 17/2/10.
+ * 参考资料:java面试宝典2016年版
  * 1.本demo主要说明java多线程中sleep方法和wait方法的区别.
  * sleep:释放cpu资源,不释放同步锁资源
  * wait:释放cpu资源,也释放同步锁资源
  * notify:不释放cup资源,不释放同步锁资源
- *
+ * <p>
  * 2.以及wait方法和notify方法的简单使用方法。
  * wait:调用同步块内监视器的wait方法释放锁资源
  * notify:调用监视器的notify方法唤醒调用过该监视器的wait方法的若干线程中的一个线程参与该锁的竞争

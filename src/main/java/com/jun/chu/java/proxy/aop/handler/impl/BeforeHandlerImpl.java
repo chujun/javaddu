@@ -9,6 +9,6 @@ import java.lang.reflect.Method;
  */
 public class BeforeHandlerImpl extends AbstractBeforeHandler {
     protected void handleBefore(Object proxy, Method method, Object[] args) {
-        System.out.println("进行前置操作");
+        System.out.println("进行实际前置操作");
     }
 }

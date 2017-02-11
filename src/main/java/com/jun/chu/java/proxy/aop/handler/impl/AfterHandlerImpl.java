@@ -9,6 +9,6 @@ import java.lang.reflect.Method;
  */
 public class AfterHandlerImpl extends AbstractAfterHandler {
     protected void afterHandle(Object proxy, Method method, Object[] args) {
-        System.out.println("进行后置操作");
+        System.out.println("进行实际后置操作");
     }
 }

@@ -6,13 +6,14 @@ import java.lang.reflect.InvocationHandler;
  * Created by chujun on 17/2/11.
  */
 public abstract class AbstractBaseHandler implements InvocationHandler {
-    private Object targetObject;
+    //实际业务接口对象
+    private Object targetBusinessObject;
 
-    public Object getTargetObject() {
-        return targetObject;
+    public Object getTargetBusinessObject() {
+        return targetBusinessObject;
     }
 
-    public void setTargetObject(Object targetObject) {
-        this.targetObject = targetObject;
+    public void setTargetBusinessObject(Object targetBusinessObject) {
+        this.targetBusinessObject = targetBusinessObject;
     }
 }

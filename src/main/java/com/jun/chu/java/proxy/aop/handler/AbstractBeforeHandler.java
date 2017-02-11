@@ -9,9 +9,9 @@ public abstract class AbstractBeforeHandler extends AbstractBaseHandler {
     protected abstract void handleBefore(Object proxy, Method method, Object[] args);
 
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        System.out.println("前置操作开始");
         handleBefore(proxy, method, args);
-        return method.invoke(getTargetObject(), args);
+        System.out.println("前置操作结束");
+        return method.invoke(getTargetBusinessObject(), args);
     }
-
-
 }

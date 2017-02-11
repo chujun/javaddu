@@ -37,11 +37,27 @@ public class ProxyImplementSpringAOP {
         AbstractBaseHandler handler = beforeHandler;
 
         Calculator proxy = (Calculator) ProxyFactory.getProxy(businessObj, handler);
-        proxy.calculate(1,2);
+        proxy.calculate(1, 2);
         System.out.println("------------");
-        proxy.calculate(10,2);
+        proxy.calculate(10, 2);
 
     }
 }
+/**
+ * 运行结果
+ * 前置操作开始
+ * 进行实际前置操作
+ * 前置操作结束
+ * 真实业务操作开始
+ * 1/2
+ * 真实业务操作结束
+ * ------------
+ * 前置操作开始
+ * 进行实际前置操作
+ * 前置操作结束
+ * 真实业务操作开始
+ * 10/2
+ * 真实业务操作结束
+ */
 
 

@@ -32,7 +32,7 @@ public class ProxyImplementSpringAOP {
         Calculator businessObj = new CalculatorImpl();
 
         AbstractBaseHandler beforeHandler = new BeforeHandlerImpl();
-        //AbstractBaseHandler afterHandler = new AfterHandlerImpl();
+        AbstractBaseHandler afterHandler = new AfterHandlerImpl();
 
         AbstractBaseHandler handler = beforeHandler;
 
@@ -48,6 +48,7 @@ public class ProxyImplementSpringAOP {
  * 前置操作开始
  * 进行实际前置操作
  * 前置操作结束
+ * ------------注意这里调用的是业务接口的method,而非proxy,proxy:com.sun.proxy.$Proxy0
  * 真实业务操作开始
  * 1/2
  * 真实业务操作结束
@@ -55,6 +56,7 @@ public class ProxyImplementSpringAOP {
  * 前置操作开始
  * 进行实际前置操作
  * 前置操作结束
+ * ------------注意这里调用的是业务接口的method,而非proxy,proxy:com.sun.proxy.$Proxy0
  * 真实业务操作开始
  * 10/2
  * 真实业务操作结束

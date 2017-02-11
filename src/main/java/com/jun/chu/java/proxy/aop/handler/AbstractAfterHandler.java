@@ -9,8 +9,10 @@ public abstract class AbstractAfterHandler extends AbstractBaseHandler {
     protected abstract void afterHandle(Object proxy, Method method, Object[] args);
 
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        Object result = method.invoke(getTargetBusinessObject(), args);
+        Object result = super.invoke(proxy, method, args);
+        System.out.println("后置操作开始");
         afterHandle(proxy, method, args);
+        System.out.println("后置操作结束");
         return result;
     }
 

@@ -12,6 +12,6 @@ public abstract class AbstractBeforeHandler extends AbstractBaseHandler {
         System.out.println("前置操作开始");
         handleBefore(proxy, method, args);
         System.out.println("前置操作结束");
-        return method.invoke(getTargetBusinessObject(), args);
+        return super.invoke(proxy, method, args);
     }
 }

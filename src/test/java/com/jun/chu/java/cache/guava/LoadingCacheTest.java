@@ -3,8 +3,10 @@ package com.jun.chu.java.cache.guava;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.Lists;
 import org.junit.Test;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -13,23 +15,24 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Created by chujun on 2017/9/22.
  */
 public class LoadingCacheTest {
-    private static AtomicInteger               count          = new AtomicInteger();
+    private static AtomicInteger                   count = new AtomicInteger();
 
-    LoadingCache<String, BigExpense>           cache          = CacheBuilder.newBuilder()
-            .build(new CacheLoader<String, BigExpense>() {
-                                                                          public BigExpense load(String key) {
-                                                                              return createBigExpense(key);
-                                                                          }
-                                                                      });
+    LoadingCache<String, BigExpense>               cache=CacheBuilder.newBuilder().build(new CacheLoader<String,BigExpense>(){public BigExpense load(String key){return createBigExpense(key);}});
     //解决LoadingCache不允许返回null的方法
-    LoadingCache<String, Optional<BigExpense>> cacheNullValue = CacheBuilder.newBuilder()
-            .build(new CacheLoader<String, Optional<BigExpense>>() {
-                                                                          public Optional<BigExpense> load(String key) {
-                                                                              //return createBigExpense(key);
-                                                                              return Optional.ofNullable(
-                                                                                      createBigExpense(key));
-                                                                          }
-                                                                      });
+    LoadingCache<String, Optional<BigExpense>>     cacheNullValue=CacheBuilder.newBuilder().build(new CacheLoader<String,Optional<BigExpense>>(){public Optional<BigExpense>load(String key){
+    //return createBigExpense(key);
+    return Optional.ofNullable(createBigExpense(key));}});
+
+    LoadingCache<String, Optional<List<BigExpense>>> cacheListNullValue = CacheBuilder.newBuilder()
+            .build(new CacheLoader<String, Optional<List<BigExpense>>>() {
+
+    public Optional<List<BigExpense>> load(String key) {
+                    //return createBigExpense(key);
+                    return Optional.ofNullable(
+                            Lists.newArrayList(createBigExpense(key),createBigExpense(key)));
+                }
+
+    });
 
     @Test
     public void case01_get() {
@@ -37,19 +40,23 @@ public class LoadingCacheTest {
             System.out.println(cache.get("chujun"));
             Optional<BigExpense> optional = cacheNullValue.get("cj");
             System.out.println(optional.isPresent() ? optional.get() : null);
+            System.out.println(cacheListNullValue.get("cjq"));
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
     }
 
     @Test
-    public void case01_get_value_is_null() {
+    public void case01_get_value_is_null() throws ExecutionException {
         try {
             //默认方式不允许value为null
             System.out.println(cache.get(""));
             //com.google.common.cache.CacheLoader$InvalidCacheLoadException: CacheLoader returned null for key .
-        } catch (ExecutionException e) {
+        } catch (CacheLoader.InvalidCacheLoadException e) {
             e.printStackTrace();
+            if(!e.getMessage().contains("CacheLoader returned null for key")){
+                throw e;
+            }
         }
     }
 

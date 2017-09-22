@@ -15,24 +15,38 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Created by chujun on 2017/9/22.
  */
 public class LoadingCacheTest {
-    private static AtomicInteger                   count = new AtomicInteger();
+    private static AtomicInteger                     count              = new AtomicInteger();
 
-    LoadingCache<String, BigExpense>               cache=CacheBuilder.newBuilder().build(new CacheLoader<String,BigExpense>(){public BigExpense load(String key){return createBigExpense(key);}});
+    LoadingCache<String, BigExpense>                 cache              = CacheBuilder.newBuilder()
+            .build(new CacheLoader<String, BigExpense>() {
+                                                                                    public BigExpense load(String key) {
+                                                                                        return createBigExpense(key);
+                                                                                    }
+                                                                                });
     //解决LoadingCache不允许返回null的方法
-    LoadingCache<String, Optional<BigExpense>>     cacheNullValue=CacheBuilder.newBuilder().build(new CacheLoader<String,Optional<BigExpense>>(){public Optional<BigExpense>load(String key){
-    //return createBigExpense(key);
-    return Optional.ofNullable(createBigExpense(key));}});
+    LoadingCache<String, Optional<BigExpense>>       cacheNullValue     = CacheBuilder.newBuilder()
+            .build(new CacheLoader<String, Optional<BigExpense>>() {
+                                                                                    public Optional<BigExpense> load(String key) {
+                                                                                        //return createBigExpense(key);
+                                                                                        return Optional.ofNullable(
+                                                                                                createBigExpense(key));
+                                                                                    }
+                                                                                });
 
     LoadingCache<String, Optional<List<BigExpense>>> cacheListNullValue = CacheBuilder.newBuilder()
             .build(new CacheLoader<String, Optional<List<BigExpense>>>() {
 
-    public Optional<List<BigExpense>> load(String key) {
-                    //return createBigExpense(key);
-                    return Optional.ofNullable(
-                            Lists.newArrayList(createBigExpense(key),createBigExpense(key)));
-                }
+                                                                                    public Optional<List<BigExpense>> load(String key) {
+                                                                                        //return createBigExpense(key);
+                                                                                        return Optional.ofNullable(
+                                                                                                Lists.newArrayList(
+                                                                                                        createBigExpense(
+                                                                                                                key),
+                                                                                                        createBigExpense(
+                                                                                                                key)));
+                                                                                    }
 
-    });
+                                                                                });
 
     @Test
     public void case01_get() {
@@ -54,7 +68,7 @@ public class LoadingCacheTest {
             //com.google.common.cache.CacheLoader$InvalidCacheLoadException: CacheLoader returned null for key .
         } catch (CacheLoader.InvalidCacheLoadException e) {
             e.printStackTrace();
-            if(!e.getMessage().contains("CacheLoader returned null for key")){
+            if (!e.getMessage().contains("CacheLoader returned null for key")) {
                 throw e;
             }
         }

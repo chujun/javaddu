@@ -23,7 +23,7 @@ public class LoadingCacheTest {
                                                                                         return createBigExpense(key);
                                                                                     }
                                                                                 });
-    //解决LoadingCache不允许返回null的方法
+    //解决LoadingCache不允许返回null值的方法
     LoadingCache<String, Optional<BigExpense>>       cacheNullValue     = CacheBuilder.newBuilder()
             .build(new CacheLoader<String, Optional<BigExpense>>() {
                                                                                     public Optional<BigExpense> load(String key) {
@@ -53,7 +53,10 @@ public class LoadingCacheTest {
         try {
             System.out.println(cache.get("chujun"));
             Optional<BigExpense> optional = cacheNullValue.get("cj");
+            //两者等效
             System.out.println(optional.isPresent() ? optional.get() : null);
+            System.out.println(optional.orElse(null));
+
             System.out.println(cacheListNullValue.get("cjq"));
         } catch (ExecutionException e) {
             e.printStackTrace();
@@ -79,6 +82,7 @@ public class LoadingCacheTest {
         try {
             Optional<BigExpense> optional = cacheNullValue.get("");
             System.out.println(optional.isPresent() ? optional.get() : null);
+            System.out.println(optional.orElse(null));
         } catch (ExecutionException e) {
             e.printStackTrace();
         }

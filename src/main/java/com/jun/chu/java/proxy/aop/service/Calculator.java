@@ -6,4 +6,6 @@ package com.jun.chu.java.proxy.aop.service;
  */
 public interface Calculator {
     int calculate(int a, int b);
+
+    int sum(int a,int b);
 }

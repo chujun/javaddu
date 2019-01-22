@@ -142,8 +142,15 @@ public class SnowflakeIdWorker {
     }
 
     public static void main(String[] args) {
-        System.out.println(-1 << 5);
-        System.out.println(~(-1 << 5));
-        System.out.println(0xfff+","+0b111111111111);
+        System.out.println(0xfff + "," + 0b111111111111);
+        System.out.println(~(-1L << 12)+"，"+(1L << 12));
+        SnowflakeIdWorker snowflakeIdWorker = new SnowflakeIdWorker(5, 5);
+        for (int i=0; i < 1000; i++) {
+            Math.random();
+            //Thread.sleep(0,);
+            //TODO:cj 有问题，生成了重复的id
+            System.out.println(snowflakeIdWorker.nextId());
+        }
+
     }
 }

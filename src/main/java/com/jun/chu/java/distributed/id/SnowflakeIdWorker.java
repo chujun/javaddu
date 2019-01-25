@@ -1,7 +1,14 @@
 package com.jun.chu.java.distributed.id;
 
+import com.google.common.collect.Sets;
+
+import java.util.Set;
+
 /**
- * 分布式唯一 ID 的 7 种生成方案 https://mp.weixin.qq.com/s/9HeiEwTh0HAIp-TMnnOeIg 简单实现
+ * 分布式唯一 ID 的 7 种生成方案 https://mp.weixin.qq.com/s/9HeiEwTh0HAIp-TMnnOeIg </br>
+ * Twitter的snowflake算法 </br>
+ * 优点：高性能，低延迟，按时间有序，一般不会造成ID碰撞 </br>
+ * 缺点：需要独立的开发和部署，依赖于机器的时钟
  * 
  * @author jun.chu
  * @date 2019-01-22 09:44
@@ -53,7 +60,7 @@ public class SnowflakeIdWorker {
     private final long timestampShift    = sequenceBits + workerIdBits + dataCenterIdBits;
 
     /**
-     * //TODO:cj ?? 生成序列的掩码，这里为4095 (0b111111111111=0xfff=4095)
+     * 生成序列的掩码，这里为4095 (0b111111111111=0xfff=4095)
      */
     private final long sequenceMask      = ~(-1L << sequenceBits);
 
@@ -104,7 +111,7 @@ public class SnowflakeIdWorker {
         //如果是同一时间生成的，则进行毫秒内序列
         if (timestamp == lastTimestamp) {
             sequence = (sequence + 1) & sequenceMask;
-            //毫秒内序列溢出
+            //毫秒内序列溢出,当sequence=4096时候说明溢出了(4096&4095=0)
             if (sequence == 0) {
                 //阻塞到下一个毫秒,获得新的时间戳
                 timestamp = nextMillis(lastTimestamp);
@@ -113,6 +120,7 @@ public class SnowflakeIdWorker {
             //时间戳改变，毫秒内序列重置
             sequence = 0L;
         }
+        lastTimestamp = timestamp;
         //移位并通过按位或运算拼到一起组成64位的ID
         return ((timestamp - epoch) << timestampShift) | (dataCenterId << dataCenterIdShift)
                 | (workerId << workerIdShift) | sequence;
@@ -143,14 +151,15 @@ public class SnowflakeIdWorker {
 
     public static void main(String[] args) {
         System.out.println(0xfff + "," + 0b111111111111);
-        System.out.println(~(-1L << 12)+"，"+(1L << 12));
+        System.out.println(~(-1L << 12) + "，" + (1L << 12));
+        System.out.println(4096 & 4095);
         SnowflakeIdWorker snowflakeIdWorker = new SnowflakeIdWorker(5, 5);
-        for (int i=0; i < 1000; i++) {
-            Math.random();
-            //Thread.sleep(0,);
-            //TODO:cj 有问题，生成了重复的id
-            System.out.println(snowflakeIdWorker.nextId());
+        Set<Long> result = Sets.newHashSet();
+        for (int i = 0; i < 1000; i++) {
+            long id = snowflakeIdWorker.nextId();
+            result.add(id);
+            System.out.println(id);
         }
-
+        System.out.println(result.size());
     }
 }

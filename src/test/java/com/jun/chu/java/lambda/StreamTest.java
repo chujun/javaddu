@@ -20,6 +20,12 @@ public class StreamTest {
         List<Integer> two = Lists.newArrayList(2, 3, 4, 5);
         List<Integer> result = Stream.concat(first.stream(), two.stream()).collect(Collectors.toList());
         System.out.println(result);
-        Assert.assertEquals("[1, 2, 3, 4, 5]",result.toString());
+        Assert.assertEquals("[1, 2, 3, 4, 5]", result.toString());
+    }
+
+    @Test
+    public void testEmptyListCollect() {
+        List<Integer> list = Lists.newArrayList();
+        Assert.assertEquals(0, list.stream().collect(Collectors.toList()).size());
     }
 }

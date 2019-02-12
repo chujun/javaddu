@@ -21,6 +21,10 @@ public class StreamTest {
         List<Integer> result = Stream.concat(first.stream(), two.stream()).collect(Collectors.toList());
         System.out.println(result);
         Assert.assertEquals("[1, 2, 3, 4, 5]", result.toString());
+        first = Lists.newArrayList(1,11);
+        result = Stream.concat(first.stream(), two.stream()).collect(Collectors.toList());
+        System.out.println(result);
+        Assert.assertEquals("[1, 11, 2, 3, 4, 5]", result.toString());
     }
 
     @Test

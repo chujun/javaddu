@@ -71,6 +71,12 @@
             <version>${lombok.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>5.4.3.Final</version>
+        </dependency>
+
     </dependencies>
     <build>
         <finalName>jun.chu.ddu</finalName>

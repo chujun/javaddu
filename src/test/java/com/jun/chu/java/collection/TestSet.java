@@ -17,5 +17,8 @@ public class TestSet {
         //集合取交集
         set.retainAll(Sets.newHashSet());
         Assert.assertEquals(0, set.size());
+        Set<Integer> emptySet = Sets.newHashSet();
+        emptySet.retainAll(Sets.newHashSet(1, 2));
+        Assert.assertEquals(0, emptySet.size());
     }
 }

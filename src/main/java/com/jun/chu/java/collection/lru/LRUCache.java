@@ -29,8 +29,9 @@ public class LRUCache<K, V> extends LinkedHashMap<K, V> {
             size++;
 
         }
-
     }
+
+
 }
 
 //        size:1,{1=1}

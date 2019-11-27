@@ -77,6 +77,12 @@
             <version>5.4.3.Final</version>
         </dependency>
 
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.9.0</version>
+        </dependency>
+
     </dependencies>
     <build>
         <finalName>jun.chu.ddu</finalName>

@@ -46,4 +46,32 @@ public class StreamTest {
         list.stream().sorted(Comparator.comparing(item -> item));
         Assert.assertEquals(Lists.newArrayList(1, 3, 4, 2), list);
     }
+
+    @Test
+    public void testEmptyListAllMatch() {
+        //allMatch方法有点坑的，空集合一定返回true ,https://www.jianshu.com/p/7fb50801d3df
+        boolean result = Lists.newArrayList().stream().allMatch(item -> false);
+        Assert.assertTrue(result);
+        result = Lists.newArrayList().stream().allMatch(item -> true);
+        Assert.assertTrue(result);
+
+        //这种过滤后空集合判断就容易错误了
+        result = Lists.newArrayList(1, 2, 3).stream()
+            .filter(item -> false)
+            .allMatch(item -> false);
+        Assert.assertTrue(result);
+
+        //anyMatch 空集合一定返回false
+        result = Lists.newArrayList().stream().anyMatch(item -> true);
+        Assert.assertFalse(result);
+        result = Lists.newArrayList().stream().anyMatch(item -> false);
+        Assert.assertFalse(result);
+
+        //noneMatch 空集合一定返回true
+        result = Lists.newArrayList().stream().noneMatch(item -> true);
+        Assert.assertTrue(result);
+        result = Lists.newArrayList().stream().noneMatch(item -> false);
+        Assert.assertTrue(result);
+
+    }
 }

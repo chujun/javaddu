@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -57,7 +58,7 @@ public class StreamTest {
 
         //这种过滤后空集合判断就容易错误了
         result = Lists.newArrayList(1, 2, 3).stream()
-            .filter(item -> false)
+            .filter(item -> Objects.equals(4, item))
             .allMatch(item -> false);
         Assert.assertTrue(result);
 

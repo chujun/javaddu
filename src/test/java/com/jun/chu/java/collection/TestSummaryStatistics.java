@@ -1,5 +1,6 @@
 package com.jun.chu.java.collection;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,6 +15,8 @@ import java.util.Set;
 public class TestSummaryStatistics {
     @Test
     public void testIntSummaryStatistics() {
+        Assert.assertEquals(9, Lists.newArrayList(1, 3, 5)
+            .stream().mapToInt(item -> item).sum());
         Set<Integer> timeScopePoints = Sets.newHashSet();
         IntSummaryStatistics intSummaryStatistics = timeScopePoints.stream().mapToInt(item -> item).summaryStatistics();
         Assert.assertEquals(Integer.MIN_VALUE, intSummaryStatistics.getMax());

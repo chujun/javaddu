@@ -20,5 +20,6 @@ public class TestSet {
         Set<Integer> emptySet = Sets.newHashSet();
         emptySet.retainAll(Sets.newHashSet(1, 2));
         Assert.assertEquals(0, emptySet.size());
+        Assert.assertTrue(Sets.newHashSet().contains(Sets.newHashSet()));
     }
 }

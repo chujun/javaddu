@@ -3,7 +3,7 @@ package com.jun.chu.java.performance.cpu;
 import java.util.Date;
 
 /**
- * 以不同的方式遍历2维数组
+ * 以不同的方式遍历2维数组,效率完全不同,会差差不多8倍
  *
  * @author chujun
  * @date 2020-09-08
@@ -13,7 +13,7 @@ public class Traverse2dArray {
     public static void main(String args[]) {
         int ch;
         int TESTN = 4096;
-        boolean slowMode = true;
+        boolean slowMode = false;
         for (String arg : args) {
             if ("-f".equals(arg)) {
                 slowMode = false;

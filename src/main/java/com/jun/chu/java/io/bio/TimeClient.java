@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.util.Objects;
 
 /**
+ * TODO:cj 考虑下如何压测,看看这个TimeServer能处理多少个请求,qps是多少,怎么压测
  * @author chujun
  * @date 2020-11-20
  */

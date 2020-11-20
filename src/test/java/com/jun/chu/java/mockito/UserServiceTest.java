@@ -8,6 +8,7 @@ import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 
 /**
+ * mockito官网文档以javadoc形式存在,IDE离线可见，使用教程可参见核心类Mockito
  * @author chujun
  * @link https://github.com/mockito/mockito/wiki
  * @date 2020-10-23
@@ -56,4 +57,19 @@ public class UserServiceTest {
             .findByName("b");
 
     }
+
+    @Test
+    public void testDefaultMethod(){
+        DM dm = BDDMockito.mock(DM.class);
+        BDDMockito.given(dm.contract()).willReturn(2);
+        BDDMockito.given(dm.default_contract()).willCallRealMethod();
+        //TODO:cj to be done
+        //assertThat(dm.default_contract()).isEqualTo(3);
+    }
+
+    interface DM {
+        int contract();
+        default int default_contract() { return contract() + 1; }
+    }
+
 }

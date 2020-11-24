@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.util.Objects;
 
 /**
- * come from <<netty权威指南>>第二版 李林锋著
+ * adjust from <<netty权威指南>>第二版 李林锋著
  *
  * @author chujun
  * @date 2020-11-20
@@ -17,6 +17,7 @@ import java.util.Objects;
 public class TimeServer {
     public static final Integer DEFAULT_PORT = 18080;
     public static final String COMMAND_QUERY_TIME = "query time order";
+    public static final String COMMAND_BYE = "bye";
 
     public static void main(String[] args) throws IOException {
         int port = DEFAULT_PORT;

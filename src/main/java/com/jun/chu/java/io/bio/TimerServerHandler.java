@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -20,15 +21,21 @@ public class TimerServerHandler implements Runnable {
     @Override
     public void run() {
 
-        try (BufferedReader in =
-                 new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-             PrintWriter out =
-                 new PrintWriter(this.socket.getOutputStream(), true)) {
+        try (
+            InputStream inputStream = socket.getInputStream();
+            BufferedReader in =
+                new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+            PrintWriter out =
+                new PrintWriter(this.socket.getOutputStream(), true)) {
             String currentTime = null;
             String body = null;
             while (true) {
                 body = in.readLine();
-                if (null == body) {
+                if (body == null) {
+                    Thread.sleep(50);
+                }
+                if (TimeServer.COMMAND_BYE.equals(body)) {
+                    //需要有关闭协议,还需要超时协议来保护服务器，不然服务器线程一直死不掉
                     break;
                 }
                 System.out.println(Thread.currentThread().toString());
@@ -46,6 +53,8 @@ public class TimerServerHandler implements Runnable {
                     ex.printStackTrace();
                 }
             }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

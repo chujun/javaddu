@@ -2,6 +2,8 @@ package com.jun.chu.java.javaHighConcurrencyCoreProgramming.concurrency.base;
 
 import com.jun.chu.java.javaHighConcurrencyCoreProgramming.concurrency.util.Print;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * 来自book-Java高并发核心编程.卷2
  * 第一章 线程区域信息
@@ -18,7 +20,7 @@ public class StackAreaDemo {
         int a = 1, b = 1;
         int c = a / b;
         anotherFun();
-        Thread.sleep(5000);
+        TimeUnit.SECONDS.sleep(5);
         System.out.println("end");
     }
 

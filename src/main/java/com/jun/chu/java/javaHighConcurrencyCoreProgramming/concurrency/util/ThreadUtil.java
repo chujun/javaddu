@@ -141,4 +141,12 @@ public class ThreadUtil {
     public static ScheduledThreadPoolExecutor getSeqOrScheduledExecutorService() {
         return SeqOrScheduledTargetThreadPoolLazyHolder.EXECUTOR;
     }
+
+    /**
+     * 获取当前线程名称
+     */
+    public static String getCurThreadName()
+    {
+        return Thread.currentThread().getName();
+    }
 }

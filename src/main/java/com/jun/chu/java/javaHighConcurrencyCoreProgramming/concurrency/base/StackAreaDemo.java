@@ -17,6 +17,7 @@ public class StackAreaDemo {
         Print.cfo("当前线程ID：" + Thread.currentThread().getId());
         Print.cfo("当前线程状态：" + Thread.currentThread().getState());
         Print.cfo("当前线程优先级：" + Thread.currentThread().getPriority());
+        Print.cfo("当前线程是否是守护线程：" + Thread.currentThread().isDaemon());
         int a = 1, b = 1;
         int c = a / b;
         anotherFun();

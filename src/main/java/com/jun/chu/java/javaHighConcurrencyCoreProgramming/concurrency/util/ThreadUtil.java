@@ -8,6 +8,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.LockSupport;
 
 /**
  * 来自book-Java高并发核心编程.卷2
@@ -140,6 +141,17 @@ public class ThreadUtil {
      */
     public static ScheduledThreadPoolExecutor getSeqOrScheduledExecutorService() {
         return SeqOrScheduledTargetThreadPoolLazyHolder.EXECUTOR;
+    }
+
+
+    /**
+     * 线程睡眠
+     *
+     * @param millisecond 毫秒
+     */
+    public static void sleepMilliSeconds(int millisecond)
+    {
+        LockSupport.parkNanos(millisecond * 1000L * 1000L);
     }
 
     /**

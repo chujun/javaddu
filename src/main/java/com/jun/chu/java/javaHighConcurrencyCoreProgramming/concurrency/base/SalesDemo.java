@@ -102,5 +102,7 @@ public class SalesDemo {
 
 
         Print.cfo(getCurThreadName() + " 运行结束.");
+
+        Print.cfo("activeCount:"+Thread.activeCount());
     }
 }

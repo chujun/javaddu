@@ -1,4 +1,4 @@
-package com.jun.chu.java.mulitread;
+package com.jun.chu.java.mulithread;
 
 /**
  * 缓存行伪共享

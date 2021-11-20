@@ -1,4 +1,4 @@
-package com.jun.chu.java.mulitread;
+package com.jun.chu.java.mulithread;
 
 /**
  * Created by chujun on 17/2/10.

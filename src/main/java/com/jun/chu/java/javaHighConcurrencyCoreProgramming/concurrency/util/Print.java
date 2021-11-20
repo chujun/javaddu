@@ -1,5 +1,7 @@
 package com.jun.chu.java.javaHighConcurrencyCoreProgramming.concurrency.util;
 
+import java.util.Scanner;
+
 /**
  * syn-同步，
  * t-thread，
@@ -22,5 +24,34 @@ public class Print {
         {
             System.out.println(cft + "：" + s);
         });
+    }
+
+    /**
+     * 带着线程名+类名+方法名称输出
+     *
+     * @param s 待输出的字符串形参
+     */
+    public static void tcfo(Object s)
+    {
+        String cft = "[" + Thread.currentThread().getName() + "|" + ReflectionUtil.getNakeCallClassMethod() + "]";
+
+        //提交线程池进行独立输出，使得输出不影响当前线程的执行
+        ThreadUtil.seqExecute(() ->
+        {
+
+            System.out.println(cft + "：" + s);
+
+        });
+
+    }
+
+    /**
+     * 编程过程中的提示说明
+     *
+     * @param s 提示的字符串形参
+     */
+    public static void hint(Object s)
+    {
+        Print.tcfo("/--" + s + "--/");
     }
 }

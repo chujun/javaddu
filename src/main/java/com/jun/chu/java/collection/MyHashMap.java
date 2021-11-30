@@ -22,7 +22,14 @@ public class MyHashMap {
         }
         //测试resize()执行两次的条件,m.size+size>capacity
         map.putAll(map2);
+        System.out.println(map);
 
         Map<String, String> copyedMap = (Map<String, String>) ((HashMap) map).clone();
+
+        //全替换
+        map.replaceAll((a,b)->{
+            return b+"122";
+        });
+        System.out.println(map);
     }
 }

@@ -43,7 +43,7 @@ public class MemoryLayout {
         //com.jun.chu.java.jvm.memoryLayout.NoChild field b 						offset is 20
         //com.jun.chu.java.jvm.memoryLayout.NoChild field i 						offset is 16
 
-        //TODO:cj 无法解释为什么value的偏移量是24，而非20+1或者20+2，正好8*3
+        //无法解释为什么value字段的偏移量是24，而非20+1或者20+2，正好8*3,因为b后面填充了3个字节到24位offset
         //-XX:+PrintFlagsFinal -XX:FieldsAllocationStyle=1 -XX:-UseCompressedOops -XX:-UseCompressedClassPointers -XX:-CompactFields
         //com.jun.chu.java.jvm.memoryLayout.NoChild field value 						offset is 24
         //com.jun.chu.java.jvm.memoryLayout.NoChild field b 						offset is 20

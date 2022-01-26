@@ -1,6 +1,7 @@
 #1.file
 #1.1
 *.class
+*.hprof
 
 #1.2Package Files #$
 # classmexer.jar上传了

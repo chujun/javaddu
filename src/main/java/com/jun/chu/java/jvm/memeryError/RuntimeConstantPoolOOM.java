@@ -4,9 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * jdk6:-vm 设置永久代大小 -XX:PermSize=6M -XX:MaxPermSize=6M
- * jdk7:常量池已经移入到java堆 -Xmx6M
- * jdk8:永久代已不存在，方法区是java堆的一部分 -XX:MetaspaceSize=6M -XX:MaxMetaspaceSize=6M(没有生效方法区还是不断增加)
+ * jdk6:-vm 设置永久代大小 -XX:PermSize=10M -XX:MaxPermSize=10M
+ * jdk7:常量池已经移入到java堆 -Xmx10M
+ * jdk8:永久代已不存在，方法区是java堆的一部分 -XX:MetaspaceSize=10M -XX:MaxMetaspaceSize=10M(没有生效方法区还是不断增加)
  *
  * @author chujun
  * @date 2022/1/27

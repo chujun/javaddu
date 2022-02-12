@@ -21,14 +21,14 @@ public class ConcurrentHashMapDeadLock {
 
     @Test
     public void testDeadLock() {
-        Map<String, Integer> map = new ConcurrentHashMap<>();
-        map.computeIfAbsent("a", key -> {
-            Integer value = 1;
-            System.out.println("开始put");
-            map.put(key, value);
-            System.out.println("这儿永远不会执行");
-            return value;
-        });
-        System.out.println(map);
+//        Map<String, Integer> map = new ConcurrentHashMap<>();
+//        map.computeIfAbsent("a", key -> {
+//            Integer value = 1;
+//            System.out.println("开始put");
+//            map.put(key, value);
+//            System.out.println("这儿永远不会执行");
+//            return value;
+//        });
+//        System.out.println(map);
     }
 }

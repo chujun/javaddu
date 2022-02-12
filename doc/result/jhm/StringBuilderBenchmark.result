@@ -1,0 +1,99 @@
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk1.8.0_211.jdk/Contents/Home/jre/bin/java
+# VM options: -javaagent:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar=64632:/Applications/IntelliJ IDEA.app/Contents/bin -Dfile.encoding=UTF-8
+# Warmup: 3 iterations, 1 s each
+# Measurement: 10 iterations, 5 s each
+# Timeout: 10 min per iteration
+# Threads: 8 threads, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: com.jun.chu.java.benchmark.StringBuilderBenchmark.testStringAdd
+
+# Run progress: 0.00% complete, ETA 00:03:32
+# Fork: 1 of 2
+# Warmup Iteration   1: 4767.845 ops/ms
+# Warmup Iteration   2: 12719.479 ops/ms
+# Warmup Iteration   3: 15360.258 ops/ms
+Iteration   1: 17043.767 ops/ms
+Iteration   2: 14577.670 ops/ms
+Iteration   3: 15781.365 ops/ms
+Iteration   4: 16406.900 ops/ms
+Iteration   5: 15883.019 ops/ms
+Iteration   6: 16359.369 ops/ms
+Iteration   7: 17141.778 ops/ms
+Iteration   8: 17094.120 ops/ms
+Iteration   9: 12337.852 ops/ms
+Iteration  10: 12684.951 ops/ms
+
+# Run progress: 25.00% complete, ETA 00:02:44
+# Fork: 2 of 2
+# Warmup Iteration   1: 9033.984 ops/ms
+# Warmup Iteration   2: 11746.628 ops/ms
+# Warmup Iteration   3: 13962.060 ops/ms
+Iteration   1: 16475.361 ops/ms
+Iteration   2: 16357.203 ops/ms
+Iteration   3: 16977.267 ops/ms
+Iteration   4: 16170.758 ops/ms
+Iteration   5: 16982.975 ops/ms
+Iteration   6: 16911.713 ops/ms
+Iteration   7: 16536.264 ops/ms
+Iteration   8: 13485.900 ops/ms
+Iteration   9: 9730.195 ops/ms
+Iteration  10: 13219.368 ops/ms
+
+
+Result: 15407.890 ±(99.9%) 1783.435 ops/ms [Average]
+  Statistics: (min, avg, max) = (9730.195, 15407.890, 17141.778), stdev = 2053.806
+  Confidence interval (99.9%): [13624.455, 17191.325]
+
+
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk1.8.0_211.jdk/Contents/Home/jre/bin/java
+# VM options: -javaagent:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar=64632:/Applications/IntelliJ IDEA.app/Contents/bin -Dfile.encoding=UTF-8
+# Warmup: 3 iterations, 1 s each
+# Measurement: 10 iterations, 5 s each
+# Timeout: 10 min per iteration
+# Threads: 8 threads, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: com.jun.chu.java.benchmark.StringBuilderBenchmark.testStringBuilderAdd
+
+# Run progress: 50.00% complete, ETA 00:01:49
+# Fork: 1 of 2
+# Warmup Iteration   1: 39688.429 ops/ms
+# Warmup Iteration   2: 25764.653 ops/ms
+# Warmup Iteration   3: 16097.195 ops/ms
+Iteration   1: 20418.695 ops/ms
+Iteration   2: 23833.232 ops/ms
+Iteration   3: 24453.125 ops/ms
+Iteration   4: 21140.801 ops/ms
+Iteration   5: 23816.797 ops/ms
+Iteration   6: 24568.985 ops/ms
+Iteration   7: 24106.846 ops/ms
+Iteration   8: 22650.358 ops/ms
+Iteration   9: 24685.622 ops/ms
+Iteration  10: 23668.353 ops/ms
+
+# Run progress: 75.00% complete, ETA 00:00:54
+# Fork: 2 of 2
+# Warmup Iteration   1: 54049.910 ops/ms
+# Warmup Iteration   2: 61987.827 ops/ms
+# Warmup Iteration   3: 35646.740 ops/ms
+Iteration   1: 31203.287 ops/ms
+Iteration   2: 32146.696 ops/ms
+Iteration   3: 31739.219 ops/ms
+Iteration   4: 31139.531 ops/ms
+Iteration   5: 29716.006 ops/ms
+Iteration   6: 29108.088 ops/ms
+Iteration   7: 22362.947 ops/ms
+Iteration   8: 25768.132 ops/ms
+Iteration   9: 25575.393 ops/ms
+Iteration  10: 22513.955 ops/ms
+
+
+Result: 25730.803 ±(99.9%) 3227.501 ops/ms [Average]
+  Statistics: (min, avg, max) = (20418.695, 25730.803, 32146.696), stdev = 3716.795
+  Confidence interval (99.9%): [22503.302, 28958.304]
+
+
+# Run complete. Total time: 00:03:38
+
+Benchmark                                                 Mode  Samples      Score      Error   Units
+c.j.c.j.b.StringBuilderBenchmark.testStringAdd           thrpt       20  15407.890 ± 1783.435  ops/ms
+c.j.c.j.b.StringBuilderBenchmark.testStringBuilderAdd    thrpt       20  25730.803 ± 3227.501  ops/ms

@@ -16,6 +16,12 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * Java的基准测试需要注意的几个点
+ * * 测试前需要预热。
+ * * 防止无用代码进入测试方法中。
+ * * 并发测试。
+ * * 测试结果呈现
+ *
  * 比较字符串直接相加和StringBuilder的效率
  *
  * 输出结果见 doc/result/jhm/StringBuilderBenchmark.result

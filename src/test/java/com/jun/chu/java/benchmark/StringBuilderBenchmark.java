@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 比较字符串直接相加和StringBuilder的效率
  *
+ * 输出结果见 doc/result/jhm/StringBuilderBenchmark.result
  * @author chujun
  * @date 2022/2/12
  */
@@ -25,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 @Warmup(iterations = 3)
 @Measurement(iterations = 10, time = 5)
 @Threads(8)
+//fork出两个2进程
 @Fork(2)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 public class StringBuilderBenchmark {

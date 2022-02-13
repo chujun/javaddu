@@ -1,0 +1,67 @@
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk1.8.0_211.jdk/Contents/Home/jre/bin/java
+# VM options: -javaagent:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar=61186:/Applications/IntelliJ IDEA.app/Contents/bin -Dfile.encoding=UTF-8
+# Warmup: 3 iterations, 1 s each
+# Measurement: 3 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: com.jun.chu.java.benchmark.jmh.state.MyStateBenchmark.testAddMethod
+
+# Run progress: 0.00% complete, ETA 00:00:12
+# Fork: 1 of 1
+# Warmup Iteration   1: Do Setup
+Do TearDown
+44028135609.935 ops/min
+# Warmup Iteration   2: Do TearDown
+83884596274.988 ops/min
+# Warmup Iteration   3: Do TearDown
+102379788572.834 ops/min
+Iteration   1: Do TearDown
+106580379608.061 ops/min
+Iteration   2: Do TearDown
+106786410291.107 ops/min
+Iteration   3: Do TearDown
+106605213792.967 ops/min
+
+
+Result: 106657334564.045 ±(99.9%) 2051878850.300 ops/min [Average]
+  Statistics: (min, avg, max) = (106580379608.061, 106657334564.045, 106786410291.107), stdev = 112470403.540
+  Confidence interval (99.9%): [104605455713.746, 108709213414.345]
+
+
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk1.8.0_211.jdk/Contents/Home/jre/bin/java
+# VM options: -javaagent:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar=61186:/Applications/IntelliJ IDEA.app/Contents/bin -Dfile.encoding=UTF-8
+# Warmup: 3 iterations, 1 s each
+# Measurement: 3 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: com.jun.chu.java.benchmark.jmh.state.MyStateBenchmark.testPlusMethod
+
+# Run progress: 50.00% complete, ETA 00:00:07
+# Fork: 1 of 1
+# Warmup Iteration   1: Do Setup
+Do TearDown
+102515916423.752 ops/min
+# Warmup Iteration   2: Do TearDown
+105346847039.117 ops/min
+# Warmup Iteration   3: Do TearDown
+104089470473.822 ops/min
+Iteration   1: Do TearDown
+105907168625.261 ops/min
+Iteration   2: Do TearDown
+105997920950.009 ops/min
+Iteration   3: Do TearDown
+106590422766.668 ops/min
+
+
+Result: 106165170780.646 ±(99.9%) 6769587299.350 ops/min [Average]
+  Statistics: (min, avg, max) = (105907168625.261, 106165170780.646, 106590422766.668), stdev = 371063922.827
+  Confidence interval (99.9%): [99395583481.296, 112934758079.996]
+
+
+# Run complete. Total time: 00:00:14
+
+Benchmark                                         Mode  Samples             Score            Error    Units
+c.j.c.j.b.j.s.MyStateBenchmark.testAddMethod     thrpt        3  106657334564.045 ± 2051878850.300  ops/min
+c.j.c.j.b.j.s.MyStateBenchmark.testPlusMethod    thrpt        3  106165170780.646 ± 6769587299.350  ops/min

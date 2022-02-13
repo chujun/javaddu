@@ -79,7 +79,7 @@ public class AccumulationBenchmark {
             .forks(1)
             .warmupIterations(3)
             .measurementIterations(3)
-            .output("/tmp/benchmark/AccumulationBenchmark.out")
+            .output("/tmp/benchmark/AccumulationBenchmark.result")
             .build();
         new Runner(opt).run();
     }

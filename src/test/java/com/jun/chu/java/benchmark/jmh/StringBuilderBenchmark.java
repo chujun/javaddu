@@ -61,7 +61,7 @@ public class StringBuilderBenchmark {
     public static void main(String[] args) throws RunnerException {
         Options options = new OptionsBuilder()
             .include(StringBuilderBenchmark.class.getSimpleName())
-            .output("/tmp/benchmark/StringBuilderBenchmark.out")
+            .output("/tmp/benchmark/StringBuilderBenchmark.result")
             .build();
         new Runner(options).run();
     }

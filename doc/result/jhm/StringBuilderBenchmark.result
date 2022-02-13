@@ -5,7 +5,7 @@
 # Timeout: 10 min per iteration
 # Threads: 8 threads, will synchronize iterations
 # Benchmark mode: Throughput, ops/time
-# Benchmark: com.jun.chu.java.benchmark.StringBuilderBenchmark.testStringAdd
+# Benchmark: com.jun.chu.java.benchmark.jmh.StringBuilderBenchmark.testStringAdd
 
 # Run progress: 0.00% complete, ETA 00:03:32
 # Fork: 1 of 2
@@ -52,7 +52,7 @@ Result: 15407.890 ±(99.9%) 1783.435 ops/ms [Average]
 # Timeout: 10 min per iteration
 # Threads: 8 threads, will synchronize iterations
 # Benchmark mode: Throughput, ops/time
-# Benchmark: com.jun.chu.java.benchmark.StringBuilderBenchmark.testStringBuilderAdd
+# Benchmark: com.jun.chu.java.benchmark.jmh.StringBuilderBenchmark.testStringBuilderAdd
 
 # Run progress: 50.00% complete, ETA 00:01:49
 # Fork: 1 of 2

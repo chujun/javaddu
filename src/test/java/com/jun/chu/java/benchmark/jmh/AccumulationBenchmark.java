@@ -1,4 +1,4 @@
-package com.jun.chu.java.benchmark;
+package com.jun.chu.java.benchmark.jmh;
 
 import org.junit.Assert;
 import org.openjdk.jmh.annotations.Benchmark;

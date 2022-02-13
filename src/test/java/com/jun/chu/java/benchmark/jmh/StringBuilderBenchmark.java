@@ -1,4 +1,4 @@
-package com.jun.chu.java.benchmark;
+package com.jun.chu.java.benchmark.jmh;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;

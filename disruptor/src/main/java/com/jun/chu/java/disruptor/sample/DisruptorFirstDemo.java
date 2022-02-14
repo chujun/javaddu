@@ -13,6 +13,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 /**
+ * @see 阿里云开发者社区 Disruptor深入解读 https://developer.aliyun.com/article/553297
  * @author chujun
  * @date 2022/2/14
  */

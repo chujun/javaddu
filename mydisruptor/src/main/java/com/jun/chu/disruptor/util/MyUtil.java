@@ -1,5 +1,6 @@
 package com.jun.chu.disruptor.util;
 
+import com.jun.chu.disruptor.MySequence;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
@@ -30,5 +31,22 @@ public final class MyUtil {
 
     public static Unsafe getUnsafe() {
         return THE_UNSAFE;
+    }
+
+    /**
+     * @param sequences
+     * @return the minimum sequence found or Long.MAX_VALUE if the array is empty.
+     */
+    public static long getMinimumSequence(final MySequence[] sequences) {
+        return getMinimumSequence(sequences, Long.MAX_VALUE);
+    }
+
+    public static long getMinimumSequence(final MySequence[] sequences, long minimum) {
+        for (int i = 0, n = sequences.length; i < n; i++) {
+            long value = sequences[i].get();
+            minimum = Math.min(minimum, value);
+        }
+
+        return minimum;
     }
 }

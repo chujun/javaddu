@@ -11,7 +11,7 @@ package com.jun.chu.disruptor;
 public interface MySequenceBarrier {
     /**
      * 等待指定的sequence可消费
-     *
+     * 核心方法
      * @param sequence
      * @return
      * @throws MyAlertException     if a status change has occurred for the Disruptor

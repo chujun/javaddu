@@ -35,6 +35,16 @@ public class MyConsumerRepository<T> implements Iterable<MyConsumerInfo> {
         consumerInfos.add(consumerInfo);
     }
 
+    /**
+     * 通过该方法添加的processor，eventProcessorInfoByEventHandler map没有eventhandler映射
+     * MyEventProcessorInfo也没有handler和barrier
+     */
+    public void add(final MyEventProcessor processor) {
+        final MyEventProcessorInfo<T> consumerInfo = new MyEventProcessorInfo<>(processor, null, null);
+        eventProcessorInfoBySequence.put(processor.getSequence(), consumerInfo);
+        consumerInfos.add(consumerInfo);
+    }
+
     @Override
     public Iterator<MyConsumerInfo> iterator() {
         return consumerInfos.iterator();

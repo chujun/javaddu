@@ -18,7 +18,7 @@ public interface MySequenced {
     boolean hasAvailableCapacity(int requiredCapacity);
 
     /**
-     * 计算剩余可存储容量
+     * 计算剩余可存储容量，最大值ringbuffer size
      *
      * @return The number of slots remaining.
      */
@@ -69,7 +69,7 @@ public interface MySequenced {
     void publish(long sequence);
 
     /**
-     * 批量发布序列号事件列表,在所有事件完成值填充后回调
+     * 批量发布序列号事件列表,在所有事件完成值填充后再回调
      *
      * @param lo first sequence number to publish
      * @param hi last sequence number to publish

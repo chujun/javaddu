@@ -10,6 +10,10 @@ public interface MySequencer extends MyCursored, MySequenced {
      */
     long INITIAL_CURSOR_VALUE = -1L;
 
+    /**
+     * Claim a specific sequence.  Only used if initialising the ring buffer to
+     * a specific value.
+     */
     void claim(long sequence);
 
     boolean isAvailable(long sequence);

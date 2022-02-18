@@ -35,7 +35,7 @@ public interface MySequenceBarrier {
     boolean isAlerted();
 
     /**
-     * 警告 MyEventProcessor 状态变更，保持这个状态知道被清楚
+     * 警告 MyEventProcessor 状态变更，保持这个状态直到被清除
      */
     void alert();
 

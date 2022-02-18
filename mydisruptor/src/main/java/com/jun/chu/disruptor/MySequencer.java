@@ -27,7 +27,11 @@ public interface MySequencer extends MyCursored, MySequenced {
     long getMinimumSequence();
 
     /**
-     * TODO:cj 这个方法值得重点探究下
+     * 核心方法
+     * 得到已发布的最大sequence值
+     * @param nextSequence      The sequence to start scanning from.
+     * @param availableSequence The sequence to scan to.
+     * @return The highest value that can be safely read, will be at least <code>nextSequence - 1</code>.
      */
     long getHighestPublishedSequence(long nextSequence, long availableSequence);
 

@@ -56,6 +56,9 @@ public class MyConsumerRepository<T> implements Iterable<MyConsumerInfo> {
         }
     }
 
+    /**
+     * 返回所有处于处理链终端的消费者的Sequence数组
+     */
     public MySequence[] getLastSequenceInChain(boolean includeStopped) {
         List<MySequence> lastSequence = new ArrayList<>();
         for (MyConsumerInfo consumerInfo : consumerInfos) {

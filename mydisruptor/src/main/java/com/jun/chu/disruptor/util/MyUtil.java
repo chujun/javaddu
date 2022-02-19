@@ -1,5 +1,6 @@
 package com.jun.chu.disruptor.util;
 
+import com.jun.chu.disruptor.MyEventProcessor;
 import com.jun.chu.disruptor.MySequence;
 import sun.misc.Unsafe;
 
@@ -48,6 +49,17 @@ public final class MyUtil {
         }
 
         return minimum;
+    }
+
+    public static MySequence[] getSequencesFor(final MyEventProcessor... processors)
+    {
+        MySequence[] sequences = new MySequence[processors.length];
+        for (int i = 0; i < sequences.length; i++)
+        {
+            sequences[i] = processors[i].getSequence();
+        }
+
+        return sequences;
     }
 
     public static int log2(int i)

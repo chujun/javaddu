@@ -4,11 +4,14 @@ import com.jun.chu.disruptor.MyEventHandler;
 import com.jun.chu.disruptor.MyEventProcessor;
 import com.jun.chu.disruptor.MySequence;
 import com.jun.chu.disruptor.MySequenceBarrier;
+import com.jun.chu.disruptor.MyWorkerPool;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,8 +48,60 @@ public class MyConsumerRepository<T> implements Iterable<MyConsumerInfo> {
         consumerInfos.add(consumerInfo);
     }
 
+    public void add(final MyWorkerPool<T> workerPool, final MySequenceBarrier sequenceBarrier) {
+        final MyWorkerPoolInfo<T> workerPoolInfo = new MyWorkerPoolInfo<>(workerPool, sequenceBarrier);
+        consumerInfos.add(workerPoolInfo);
+        for (MySequence sequence : workerPool.getWorkerSequences()) {
+            eventProcessorInfoBySequence.put(sequence, workerPoolInfo);
+        }
+    }
+
+    public MySequence[] getLastSequenceInChain(boolean includeStopped) {
+        List<MySequence> lastSequence = new ArrayList<>();
+        for (MyConsumerInfo consumerInfo : consumerInfos) {
+            if ((includeStopped || consumerInfo.isRunning()) && consumerInfo.isEndOfChain()) {
+                final MySequence[] sequences = consumerInfo.getSequences();
+                Collections.addAll(lastSequence, sequences);
+            }
+        }
+
+        return lastSequence.toArray(new MySequence[lastSequence.size()]);
+    }
+
+    public MyEventProcessor getEventProcessorFor(final MyEventHandler<T> handler) {
+        final MyEventProcessorInfo<T> eventprocessorInfo = getEventProcessorInfo(handler);
+        if (eventprocessorInfo == null) {
+            throw new IllegalArgumentException("The event handler " + handler + " is not processing events.");
+        }
+
+        return eventprocessorInfo.getEventProcessor();
+    }
+
+    public MySequence getSequenceFor(final MyEventHandler<T> handler) {
+        return getEventProcessorFor(handler).getSequence();
+    }
+
+    public void unMarkEventProcessorsAsEndOfChain(final MySequence... barrierEventProcessors) {
+        for (MySequence barrierEventProcessor : barrierEventProcessors) {
+            getEventProcessorInfo(barrierEventProcessor).markAsUsedInBarrier();
+        }
+    }
+
     @Override
     public Iterator<MyConsumerInfo> iterator() {
         return consumerInfos.iterator();
+    }
+
+    public MySequenceBarrier getBarrierFor(final MyEventHandler<T> handler) {
+        final MyConsumerInfo consumerInfo = getEventProcessorInfo(handler);
+        return consumerInfo != null ? consumerInfo.getBarrier() : null;
+    }
+
+    private MyEventProcessorInfo<T> getEventProcessorInfo(final MyEventHandler<T> handler) {
+        return eventProcessorInfoByEventHandler.get(handler);
+    }
+
+    private MyConsumerInfo getEventProcessorInfo(final MySequence barrierEventProcessor) {
+        return eventProcessorInfoBySequence.get(barrierEventProcessor);
     }
 }

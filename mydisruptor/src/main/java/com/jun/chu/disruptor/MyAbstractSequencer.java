@@ -16,7 +16,7 @@ public abstract class MyAbstractSequencer implements MySequencer{
     protected final int bufferSize;
     protected final MyWaitStrategy waitStrategy;
     protected final MySequence cursor = new MySequence(MySequencer.INITIAL_CURSOR_VALUE);
-    //TODO:cj 作用 维护消费者消费的sequence列表
+    //作用 维护消费者集合消费的sequence列表,更准确的说是处理链的终点sequence列表
     protected volatile MySequence[] gatingSequences = new MySequence[0];
 
     public MyAbstractSequencer(int bufferSize, MyWaitStrategy waitStrategy)

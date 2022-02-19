@@ -1,8 +1,10 @@
 package com.jun.chu.disruptor.dsl;
 
 import com.jun.chu.disruptor.MyEventFactory;
+import com.jun.chu.disruptor.MyEventHandler;
 import com.jun.chu.disruptor.MyExceptionHandler;
 import com.jun.chu.disruptor.MyRingBuffer;
+import com.jun.chu.disruptor.MySequence;
 import com.jun.chu.disruptor.MyWaitStrategy;
 
 import java.util.concurrent.Executor;
@@ -58,5 +60,12 @@ public class MyDisruptor<T> {
     {
         this.ringBuffer = ringBuffer;
         this.executor = executor;
+    }
+
+    @SuppressWarnings("varargs")
+    @SafeVarargs
+    public final MyEventHandlerGroup<T> handleEventsWith(final MyEventHandler<? super T>... handlers)
+    {
+        return createEventProcessors(new MySequence[0], handlers);
     }
 }

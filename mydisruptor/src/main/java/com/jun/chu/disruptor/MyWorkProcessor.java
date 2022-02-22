@@ -62,7 +62,7 @@ public final class MyWorkProcessor<T> implements MyEventProcessor {
     }
 
     /**
-     * TODO:cj 比较核心方法
+     * 比较核心方法
      * It is ok to have another thread re-run this method after a halt().
      */
     @Override

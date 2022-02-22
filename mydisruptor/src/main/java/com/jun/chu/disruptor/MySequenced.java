@@ -11,7 +11,7 @@ public interface MySequenced {
     int getBufferSize();
 
     /**
-     * TODO:cj 关键方法
+     * 核心方法
      * 判断数据结构是否有有空间分配指定容量sequence
      * 并发访问方法,返回的值仅能做快照
      */

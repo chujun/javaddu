@@ -77,7 +77,7 @@ abstract class MyRingBufferFields<E> extends MyRingBufferPad {
      */
     protected final E elementAt(long sequence) {
         //获得给定对象的指定地址偏移量的值
-        //TODO:cj 为何不直接用数组下标方式访问，二用UNSAFE方法访问，性能问题原因嘛？？jmh进行方法微测试
+        //TODO:cj 为何不直接用数组下标方式访问，而用UNSAFE方法访问，性能问题原因嘛？？jmh进行方法微测试
         return (E) UNSAFE.getObject(entries, REF_ARRAY_BASE + ((sequence & indexMask) << REF_ELEMENT_SHIFT));
     }
 

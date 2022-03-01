@@ -22,7 +22,7 @@
         <jmockit.version>1.36</jmockit.version>
         <jmh.version>1.3.3</jmh.version>
         <disruptor.version>3.4.4</disruptor.version>
-        <jackson.version>2.9.0</jackson.version>
+        <jackson.version>2.9.10.8</jackson.version>
     </properties>
 
     <dependencyManagement>

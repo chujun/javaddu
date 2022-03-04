@@ -8,6 +8,7 @@
     <modules>
         <module>disruptor</module>
         <module>mydisruptor</module>
+        <module>transactionIsolation</module>
     </modules>
     <packaging>pom</packaging>
 

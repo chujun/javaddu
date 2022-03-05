@@ -7,49 +7,69 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * 可重复读
+ * jdbc可重复读+事务自动提交
+ * <p>
+ * 多线程时间执行顺序
+ * A线程查询id为1的学生信息
+ * B线程更新id为1的学生信息
+ * A线程再查询id为1的学生信息
  *
  * @author chujun
  * @date 2022/3/5
  */
-public class JdbcRepeatableReadTransactionIsolation {
-    private static final CountDownLatch COUNT_DOWN_LATCH = new CountDownLatch(1);
-    private static final CountDownLatch STARTED = new CountDownLatch(1);
-    private static final Integer RANDOM_INT = new Random().nextInt();
+public class JdbcRepeatableReadTransactionIsolationWithAutoCommit {
+    private static final Lock LOCK = new ReentrantLock();
+    /**
+     * 自动提交事务
+     */
+    private static final Condition CONDITION_AUTO_COMMIT = LOCK.newCondition();
+    private static final String RANDOM_INT = "" + new Random().nextInt();
 
     public static void main(String[] args) {
-        new Thread(new RunnableB()).start();
-        new Thread(new RunnableA()).start();
+        new Thread(new AutoCommitB()).start();
+        new Thread(new AutoCommitA()).start();
     }
 
-    public static class RunnableA implements Runnable {
+    public static class AutoCommitA implements Runnable {
 
         /**
          * 事务自动提交+mysql隔离级别可重复读
          */
         @Override
         public void run() {
+            List<Student> result;
             try (Connection conn = SqlUtil.getNewConnection()) {
-                System.out.println("autoCommit:" + conn.getAutoCommit() + ",TransactionIsolation:" + conn.getTransactionIsolation());
+                System.out.println("A autoCommit:" + conn.getAutoCommit() + ",TransactionIsolation:" + conn.getTransactionIsolation());
                 try (PreparedStatement ps = conn.prepareStatement("SELECT id, grade, name, gender FROM students WHERE id=? ")) {
                     ps.setObject(1, 1);
                     try (ResultSet rs = ps.executeQuery()) {
-                        List<Student> students = StudentHelper.fetchStudents(rs);
-                        System.out.println("A first query:" + JsonUtil.toJson(students));
+                        result = StudentHelper.fetchStudents(rs);
+                        System.out.println("A first query:" + JsonUtil.toJson(result));
                     }
                 }
-                STARTED.countDown();
-                COUNT_DOWN_LATCH.await();
+                System.out.println("A start to await");
+                LOCK.lock();
+                try {
+                    CONDITION_AUTO_COMMIT.signalAll();
+                    CONDITION_AUTO_COMMIT.await();
+                } finally {
+                    LOCK.unlock();
+                }
                 try (PreparedStatement ps = conn.prepareStatement("SELECT id, grade, name, gender FROM students WHERE id=?")) {
                     ps.setObject(1, 1);
                     try (ResultSet rs = ps.executeQuery()) {
                         List<Student> students = StudentHelper.fetchStudents(rs);
                         //因为事务自动提交了，所以能读取到另一个事务提交的数据
+                        result.get(0).setName(RANDOM_INT);
                         System.out.println("A second query:" + JsonUtil.toJson(students));
+                        Assert.isTrue(Objects.equals(result, students), new RuntimeException("not true"));
                     }
                 }
             } catch (SQLException | InterruptedException throwable) {
@@ -59,24 +79,36 @@ public class JdbcRepeatableReadTransactionIsolation {
         }
     }
 
-    public static class RunnableB implements Runnable {
+    public static class AutoCommitB implements Runnable {
 
         @SneakyThrows
         @Override
         public void run() {
             System.out.println("B start to await");
-            STARTED.await();
+            LOCK.lock();
+            try {
+                CONDITION_AUTO_COMMIT.await();
+            } finally {
+                LOCK.unlock();
+            }
+
             try (Connection conn = SqlUtil.getNewConnection()) {
                 try (PreparedStatement ps = conn.prepareStatement(
                     "UPDATE students SET name=? WHERE id=?")) {
                     System.out.println("randomInt:" + RANDOM_INT);
-                    ps.setObject(1, "" + RANDOM_INT);
+                    ps.setObject(1, RANDOM_INT);
                     ps.setObject(2, 1);
                     // 返回更新的行数
                     int count = ps.executeUpdate();
                     System.out.println("B execute update count:" + count);
                 }
-                COUNT_DOWN_LATCH.countDown();
+
+                LOCK.lock();
+                try {
+                    CONDITION_AUTO_COMMIT.signalAll();
+                } finally {
+                    LOCK.unlock();
+                }
             } catch (SQLException throwable) {
                 throwable.printStackTrace();
                 throw new RuntimeException(throwable);

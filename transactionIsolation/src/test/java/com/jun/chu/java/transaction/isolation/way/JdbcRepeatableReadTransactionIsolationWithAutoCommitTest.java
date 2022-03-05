@@ -1,25 +1,27 @@
 package com.jun.chu.java.transaction.isolation.way;
 
-import com.jun.chu.java.transaction.isolation.Assert;
 import com.jun.chu.java.transaction.isolation.JsonUtil;
 import com.jun.chu.java.transaction.isolation.SqlUtil;
 import com.jun.chu.java.transaction.isolation.Student;
 import com.jun.chu.java.transaction.isolation.StudentHelper;
 import lombok.SneakyThrows;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * jdbc mysql默认隔离级别可重复读+事务手动提交
+ * jdbc可重复读+事务自动提交
+ * mysql默认隔离级别可重复读
+ * connection连接默认为事务自动提交，每执行一个语句(包括增删改查)自动提交事务
  * <p>
  * 多线程时间执行顺序
  * A线程查询id为1的学生信息
@@ -29,15 +31,16 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author chujun
  * @date 2022/3/5
  */
-public class JdbcRepeatableReadTransactionIsolationWithManualCommit {
+public class JdbcRepeatableReadTransactionIsolationWithAutoCommitTest {
     private static final Lock LOCK = new ReentrantLock();
     /**
-     * 手动提交事务
+     * 自动提交事务
      */
-    private static final Condition CONDITION_MANUAL_COMMIT = LOCK.newCondition();
+    private static final Condition CONDITION_AUTO_COMMIT = LOCK.newCondition();
     private static final String RANDOM_INT = "" + new Random().nextInt();
 
-    public static void main(String[] args) {
+    @Test
+    public void test() {
         new Thread(new RunnableB()).start();
         new Thread(new RunnableA()).start();
     }
@@ -45,13 +48,12 @@ public class JdbcRepeatableReadTransactionIsolationWithManualCommit {
     public static class RunnableA implements Runnable {
 
         /**
-         * 事务手动提交+mysql默认隔离级别可重复读
+         * 事务自动提交+mysql默认隔离级别可重复读
          */
         @Override
         public void run() {
             List<Student> result;
             try (Connection conn = SqlUtil.getNewConnection()) {
-                conn.setAutoCommit(false);
                 System.out.println("A autoCommit:" + conn.getAutoCommit() + ",TransactionIsolation:" + conn.getTransactionIsolation());
                 try (PreparedStatement ps = conn.prepareStatement("SELECT id, grade, name, gender FROM students WHERE id=? ")) {
                     ps.setObject(1, 1);
@@ -63,8 +65,8 @@ public class JdbcRepeatableReadTransactionIsolationWithManualCommit {
                 System.out.println("A start to await");
                 LOCK.lock();
                 try {
-                    CONDITION_MANUAL_COMMIT.signalAll();
-                    CONDITION_MANUAL_COMMIT.await();
+                    CONDITION_AUTO_COMMIT.signalAll();
+                    CONDITION_AUTO_COMMIT.await();
                 } finally {
                     LOCK.unlock();
                 }
@@ -72,9 +74,10 @@ public class JdbcRepeatableReadTransactionIsolationWithManualCommit {
                     ps.setObject(1, 1);
                     try (ResultSet rs = ps.executeQuery()) {
                         List<Student> students = StudentHelper.fetchStudents(rs);
-                        //因为事务手动提交了+事务隔离级别为重复读,所以不能读取到另一个事务提交的数据
+                        //因为事务自动提交了，所以能读取到另一个事务提交的数据
+                        result.get(0).setName(RANDOM_INT);
                         System.out.println("A second query:" + JsonUtil.toJson(students));
-                        Assert.isTrue(Objects.equals(result, students), new RuntimeException("not true"));
+                        Assert.assertEquals(result, students);
                     }
                 }
             } catch (SQLException | InterruptedException throwable) {
@@ -92,7 +95,7 @@ public class JdbcRepeatableReadTransactionIsolationWithManualCommit {
             System.out.println("B start to await");
             LOCK.lock();
             try {
-                CONDITION_MANUAL_COMMIT.await();
+                CONDITION_AUTO_COMMIT.await();
             } finally {
                 LOCK.unlock();
             }
@@ -110,7 +113,7 @@ public class JdbcRepeatableReadTransactionIsolationWithManualCommit {
 
                 LOCK.lock();
                 try {
-                    CONDITION_MANUAL_COMMIT.signalAll();
+                    CONDITION_AUTO_COMMIT.signalAll();
                 } finally {
                     LOCK.unlock();
                 }

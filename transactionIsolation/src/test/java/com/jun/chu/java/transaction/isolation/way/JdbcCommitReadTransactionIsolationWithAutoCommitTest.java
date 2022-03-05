@@ -1,18 +1,18 @@
 package com.jun.chu.java.transaction.isolation.way;
 
-import com.jun.chu.java.transaction.isolation.Assert;
 import com.jun.chu.java.transaction.isolation.JsonUtil;
 import com.jun.chu.java.transaction.isolation.SqlUtil;
 import com.jun.chu.java.transaction.isolation.Student;
 import com.jun.chu.java.transaction.isolation.StudentHelper;
 import lombok.SneakyThrows;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -30,7 +30,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author chujun
  * @date 2022/3/5
  */
-public class JdbcCommitReadTransactionIsolationWithAutoCommit {
+public class JdbcCommitReadTransactionIsolationWithAutoCommitTest {
     private static final Lock LOCK = new ReentrantLock();
     /**
      * 自动提交事务
@@ -38,7 +38,8 @@ public class JdbcCommitReadTransactionIsolationWithAutoCommit {
     private static final Condition CONDITION_AUTO_COMMIT = LOCK.newCondition();
     private static final String RANDOM_INT = "" + new Random().nextInt();
 
-    public static void main(String[] args) {
+    @Test
+    public void test() {
         new Thread(new RunnableB()).start();
         new Thread(new RunnableA()).start();
     }
@@ -73,7 +74,7 @@ public class JdbcCommitReadTransactionIsolationWithAutoCommit {
                         //因为事务隔离级别是提交读，无论事务是否提交，都能读取到另一个事务提交的数据
                         result.get(0).setName(RANDOM_INT);
                         System.out.println("A second query:" + JsonUtil.toJson(students));
-                        Assert.isTrue(Objects.equals(result, students), new RuntimeException("not true"));
+                        Assert.assertEquals(result, students);
                     }
                 }
             } catch (SQLException | InterruptedException throwable) {

@@ -1,5 +1,10 @@
-package com.jun.chu.java.transaction.isolation;
+package com.jun.chu.java.transaction.isolation.way;
 
+import com.jun.chu.java.transaction.isolation.Assert;
+import com.jun.chu.java.transaction.isolation.JsonUtil;
+import com.jun.chu.java.transaction.isolation.SqlUtil;
+import com.jun.chu.java.transaction.isolation.Student;
+import com.jun.chu.java.transaction.isolation.StudentHelper;
 import lombok.SneakyThrows;
 
 import java.sql.Connection;
@@ -14,7 +19,9 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * jdbc可重复读+事务自动提交
+ * jdbcjdbc+事务自动提交
+ * mysql默认隔离级别可重复读
+ * connection连接默认为事务自动提交，每执行一个语句(包括增删改查)自动提交事务
  * <p>
  * 多线程时间执行顺序
  * A线程查询id为1的学生信息
@@ -33,14 +40,14 @@ public class JdbcRepeatableReadTransactionIsolationWithAutoCommit {
     private static final String RANDOM_INT = "" + new Random().nextInt();
 
     public static void main(String[] args) {
-        new Thread(new AutoCommitB()).start();
-        new Thread(new AutoCommitA()).start();
+        new Thread(new RunnableB()).start();
+        new Thread(new RunnableA()).start();
     }
 
-    public static class AutoCommitA implements Runnable {
+    public static class RunnableA implements Runnable {
 
         /**
-         * 事务自动提交+mysql隔离级别可重复读
+         * 事务自动提交+mysql默认隔离级别可重复读
          */
         @Override
         public void run() {
@@ -79,7 +86,7 @@ public class JdbcRepeatableReadTransactionIsolationWithAutoCommit {
         }
     }
 
-    public static class AutoCommitB implements Runnable {
+    public static class RunnableB implements Runnable {
 
         @SneakyThrows
         @Override

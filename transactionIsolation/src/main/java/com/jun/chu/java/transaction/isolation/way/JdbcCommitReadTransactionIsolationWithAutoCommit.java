@@ -19,8 +19,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * jdbc可重复读+事务自动提交
- * mysql默认隔离级别可重复读
+ * jdbc提交读+事务自动提交
  * connection连接默认为事务自动提交，每执行一个语句(包括增删改查)自动提交事务
  * <p>
  * 多线程时间执行顺序
@@ -31,7 +30,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author chujun
  * @date 2022/3/5
  */
-public class JdbcRepeatableReadTransactionIsolationWithAutoCommit {
+public class JdbcCommitReadTransactionIsolationWithAutoCommit {
     private static final Lock LOCK = new ReentrantLock();
     /**
      * 自动提交事务
@@ -46,13 +45,11 @@ public class JdbcRepeatableReadTransactionIsolationWithAutoCommit {
 
     public static class RunnableA implements Runnable {
 
-        /**
-         * 事务自动提交+mysql默认隔离级别可重复读
-         */
         @Override
         public void run() {
             List<Student> result;
             try (Connection conn = SqlUtil.getNewConnection()) {
+                conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
                 System.out.println("A autoCommit:" + conn.getAutoCommit() + ",TransactionIsolation:" + conn.getTransactionIsolation());
                 try (PreparedStatement ps = conn.prepareStatement("SELECT id, grade, name, gender FROM students WHERE id=? ")) {
                     ps.setObject(1, 1);
@@ -73,7 +70,7 @@ public class JdbcRepeatableReadTransactionIsolationWithAutoCommit {
                     ps.setObject(1, 1);
                     try (ResultSet rs = ps.executeQuery()) {
                         List<Student> students = StudentHelper.fetchStudents(rs);
-                        //因为事务自动提交了，所以能读取到另一个事务提交的数据
+                        //因为事务隔离级别是提交读，无论事务是否提交，都能读取到另一个事务提交的数据
                         result.get(0).setName(RANDOM_INT);
                         System.out.println("A second query:" + JsonUtil.toJson(students));
                         Assert.isTrue(Objects.equals(result, students), new RuntimeException("not true"));

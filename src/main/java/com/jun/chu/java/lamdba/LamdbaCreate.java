@@ -1,6 +1,9 @@
 package com.jun.chu.java.lamdba;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -31,6 +34,21 @@ public class LamdbaCreate {
 
 
         LamdbaCreate.isTrueForFunction(Objects.nonNull(a), a, number, e -> number.append(e));
+
+        Integer count = null;
+        Integer number2 = 1;
+        String address = "";
+        String name = "name";
+        TestA test = new TestA();
+
+        ChainObject.get()
+            .eq(Objects.nonNull(count), () -> test.setCount(count))
+            .eq(Objects.nonNull(number), () -> test.setNumber(number2))
+            .eq(StringUtils.isNotBlank(address), () -> test.setAddress(address))
+            .eq(StringUtils.isNotBlank(name), () -> test.setName(name));
+
+
+        System.out.println(test);
     }
 
     @Data
@@ -42,4 +60,18 @@ public class LamdbaCreate {
             return this;
         }
     }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class TestA {
+        private Integer count;
+
+        private String name;
+
+        private String address;
+
+        private Integer number;
+    }
+
 }

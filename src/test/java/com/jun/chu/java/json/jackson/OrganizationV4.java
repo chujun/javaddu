@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Data;
 
 /**
+ * 这种写法比较复杂,还是推荐v3版本写法
  * @author chujun
  * @date 2022/3/1
  */
@@ -14,7 +15,7 @@ public class OrganizationV4 {
 
     @Data
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
         property = "type",
         defaultImpl = PeopleV4.class
     )

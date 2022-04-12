@@ -66,6 +66,18 @@ public class JacksonPolymorphic {
 
     }
 
+    @Test
+    public void testDeserializationFeatureV4() throws IOException {
+        String json = "{\"people\":{\"@type\":\"manNew\",\"id\":1,\"manNewField\":\"man\"}}";
+        ObjectMapper objectMapper = getObjectMapper();
+        OrganizationV4 desOrganization = objectMapper.readValue(json, OrganizationV4.class);
+        Assert.assertEquals(OrganizationV4.PeopleV4.class, desOrganization.getPeople().getClass());
+        String desJson = objectMapper.writeValueAsString(desOrganization);
+        //识别不了的类型，取默认类型
+        Assert.assertEquals("{\"people\":{\"type\":\"OrganizationV4$PeopleV4\",\"id\":1}}", desJson);
+
+    }
+
     private ObjectMapper getObjectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

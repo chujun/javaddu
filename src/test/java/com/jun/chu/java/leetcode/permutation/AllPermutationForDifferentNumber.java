@@ -51,17 +51,11 @@ public class AllPermutationForDifferentNumber {
     }
 
     @Test
-    public void testPermuteV2() {
-        System.out.println(permuteV2(new int[]{1}));
-        System.out.println(permuteV2(new int[]{1, 2}));
-        System.out.println(permuteV2(new int[]{1, 2, 3}));
-        List<List<Integer>> result = permuteV2(new int[]{1, 2, 3, 4});
-        System.out.println(result);
-        System.out.println(result.size());
-        Assert.assertEquals(permuteV2(new int[]{1}).toString(), "[[1]]");
-        Assert.assertEquals(permuteV2(new int[]{1, 2}).toString(), "[[1, 2], [2, 1]]");
-        Assert.assertEquals(permuteV2(new int[]{1, 2, 3}).toString(), "[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
-        Assert.assertEquals(permuteV2(new int[]{1, 2, 3, 4}).toString(), "[[1, 2, 3, 4], [1, 2, 4, 3], [1, 3, 2, 4], [1, 3, 4, 2], [1, 4, 2, 3], [1, 4, 3, 2], [2, 1, 3, 4], [2, 1, 4, 3], [2, 3, 1, 4], [2, 3, 4, 1], [2, 4, 1, 3], [2, 4, 3, 1], [3, 1, 2, 4], [3, 1, 4, 2], [3, 2, 1, 4], [3, 2, 4, 1], [3, 4, 1, 2], [3, 4, 2, 1], [4, 1, 2, 3], [4, 1, 3, 2], [4, 2, 1, 3], [4, 2, 3, 1], [4, 3, 1, 2], [4, 3, 2, 1]]");
+    public void testPermuteV10() {
+        Assert.assertEquals(permuteV10(new int[]{1}).toString(), "[[1]]");
+        Assert.assertEquals(permuteV10(new int[]{1, 2}).toString(), "[[1, 2], [2, 1]]");
+        Assert.assertEquals(permuteV10(new int[]{1, 2, 3}).toString(), "[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 2, 1], [3, 1, 2]]");
+        Assert.assertEquals(permuteV10(new int[]{1, 2, 3, 4}).toString(), "[[1, 2, 3, 4], [1, 2, 4, 3], [1, 3, 2, 4], [1, 3, 4, 2], [1, 4, 3, 2], [1, 4, 2, 3], [2, 1, 3, 4], [2, 1, 4, 3], [2, 3, 1, 4], [2, 3, 4, 1], [2, 4, 3, 1], [2, 4, 1, 3], [3, 2, 1, 4], [3, 2, 4, 1], [3, 1, 2, 4], [3, 1, 4, 2], [3, 4, 1, 2], [3, 4, 2, 1], [4, 2, 3, 1], [4, 2, 1, 3], [4, 3, 2, 1], [4, 3, 1, 2], [4, 1, 3, 2], [4, 1, 2, 3]]");
     }
 
 
@@ -118,30 +112,6 @@ public class AllPermutationForDifferentNumber {
         }
     }
 
-//    private void permute_2(List<List<Integer>> result,
-//                           List<Integer> toBeAddList,
-//                           int[] visited,
-//                           int num) {
-//        //有限解
-//        if (num == toBeAddList.size()) {
-//            //注意不要破坏源数据结构
-//            //这儿有copy成本
-//            List<Integer> onePermutation = OriginJDKUtil.newCopy(toBeAddList);
-//            result.add(onePermutation);
-//            return;
-//        }
-//        //递归解
-//        for (int i = 0; i < remainList.size(); i++) {
-//            Integer data = remainList.get(i);
-//            //这儿有copy成本
-//            List<Integer> destToBeAddedList = OriginJDKUtil.newCopy(toBeAddList, toBeAddList.size() + 1);
-//            destToBeAddedList.add(data);
-//            //这儿有copy成本
-//            List<Integer> destRemainList = OriginJDKUtil.newCopy(remainList, remainList.size());
-//            destRemainList.remove(i);
-//            permute(result, destToBeAddedList, destRemainList);
-//        }
-//    }
     /////////////////////////////方法一暴力遍历\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
     /////////////////////////////方法二使用树结构简化复制成本\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -181,6 +151,59 @@ public class AllPermutationForDifferentNumber {
         }
     }
 
+    /////////////////////////////方法二使用树结构简化复制成本\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    /////////////////////////////方法十直接基于数组本身，不需要复制成本\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    /**
+     * 最佳推荐
+     * [参考官方实现](https://leetcode.cn/problems/permutations/solution/quan-pai-lie-by-leetcode-solution-2/)
+     * 参考官方实现，直接基于数据结构,使用状态重置替代复制(成本耗费巨大)
+     * 数组结构划分成两部分,左边已遍历数组|右边待遍历数组,[1,2,3|4,5,6,7]
+     * 时间复杂度:O(n!*n):n!,遍历节点数量,输出结果n到结果集
+     * 空间复杂度:
+     */
+    public List<List<Integer>> permuteV10(int[] nums) {
+        if (null == nums || 0 == nums.length) {
+            return Collections.emptyList();
+        }
+        List<List<Integer>> result = new ArrayList<>();
+        permuteV10(result, 0, nums);
+        return result;
+    }
+
+    private void permuteV10(List<List<Integer>> result,
+                            int traverseLocation,
+                            int[] nums) {
+        //有限确定解
+        if (traverseLocation == nums.length - 1) {
+            List<Integer> onePermutation = OriginJDKUtil.newCopyList(nums);
+            result.add(onePermutation);
+            return;
+        }
+        for (int i = traverseLocation; i < nums.length; i++) {
+            //swap,交换两个下标位置的数值
+            if (i != traverseLocation) {
+                swap(nums, traverseLocation, i);
+            }
+            //递归遍历下一层
+            permuteV10(result, 1 + traverseLocation, nums);
+            //revert,状态重置(这是回溯算法深度遍历的关键),重新交换回来两个下标位置的数值
+            //然后数组就恢复原状态了，这儿很神奇
+            if (i != traverseLocation) {
+                swap(nums, i, traverseLocation);
+            }
+        }
+    }
+
+    private void swap(final int[] nums, final int traverseLocation, final int i) {
+        int a = nums[traverseLocation];
+        nums[traverseLocation] = nums[i];
+        nums[i] = a;
+    }
+
+    /////////////////////////////方法十直接基于数组本身，不需要复制成本\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
     public static class Tree<T> {
         private TreeNode<T> rootNode;
 
@@ -196,7 +219,7 @@ public class AllPermutationForDifferentNumber {
             if (null == rootNode) {
                 return Collections.emptyList();
             }
-            //TODO:cj to be done
+            //TODO:cj to be done,其实也不方便这儿还涉及到树的深度遍历了，路径处理
             return null;
         }
     }
@@ -228,5 +251,6 @@ public class AllPermutationForDifferentNumber {
         public List<TreeNode<T>> getNextNodes() {
             return nextNodes;
         }
+
     }
 }

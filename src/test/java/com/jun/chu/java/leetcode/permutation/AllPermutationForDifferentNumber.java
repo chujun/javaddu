@@ -104,7 +104,8 @@ public class AllPermutationForDifferentNumber {
         TreeNode<Integer> currentNode = new TreeNode<>(null);
         Tree<Integer> tree = new Tree<>(currentNode, true);
         permuteV2(currentNode, OriginJDKUtil.newCopySet(nums));
-        return tree.toList();
+        //这儿树的遍历成本增加了
+        return tree.outputTraverseTrace();
     }
 
     private void permuteV2(TreeNode<Integer> node,
@@ -138,7 +139,8 @@ public class AllPermutationForDifferentNumber {
             this.rootNodeEmpty = rootNodeEmpty;
         }
 
-        public List<List<T>> toList() {
+        //输出遍历轨迹,不成环的遍历
+        public List<List<T>> outputTraverseTrace() {
             if (null == rootNode) {
                 return Collections.emptyList();
             }
@@ -147,15 +149,15 @@ public class AllPermutationForDifferentNumber {
     }
 
     public static class TreeNode<T> {
-        private T num;
+        private T data;
         private List<TreeNode<T>> nextNodes;
 
-        public TreeNode(final T num) {
-            this.num = num;
+        public TreeNode(final T data) {
+            this.data = data;
         }
 
-        public TreeNode(final T num, final List<TreeNode<T>> nextNodes) {
-            this.num = num;
+        public TreeNode(final T data, final List<TreeNode<T>> nextNodes) {
+            this.data = data;
             this.nextNodes = nextNodes;
         }
 
@@ -166,8 +168,8 @@ public class AllPermutationForDifferentNumber {
             nextNodes.add(treeNode);
         }
 
-        public T getNum() {
-            return num;
+        public T getData() {
+            return data;
         }
 
         public List<TreeNode<T>> getNextNodes() {

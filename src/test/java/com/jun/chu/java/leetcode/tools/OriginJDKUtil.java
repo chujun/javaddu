@@ -12,6 +12,15 @@ import java.util.Set;
  * @date 2022/5/19
  */
 public class OriginJDKUtil {
+    public static <T> List<T> newCopy(List<T> src) {
+        if (null == src || 0 == src.size()) {
+            return new ArrayList<>();
+        }
+        List<T> destList = new ArrayList<>(src.size());
+        destList.addAll(src);
+        return destList;
+    }
+
     public static <T> List<T> newCopy(List<T> src, int initNumber) {
         if (null == src || 0 == src.size()) {
             return new ArrayList<>();

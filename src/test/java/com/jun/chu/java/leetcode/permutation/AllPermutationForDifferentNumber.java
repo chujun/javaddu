@@ -17,6 +17,25 @@ import java.util.Set;
  * @date 2022/5/19
  */
 public class AllPermutationForDifferentNumber {
+    private static int costCounter1 = 0;
+    private static int costCounter2 = 0;
+    private static int costCounter3 = 0;
+
+    @Test
+    public void testCost() {
+        //时间复杂度估算
+        costCounter1 = 0;
+        costCounter2 = 0;
+        costCounter3 = 0;
+        Assert.assertEquals(permute(new int[]{1, 2, 3, 4}).toString(), "[[1, 2, 3, 4], [1, 2, 4, 3], [1, 3, 2, 4], [1, 3, 4, 2], [1, 4, 2, 3], [1, 4, 3, 2], [2, 1, 3, 4], [2, 1, 4, 3], [2, 3, 1, 4], [2, 3, 4, 1], [2, 4, 1, 3], [2, 4, 3, 1], [3, 1, 2, 4], [3, 1, 4, 2], [3, 2, 1, 4], [3, 2, 4, 1], [3, 4, 1, 2], [3, 4, 2, 1], [4, 1, 2, 3], [4, 1, 3, 2], [4, 2, 1, 3], [4, 2, 3, 1], [4, 3, 1, 2], [4, 3, 2, 1]]");
+        //(4*3*2*1)*(4-1)=24*3
+        Assert.assertEquals(24 * 3, costCounter1);
+        //4*0+(4*3)*1+(4*3*2)*2
+        Assert.assertEquals(60, costCounter2);
+        //4*4+(4*3)*3+(4*3*2)*2
+        Assert.assertEquals(100, costCounter3);
+    }
+
     @Test
     public void test() {
         System.out.println(permute(new int[]{1}));
@@ -73,23 +92,56 @@ public class AllPermutationForDifferentNumber {
         if (1 == remainList.size()) {
             //注意不要破坏源数据结构
             //这儿有copy成本
+            costCounter1 += toBeAddList.size();
             List<Integer> onePermutation = OriginJDKUtil.newCopy(toBeAddList, toBeAddList.size() + 1);
+            //可优化,linkedList比arraylist更有优势,这儿不存在随机读取，都是顺序读取
             onePermutation.addAll(remainList);
             result.add(onePermutation);
+
             return;
         }
         //递归解
         for (int i = 0; i < remainList.size(); i++) {
             Integer data = remainList.get(i);
             //这儿有copy成本
+            costCounter2 += toBeAddList.size();
             List<Integer> destToBeAddedList = OriginJDKUtil.newCopy(toBeAddList, toBeAddList.size() + 1);
+            //costCounter2没统计这儿的成本,可优化,linkedList比arraylist更有优势,这儿不存在随机读取，都是顺序读取
             destToBeAddedList.add(data);
+
             //这儿有copy成本
+            costCounter3 += remainList.size();
             List<Integer> destRemainList = OriginJDKUtil.newCopy(remainList, remainList.size());
+            //costCounter3没统计这儿的成本,可优化,linkedList比arraylist更有优势,这儿不存在随机读取，都是顺序读取
             destRemainList.remove(i);
             permute(result, destToBeAddedList, destRemainList);
         }
     }
+
+//    private void permute_2(List<List<Integer>> result,
+//                           List<Integer> toBeAddList,
+//                           int[] visited,
+//                           int num) {
+//        //有限解
+//        if (num == toBeAddList.size()) {
+//            //注意不要破坏源数据结构
+//            //这儿有copy成本
+//            List<Integer> onePermutation = OriginJDKUtil.newCopy(toBeAddList);
+//            result.add(onePermutation);
+//            return;
+//        }
+//        //递归解
+//        for (int i = 0; i < remainList.size(); i++) {
+//            Integer data = remainList.get(i);
+//            //这儿有copy成本
+//            List<Integer> destToBeAddedList = OriginJDKUtil.newCopy(toBeAddList, toBeAddList.size() + 1);
+//            destToBeAddedList.add(data);
+//            //这儿有copy成本
+//            List<Integer> destRemainList = OriginJDKUtil.newCopy(remainList, remainList.size());
+//            destRemainList.remove(i);
+//            permute(result, destToBeAddedList, destRemainList);
+//        }
+//    }
     /////////////////////////////方法一暴力遍历\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
     /////////////////////////////方法二使用树结构简化复制成本\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -144,7 +196,8 @@ public class AllPermutationForDifferentNumber {
             if (null == rootNode) {
                 return Collections.emptyList();
             }
-
+            //TODO:cj to be done
+            return null;
         }
     }
 

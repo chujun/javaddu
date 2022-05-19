@@ -1,5 +1,6 @@
 package com.jun.chu.java.leetcode.permutation;
 
+import com.jun.chu.java.leetcode.tools.OriginJDKUtil;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -40,7 +41,7 @@ public class AllPermutationForDifferentNumber {
         }
         List<List<Integer>> result = new ArrayList<>();
 
-        permute(result, new ArrayList<>(), newCopy(nums));
+        permute(result, new ArrayList<>(), OriginJDKUtil.newCopy(nums));
         return result;
     }
 
@@ -50,35 +51,19 @@ public class AllPermutationForDifferentNumber {
         //有限解
         if (1 == remainList.size()) {
             //注意不要破坏源数据结构
-            List<Integer> onePermutation = newCopy(toBeAddList, toBeAddList.size() + 1);
+            List<Integer> onePermutation = OriginJDKUtil.newCopy(toBeAddList, toBeAddList.size() + 1);
             onePermutation.addAll(remainList);
             result.add(onePermutation);
         }
         //递归解
         for (int i = 0; i < remainList.size(); i++) {
             Integer data = remainList.get(i);
-            List<Integer> destToBeAddedList = newCopy(toBeAddList, toBeAddList.size() + 1);
+            List<Integer> destToBeAddedList = OriginJDKUtil.newCopy(toBeAddList, toBeAddList.size() + 1);
             destToBeAddedList.add(data);
-            List<Integer> destRemainList = newCopy(remainList, remainList.size());
+            List<Integer> destRemainList = OriginJDKUtil.newCopy(remainList, remainList.size());
             destRemainList.remove(i);
             permute(result, destToBeAddedList, destRemainList);
         }
 
-    }
-
-    private List<Integer> newCopy(List<Integer> src, int initNumber) {
-        List<Integer> destList = new ArrayList<>(initNumber);
-        for (Integer i : src) {
-            destList.add(i);
-        }
-        return destList;
-    }
-
-    private List<Integer> newCopy(int[] src) {
-        List<Integer> dest = new ArrayList<>(src.length);
-        for (final int num : src) {
-            dest.add(num);
-        }
-        return dest;
     }
 }

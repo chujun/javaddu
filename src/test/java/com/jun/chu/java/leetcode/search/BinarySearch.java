@@ -60,7 +60,7 @@ public class BinarySearch {
     }
 
     /**
-     * 写法二:明确区间定义[left,right),左闭右开
+     * 写法二:明确区间定义[left,right),左闭右开,意味着right处下标数组不是结果
      * 循环不变量
      */
     public int search2(int[] nums, int target) {

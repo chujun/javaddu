@@ -55,7 +55,7 @@ public class BinaryTreePreorderSearch {
     /**
      * 以迭代方式遍历(非递归方式)
      * 前序遍历:
-     * 节点访问顺序:中左右
+     * 节点遍历顺序:中左右
      * 入栈顺序:中右左
      */
     private void preorderTraversalForIterator(List<Integer> result, TreeNode treeNode) {
@@ -75,25 +75,6 @@ public class BinaryTreePreorderSearch {
             if (null != pop.left) {
                 stack.push(pop.left);
             }
-        }
-    }
-
-    public static class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-
-        TreeNode() {
-        }
-
-        TreeNode(int val) {
-            this.val = val;
-        }
-
-        TreeNode(int val, TreeNode left, TreeNode right) {
-            this.val = val;
-            this.left = left;
-            this.right = right;
         }
     }
 

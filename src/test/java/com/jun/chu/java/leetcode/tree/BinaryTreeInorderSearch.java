@@ -1,7 +1,11 @@
 package com.jun.chu.java.leetcode.tree;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * 二叉树的中序遍历
@@ -15,6 +19,17 @@ import java.util.List;
  * @date 2022/5/21
  */
 public class BinaryTreeInorderSearch {
+    @Test
+    public void test() {
+        TreeNode treeNode1 = new TreeNode(1);
+        TreeNode treeNode2 = new TreeNode(2);
+        TreeNode treeNode3 = new TreeNode(3);
+        treeNode1.right = treeNode2;
+        treeNode2.left = treeNode3;
+        List<Integer> result = inorderTraversalForIterator(treeNode1);
+        Assert.assertEquals("[1, 3, 2]", result.toString());
+    }
+
     public List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> result = new ArrayList<>();
         inorderTraversal(result, root);
@@ -31,23 +46,42 @@ public class BinaryTreeInorderSearch {
         inorderTraversal(result, treeNode.right);
     }
 
-    public static class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
+    private List<Integer> inorderTraversalForIterator(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        inorderTraversalForIterator(result, root);
+        return result;
+    }
 
-        TreeNode() {
+    /**
+     * 以迭代方式遍历(非递归方式),和前序遍历的迭代方式并不是简单的交换前后位置关系即可。
+     * 因为迭代顺序和出栈顺序不是相同，不是同时进行的，两者需要分开处理
+     * 中序遍历:
+     * 节点遍历顺序:左中右
+     * 入栈顺序:左右，
+     */
+    private void inorderTraversalForIterator(List<Integer> result, TreeNode treeNode) {
+        if (null == treeNode) {
+            return;
         }
-
-        TreeNode(int val) {
-            this.val = val;
-        }
-
-        TreeNode(int val, TreeNode left, TreeNode right) {
-            this.val = val;
-            this.left = left;
-            this.right = right;
+        Stack<TreeNode> stack = new Stack<>();
+        stack.add(treeNode);
+        TreeNode cur = treeNode;
+        while (!stack.isEmpty()) {
+            if (null != cur.left) {
+                //迭代节点发现左叶子的处理
+                stack.push(cur.left);
+                cur = cur.left;
+            } else {
+                //迭代节点没有发现左叶子的处理
+                TreeNode pop = stack.pop();
+                result.add(pop.val);
+                if (null != pop.right) {
+                    stack.push(pop.right);
+                    cur = pop.right;
+                }
+            }
         }
     }
+
 
 }

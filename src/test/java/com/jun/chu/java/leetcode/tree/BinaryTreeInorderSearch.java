@@ -30,6 +30,17 @@ public class BinaryTreeInorderSearch {
         Assert.assertEquals("[1, 3, 2]", result.toString());
     }
 
+    @Test
+    public void testInorderTraversalForIteratorV100() {
+        TreeNode treeNode1 = new TreeNode(1);
+        TreeNode treeNode2 = new TreeNode(2);
+        TreeNode treeNode3 = new TreeNode(3);
+        treeNode1.right = treeNode2;
+        treeNode2.left = treeNode3;
+        List<Integer> result = inorderTraversalForIteratorV100(treeNode1);
+        Assert.assertEquals("[1, 3, 2]", result.toString());
+    }
+
     public List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> result = new ArrayList<>();
         inorderTraversal(result, root);
@@ -76,11 +87,46 @@ public class BinaryTreeInorderSearch {
                 TreeNode pop = stack.pop();
                 result.add(pop.val);
                 if (null != pop.right) {
+                    //处理右叶子
                     stack.push(pop.right);
                     cur = pop.right;
                 }
             }
         }
+    }
+
+    private List<Integer> inorderTraversalForIteratorV100(TreeNode treeNode) {
+        List<Integer> result = new ArrayList<>();
+        inorderTraversalForIteratorV100(result, treeNode);
+        return result;
+    }
+
+    /**
+     * v100版本相比inorderTraversalForIterator方法 stack初始时不压入根节点
+     *
+     * @see BinaryTreeInorderSearch#inorderTraversalForIterator(TreeNode)
+     */
+    private void inorderTraversalForIteratorV100(List<Integer> result, TreeNode treeNode) {
+        if (null == treeNode) {
+            return;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        //stack不压入根节点
+        TreeNode cur = treeNode;
+        do {
+            if (null != cur) {
+                //迭代节点发现左叶子的处理
+                stack.push(cur);
+                cur = cur.left;
+            } else {
+                //迭代节点没有发现左叶子的处理
+                TreeNode pop = stack.pop();
+                result.add(pop.val);
+                //处理右叶子
+                cur = pop.right;
+            }
+            // null != cur是debug中当中发现NPE才补上的,根节点访问完后栈内就没有元素了，但此时右节点还没有遍历
+        } while (!stack.isEmpty() || null != cur);
     }
 
 

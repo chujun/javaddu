@@ -114,13 +114,12 @@ public class BinaryTreePostorderSearch {
         return result;
     }
 
-    /**
-     * //尝试严格按照递归算法，递归过程，将递归算法转化为栈表示结构
-     */
+
     private void postorderTraversalV10(List<Integer> result, TreeNode treeNode) {
         Stack<TreeNode> stack = new Stack<>();
         TreeNode cur = treeNode;
-        TreeNode prev = null;
+        //上一次访问过的节点
+        TreeNode prevVisitedNode = null;
         while (cur != null || !stack.empty()) {
             while (null != cur) {
                 stack.push(cur);
@@ -129,27 +128,16 @@ public class BinaryTreePostorderSearch {
             TreeNode pop = stack.pop();
             cur = pop;
             //右节点访问完毕才访问中节点
-            if (null == pop.right || pop.right == prev) {
+            if (null == pop.right || pop.right == prevVisitedNode) {
                 result.add(pop.val);
-                prev = cur;
+                prevVisitedNode = cur;
+                //该从栈中取元素了
                 cur = null;
             } else {
-                //中间节点重新二次入栈
+                //右节点还没有访问,中间节点重新二次入栈
                 stack.push(cur);
                 cur = cur.right;
             }
         }
     }
-
-//    private void postorderTraversal(List<Integer> result, TreeNode treeNode) {
-//        if (null == treeNode) {
-//            return;
-//        }
-//        postorderTraversal(result, treeNode.left);
-//        postorderTraversal(result, treeNode.right);
-//        //最后访问中间节点
-//        result.add(treeNode.val);
-//    }
-
-
 }

@@ -123,7 +123,7 @@ public class BinaryTreeInorderSearch {
         Stack<TreeNode> stack = new Stack<>();
         //stack不压入根节点
         TreeNode cur = treeNode;
-        // null != cur是debug中当中发现NPE才补上的,根节点访问完后栈内就没有元素了，但此时右节点还没有遍历
+        //null != cur是debug中当中发现NPE才补上的,根节点访问完后栈内就没有元素了，但此时右节点还没有遍历
         while (!stack.isEmpty() || null != cur) {
             while (null != cur) {
                 //迭代节点发现左叶子的处理

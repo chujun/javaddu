@@ -84,6 +84,7 @@ public class BinaryTreePostorderSearch {
      * <p>
      * 逆后序遍历为：1 4 2 3 5
      * **比较先序遍历(中左右)和逆后续遍历顺序可知,逆后续遍历是中右左,**
+     * 这是一种特殊技巧,利用了中右左遍历顺序和左右中遍历顺序(后序遍历)成互逆的特殊关系处理
      */
     private void postorderTraversalForRevert(LinkedList<Integer> result, TreeNode treeNode) {
         if (null == treeNode) {

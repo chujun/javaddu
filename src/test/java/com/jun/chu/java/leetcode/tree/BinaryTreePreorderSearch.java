@@ -36,6 +36,9 @@ public class BinaryTreePreorderSearch {
         return result;
     }
 
+    /**
+     * 递归方法
+     */
     private void preorderTraversal(List<Integer> result, TreeNode treeNode) {
         if (null == treeNode) {
             return;

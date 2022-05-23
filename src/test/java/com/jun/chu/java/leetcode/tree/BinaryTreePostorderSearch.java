@@ -27,7 +27,7 @@ public class BinaryTreePostorderSearch {
         TreeNode treeNode3 = new TreeNode(3);
         treeNode1.right = treeNode2;
         treeNode2.left = treeNode3;
-        List<Integer> result = postorderTraversalForRevert(treeNode1);
+        List<Integer> result = postorderTraversalV10(treeNode1);
         Assert.assertEquals("[3, 2, 1]", result.toString());
 
     }
@@ -43,7 +43,7 @@ public class BinaryTreePostorderSearch {
         treeNode1.right = treeNode4;
         treeNode2.left = treeNode5;
         treeNode2.right = treeNode3;
-        List<Integer> result = postorderTraversalForRevert(treeNode1);
+        List<Integer> result = postorderTraversalV10(treeNode1);
         Assert.assertEquals("[5, 3, 2, 4, 1]", result.toString());
 
     }
@@ -56,6 +56,7 @@ public class BinaryTreePostorderSearch {
     }
 
     /**
+     * 递归方法
      * 时间复杂度：O(n)，其中 n 是二叉搜索树的节点数。每一个节点恰好被遍历一次。
      * <p>
      * 空间复杂度：O(n)，为递归过程中栈的开销，平均情况下为 O(logn)，最坏情况下树呈现链状，为 O(n)。
@@ -106,6 +107,49 @@ public class BinaryTreePostorderSearch {
             }
         }
     }
+
+    public List<Integer> postorderTraversalV10(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        postorderTraversalV10(result, root);
+        return result;
+    }
+
+    /**
+     * //尝试严格按照递归算法，递归过程，将递归算法转化为栈表示结构
+     */
+    private void postorderTraversalV10(List<Integer> result, TreeNode treeNode) {
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode cur = treeNode;
+        TreeNode prev = null;
+        while (cur != null || !stack.empty()) {
+            while (null != cur) {
+                stack.push(cur);
+                cur = cur.left;
+            }
+            TreeNode pop = stack.pop();
+            cur = pop;
+            //右节点访问完毕才访问中节点
+            if (null == pop.right || pop.right == prev) {
+                result.add(pop.val);
+                prev = cur;
+                cur = null;
+            } else {
+                //中间节点重新二次入栈
+                stack.push(cur);
+                cur = cur.right;
+            }
+        }
+    }
+
+//    private void postorderTraversal(List<Integer> result, TreeNode treeNode) {
+//        if (null == treeNode) {
+//            return;
+//        }
+//        postorderTraversal(result, treeNode.left);
+//        postorderTraversal(result, treeNode.right);
+//        //最后访问中间节点
+//        result.add(treeNode.val);
+//    }
 
 
 }

@@ -47,6 +47,9 @@ public class BinaryTreeInorderSearch {
         return result;
     }
 
+    /**
+     * 递归方法
+     */
     private void inorderTraversal(List<Integer> result, TreeNode treeNode) {
         if (null == treeNode) {
             return;

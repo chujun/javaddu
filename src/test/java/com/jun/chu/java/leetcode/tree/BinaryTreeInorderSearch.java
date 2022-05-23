@@ -103,6 +103,9 @@ public class BinaryTreeInorderSearch {
 
     /**
      * 相比inorderTraversalForIterator方法 stack初始时不压入根节点
+     * 单层遍历逻辑:
+     * 中节点不为空则栈压入中节点,遍历左节点(循环直至左节点为空)；
+     * 中节点为空，则弹出栈顶节点,遍历节点值,开始遍历右节点
      *
      * @see BinaryTreeInorderSearch#inorderTraversalForIterator(TreeNode)
      */
@@ -113,20 +116,19 @@ public class BinaryTreeInorderSearch {
         Stack<TreeNode> stack = new Stack<>();
         //stack不压入根节点
         TreeNode cur = treeNode;
-        do {
-            if (null != cur) {
+        // null != cur是debug中当中发现NPE才补上的,根节点访问完后栈内就没有元素了，但此时右节点还没有遍历
+        while (!stack.isEmpty() || null != cur) {
+            while (null != cur) {
                 //迭代节点发现左叶子的处理
                 stack.push(cur);
                 cur = cur.left;
-            } else {
-                //迭代节点没有发现左叶子的处理
-                TreeNode pop = stack.pop();
-                result.add(pop.val);
-                //处理右叶子
-                cur = pop.right;
             }
-            // null != cur是debug中当中发现NPE才补上的,根节点访问完后栈内就没有元素了，但此时右节点还没有遍历
-        } while (!stack.isEmpty() || null != cur);
+            //迭代节点没有发现左叶子的处理
+            TreeNode pop = stack.pop();
+            result.add(pop.val);
+            //处理右叶子
+            cur = pop.right;
+        }
     }
 
 

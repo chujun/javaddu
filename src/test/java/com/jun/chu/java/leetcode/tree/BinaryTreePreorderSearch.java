@@ -88,7 +88,7 @@ public class BinaryTreePreorderSearch {
     /**
      * 根节点先不压入栈方式
      * 单层遍历逻辑:
-     * 中节点不为空则访问中节点值,栈压入中节点,一直循环遍历左节点直至左节点为空；
+     * 中节点不为空则访问中节点值,栈压入中节点,遍历左节点(循环直至左节点为空)；
      * 中节点为空，则弹出栈顶节点,开始遍历右节点
      */
     private void preorderTraversalForIteratorWithoutPushRootNodeInit(List<Integer> result, TreeNode treeNode) {

@@ -106,6 +106,10 @@ public class BinaryTreeInorderSearch {
      * 单层遍历逻辑:
      * 中节点不为空则栈压入中节点,遍历左节点(循环直至左节点为空)；
      * 中节点为空，则弹出栈顶节点,遍历节点值,开始遍历右节点
+     * <p>
+     * 时间复杂度：O(n)，其中 n 为二叉树节点的个数。二叉树的遍历中每个节点会被访问一次且只会被访问一次。
+     * <p>
+     * 空间复杂度：O(n)。空间复杂度取决于栈深度，而栈深度在二叉树为一条链的情况下会达到 O(n) 的级别
      *
      * @see BinaryTreeInorderSearch#inorderTraversalForIterator(TreeNode)
      */

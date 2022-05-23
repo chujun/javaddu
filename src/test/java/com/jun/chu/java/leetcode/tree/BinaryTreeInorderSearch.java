@@ -37,7 +37,7 @@ public class BinaryTreeInorderSearch {
         TreeNode treeNode3 = new TreeNode(3);
         treeNode1.right = treeNode2;
         treeNode2.left = treeNode3;
-        List<Integer> result = inorderTraversalForIteratorV100(treeNode1);
+        List<Integer> result = inorderTraversalForIteratorWithoutPushRootNodeInit(treeNode1);
         Assert.assertEquals("[1, 3, 2]", result.toString());
     }
 
@@ -95,18 +95,18 @@ public class BinaryTreeInorderSearch {
         }
     }
 
-    private List<Integer> inorderTraversalForIteratorV100(TreeNode treeNode) {
+    private List<Integer> inorderTraversalForIteratorWithoutPushRootNodeInit(TreeNode treeNode) {
         List<Integer> result = new ArrayList<>();
-        inorderTraversalForIteratorV100(result, treeNode);
+        inorderTraversalForIteratorWithoutPushRootNodeInit(result, treeNode);
         return result;
     }
 
     /**
-     * v100版本相比inorderTraversalForIterator方法 stack初始时不压入根节点
+     * 相比inorderTraversalForIterator方法 stack初始时不压入根节点
      *
      * @see BinaryTreeInorderSearch#inorderTraversalForIterator(TreeNode)
      */
-    private void inorderTraversalForIteratorV100(List<Integer> result, TreeNode treeNode) {
+    private void inorderTraversalForIteratorWithoutPushRootNodeInit(List<Integer> result, TreeNode treeNode) {
         if (null == treeNode) {
             return;
         }

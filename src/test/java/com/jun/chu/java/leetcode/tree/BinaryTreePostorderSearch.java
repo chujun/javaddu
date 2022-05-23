@@ -54,6 +54,11 @@ public class BinaryTreePostorderSearch {
         return result;
     }
 
+    /**
+     * 时间复杂度：O(n)，其中 n 是二叉搜索树的节点数。每一个节点恰好被遍历一次。
+     * <p>
+     * 空间复杂度：O(n)，为递归过程中栈的开销，平均情况下为 O(logn)，最坏情况下树呈现链状，为 O(n)。
+     */
     private void postorderTraversal(List<Integer> result, TreeNode treeNode) {
         if (null == treeNode) {
             return;

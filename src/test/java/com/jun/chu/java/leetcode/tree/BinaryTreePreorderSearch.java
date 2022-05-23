@@ -26,7 +26,7 @@ public class BinaryTreePreorderSearch {
         TreeNode treeNode3 = new TreeNode(3);
         treeNode1.right = treeNode2;
         treeNode2.left = treeNode3;
-        List<Integer> result = preorderTraversalForIterator(treeNode1);
+        List<Integer> result = preorderTraversalForIteratorWithoutPushRootNodeInit(treeNode1);
         Assert.assertEquals("[1, 2, 3]", result.toString());
     }
 
@@ -56,7 +56,8 @@ public class BinaryTreePreorderSearch {
      * 以迭代方式遍历(非递归方式)
      * 前序遍历:
      * 节点遍历顺序:中左右
-     * 入栈顺序:中右左
+     * 入栈顺序:中右左，
+     * 不用遍历指针的方式，代码看起来很简洁
      */
     private void preorderTraversalForIterator(List<Integer> result, TreeNode treeNode) {
         if (null == treeNode) {
@@ -75,6 +76,39 @@ public class BinaryTreePreorderSearch {
             if (null != pop.left) {
                 stack.push(pop.left);
             }
+        }
+    }
+
+    public List<Integer> preorderTraversalForIteratorWithoutPushRootNodeInit(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        preorderTraversalForIteratorWithoutPushRootNodeInit(result, root);
+        return result;
+    }
+
+    /**
+     * 根节点先不压入栈方式
+     * 单层遍历逻辑:
+     * 中节点不为空则访问中节点值,栈压入中节点,一直循环遍历左节点直至左节点为空；
+     * 中节点为空，则弹出栈顶节点,开始遍历右节点
+     */
+    private void preorderTraversalForIteratorWithoutPushRootNodeInit(List<Integer> result, TreeNode treeNode) {
+        if (null == treeNode) {
+            return;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        //遍历指针
+        TreeNode cur = treeNode;
+        while (null != cur || !stack.empty()) {
+            while (null != cur) {
+                //节点存在情况下
+                result.add(cur.val);
+                stack.push(cur);
+                //一直循环遍历左节点直至左节点为空
+                cur = cur.left;
+            }
+            //节点不存在情况下弹出栈顶,遍历右节点
+            TreeNode pop = stack.pop();
+            cur = pop.right;
         }
     }
 

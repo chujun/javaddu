@@ -131,6 +131,7 @@ public class BinaryTreePostorderSearch {
         TreeNode prevVisitedNode = null;
         while (cur != null || !stack.empty()) {
             while (null != cur) {
+                //(左子节点先一直访问完)
                 stack.push(cur);
                 counter++;
                 cur = cur.left;
@@ -144,7 +145,7 @@ public class BinaryTreePostorderSearch {
                 //该从栈中取元素了
                 cur = null;
             } else {
-                //右节点还没有访问,暂时先不访问节点数值,所以中间节点需要重新二次入栈
+                //右节点还没有访问,暂时先不访问节点数值,所以这部分中间节点需要重新二次入栈
                 stack.push(cur);//这行不加上的话，你会发现结果少了部分中间节点(存在右节点的节点)的遍历
                 counter++;
                 cur = cur.right;

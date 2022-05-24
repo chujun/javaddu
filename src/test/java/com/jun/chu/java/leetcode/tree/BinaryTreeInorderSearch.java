@@ -126,13 +126,13 @@ public class BinaryTreeInorderSearch {
         //null != cur是debug中当中发现NPE才补上的,根节点访问完后栈内就没有元素了，但此时右节点还没有遍历
         while (!stack.isEmpty() || null != cur) {
             while (null != cur) {
-                //迭代节点发现左叶子的处理
+                //迭代节点发现左叶子的处理(左子节点先一直访问完)
                 stack.push(cur);
                 cur = cur.left;
             }
             //迭代节点没有发现左叶子的处理
             TreeNode pop = stack.pop();
-            result.add(pop.val);
+            result.add(pop.val);//相比前序遍历的同类方法唯一区别就在于这儿，访问根节点的数据时机
             //处理右叶子
             cur = pop.right;
         }

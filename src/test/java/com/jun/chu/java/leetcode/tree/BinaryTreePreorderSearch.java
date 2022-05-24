@@ -103,7 +103,7 @@ public class BinaryTreePreorderSearch {
         TreeNode cur = treeNode;
         while (null != cur || !stack.empty()) {
             while (null != cur) {
-                //节点存在情况下
+                //节点存在情况下(左子节点先一直访问完)
                 result.add(cur.val);
                 stack.push(cur);
                 //一直循环遍历左节点直至左节点为空

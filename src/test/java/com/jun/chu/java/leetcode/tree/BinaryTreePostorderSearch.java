@@ -155,4 +155,43 @@ public class BinaryTreePostorderSearch {
             }
         }
     }
+
+    private List<Integer> postorderTraversalForUnifyStyle(TreeNode treeNode) {
+        List<Integer> result = new ArrayList<>();
+        postorderTraversalForUnifyStyle(result, treeNode);
+        return result;
+    }
+
+    /**
+     * 见前序遍历对应算法描述
+     */
+    private void postorderTraversalForUnifyStyle(List<Integer> result, TreeNode treeNode) {
+        if (null == treeNode) {
+            return;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(treeNode);
+        while (!stack.empty()) {
+            TreeNode cur = stack.pop();
+            if (null != cur) {
+                //和前序遍历算法不同之处仅仅在于根节点的代码位置调整了
+                //再push一个null节点用来和需要遍历的节点区标识
+                stack.push(cur);
+                stack.push(null);
+                //右节点入栈,如果是空节点则不入栈
+                if (null != cur.right) {
+                    stack.push(cur.right);
+                }
+                //右节点入栈,如果是空节点则不入栈
+                if (null != cur.left) {
+                    stack.push(cur.left);
+                }
+            } else {
+                //需要处理的的处理节点
+                //空节点弹出后，再弹出真正需要处理的节点,这儿不会有空栈异常(因为空节点后必有节点)
+                TreeNode pop = stack.pop();
+                result.add(pop.val);
+            }
+        }
+    }
 }

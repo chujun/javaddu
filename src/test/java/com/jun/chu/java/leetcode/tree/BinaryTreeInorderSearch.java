@@ -141,7 +141,7 @@ public class BinaryTreeInorderSearch {
 
     private List<Integer> inorderTraversalForUnifyStyle(TreeNode treeNode) {
         List<Integer> result = new ArrayList<>();
-        inorderTraversalForIterator(result, treeNode);
+        inorderTraversalForUnifyStyle(result, treeNode);
         return result;
     }
 
@@ -162,7 +162,7 @@ public class BinaryTreeInorderSearch {
                 if (null != cur.right) {
                     stack.push(cur.right);
                 }
-                //和前序遍历算法不同之处仅仅在于这儿的代码位置调整了
+                //和前序遍历算法不同之处仅仅在于根节点的代码位置调整了
                 stack.push(cur);
                 //再push一个null节点用来和需要遍历的节点区标识
                 stack.push(null);

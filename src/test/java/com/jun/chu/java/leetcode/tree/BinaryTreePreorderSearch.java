@@ -205,7 +205,7 @@ public class BinaryTreePreorderSearch {
                 counter2 += 2;
             } else {
                 //需要处理的的处理节点
-                //空节点弹出后，再弹出真正需要处理的节点
+                //空节点弹出后，再弹出真正需要处理的节点,这儿不会有空栈异常(因为空节点后必有节点)
                 TreeNode data = stack.pop();
                 result.add(data.val);
             }

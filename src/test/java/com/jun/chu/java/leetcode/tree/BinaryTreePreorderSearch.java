@@ -194,7 +194,7 @@ public class BinaryTreePreorderSearch {
                     stack.push(cur.right);
                     counter2++;
                 }
-                //右节点入栈,如果是空节点则不入栈
+                //左节点入栈,如果是空节点则不入栈
                 if (null != cur.left) {
                     stack.push(cur.left);
                     counter2++;

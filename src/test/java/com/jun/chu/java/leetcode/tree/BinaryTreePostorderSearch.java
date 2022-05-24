@@ -182,7 +182,7 @@ public class BinaryTreePostorderSearch {
                 if (null != cur.right) {
                     stack.push(cur.right);
                 }
-                //右节点入栈,如果是空节点则不入栈
+                //左节点入栈,如果是空节点则不入栈
                 if (null != cur.left) {
                     stack.push(cur.left);
                 }

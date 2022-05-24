@@ -72,9 +72,9 @@ public class BinaryTreePreorderSearch {
 
     }
 
-    public List<Integer> preorderTraversal(TreeNode root) {
+    public List<Integer> preorderTraversal(TreeNode treeNode) {
         List<Integer> result = new ArrayList<>();
-        preorderTraversal(result, root);
+        preorderTraversal(result, treeNode);
         return result;
     }
 
@@ -91,9 +91,9 @@ public class BinaryTreePreorderSearch {
         preorderTraversal(result, treeNode.right);
     }
 
-    public List<Integer> preorderTraversalForIterator(TreeNode root) {
+    public List<Integer> preorderTraversalForIterator(TreeNode treeNode) {
         List<Integer> result = new ArrayList<>();
-        preorderTraversalForIterator(result, root);
+        preorderTraversalForIterator(result, treeNode);
         return result;
     }
 
@@ -124,9 +124,9 @@ public class BinaryTreePreorderSearch {
         }
     }
 
-    public List<Integer> preorderTraversalForIteratorWithoutPushRootNodeInit(TreeNode root) {
+    public List<Integer> preorderTraversalForIteratorWithoutPushRootNodeInit(TreeNode treeNode) {
         List<Integer> result = new ArrayList<>();
-        preorderTraversalForIteratorWithoutPushRootNodeInit(result, root);
+        preorderTraversalForIteratorWithoutPushRootNodeInit(result, treeNode);
         return result;
     }
 
@@ -157,9 +157,9 @@ public class BinaryTreePreorderSearch {
         }
     }
 
-    private List<Integer> preorderTraversalForUnifyStyle(TreeNode root) {
+    private List<Integer> preorderTraversalForUnifyStyle(TreeNode treeNode) {
         List<Integer> result = new ArrayList<>();
-        preorderTraversalForUnifyStyle(result, root);
+        preorderTraversalForUnifyStyle(result, treeNode);
         return result;
     }
 

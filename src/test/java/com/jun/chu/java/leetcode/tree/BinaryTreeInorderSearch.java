@@ -1,7 +1,6 @@
 package com.jun.chu.java.leetcode.tree;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -20,12 +19,6 @@ import java.util.Stack;
  * @date 2022/5/21
  */
 public class BinaryTreeInorderSearch {
-    private static int counter = 0;
-
-    @Before
-    public void before() {
-        counter = 0;
-    }
 
     @Test
     public void test() {
@@ -34,7 +27,7 @@ public class BinaryTreeInorderSearch {
         TreeNode treeNode3 = new TreeNode(3);
         treeNode1.right = treeNode2;
         treeNode2.left = treeNode3;
-        List<Integer> result = inorderTraversalForIterator(treeNode1);
+        List<Integer> result = inorderTraversalForUnifyStyle(treeNode1);
         Assert.assertEquals("[1, 3, 2]", result.toString());
     }
 
@@ -45,13 +38,13 @@ public class BinaryTreeInorderSearch {
         TreeNode treeNode3 = new TreeNode(3);
         treeNode1.right = treeNode2;
         treeNode2.left = treeNode3;
-        List<Integer> result = inorderTraversalForIteratorWithoutPushRootNodeInit(treeNode1);
+        List<Integer> result = inorderTraversalForUnifyStyle(treeNode1);
         Assert.assertEquals("[1, 3, 2]", result.toString());
     }
 
-    public List<Integer> inorderTraversal(TreeNode root) {
+    public List<Integer> inorderTraversal(TreeNode treeNode) {
         List<Integer> result = new ArrayList<>();
-        inorderTraversal(result, root);
+        inorderTraversal(result, treeNode);
         return result;
     }
 
@@ -68,9 +61,9 @@ public class BinaryTreeInorderSearch {
         inorderTraversal(result, treeNode.right);
     }
 
-    private List<Integer> inorderTraversalForIterator(TreeNode root) {
+    private List<Integer> inorderTraversalForIterator(TreeNode treeNode) {
         List<Integer> result = new ArrayList<>();
-        inorderTraversalForIterator(result, root);
+        inorderTraversalForIterator(result, treeNode);
         return result;
     }
 
@@ -143,6 +136,48 @@ public class BinaryTreeInorderSearch {
             result.add(pop.val);//相比前序遍历的同类方法唯一区别就在于这儿，访问根节点的数据时机
             //处理右叶子
             cur = pop.right;
+        }
+    }
+
+    private List<Integer> inorderTraversalForUnifyStyle(TreeNode treeNode) {
+        List<Integer> result = new ArrayList<>();
+        inorderTraversalForIterator(result, treeNode);
+        return result;
+    }
+
+    /**
+     * 见前序遍历对应算法描述
+     */
+    private void inorderTraversalForUnifyStyle(List<Integer> result, TreeNode treeNode) {
+        if (null == treeNode) {
+            return;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(treeNode);
+        while (!stack.empty()) {
+            TreeNode cur = stack.pop();
+            if (null != cur) {
+                //需要遍历的遍历节点
+                //右节点入栈,如果是空节点则不入栈
+                if (null != cur.right) {
+                    stack.push(cur.right);
+                }
+                //和前序遍历算法不同之处仅仅在于这儿的代码位置调整了
+                stack.push(cur);
+                //再push一个null节点用来和需要遍历的节点区标识
+                stack.push(null);
+
+                //右节点入栈,如果是空节点则不入栈
+                if (null != cur.left) {
+                    stack.push(cur.left);
+                }
+
+            } else {
+                //需要处理的的处理节点
+                //空节点弹出后，再弹出真正需要处理的节点
+                TreeNode data = stack.pop();
+                result.add(data.val);
+            }
         }
     }
 

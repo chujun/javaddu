@@ -58,9 +58,9 @@ public class BinaryTreePostorderSearch {
     }
 
 
-    public List<Integer> postorderTraversal(TreeNode root) {
+    public List<Integer> postorderTraversal(TreeNode treeNode) {
         List<Integer> result = new ArrayList<>();
-        postorderTraversal(result, root);
+        postorderTraversal(result, treeNode);
         return result;
     }
 
@@ -80,9 +80,9 @@ public class BinaryTreePostorderSearch {
         result.add(treeNode.val);
     }
 
-    private List<Integer> postorderTraversalForRevert(TreeNode root) {
+    private List<Integer> postorderTraversalForRevert(TreeNode treeNode) {
         LinkedList<Integer> result = new LinkedList<>();
-        postorderTraversalForRevert(result, root);
+        postorderTraversalForRevert(result, treeNode);
         return result;
     }
 
@@ -117,9 +117,9 @@ public class BinaryTreePostorderSearch {
         }
     }
 
-    public List<Integer> postorderTraversalV10(TreeNode root) {
+    public List<Integer> postorderTraversalV10(TreeNode treeNode) {
         List<Integer> result = new ArrayList<>();
-        postorderTraversalV10(result, root);
+        postorderTraversalV10(result, treeNode);
         return result;
     }
 

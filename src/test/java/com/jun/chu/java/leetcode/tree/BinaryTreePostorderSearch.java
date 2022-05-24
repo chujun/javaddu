@@ -1,6 +1,7 @@
 package com.jun.chu.java.leetcode.tree;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -22,9 +23,13 @@ import java.util.Stack;
 public class BinaryTreePostorderSearch {
     private static int counter = 0;
 
+    @Before
+    public void before() {
+        counter = 0;
+    }
+
     @Test
     public void test() {
-        counter = 0;
         TreeNode treeNode1 = new TreeNode(1);
         TreeNode treeNode2 = new TreeNode(2);
         TreeNode treeNode3 = new TreeNode(3);
@@ -33,12 +38,10 @@ public class BinaryTreePostorderSearch {
         List<Integer> result = postorderTraversalV10(treeNode1);
         Assert.assertEquals("[3, 2, 1]", result.toString());
         Assert.assertEquals(4, counter);
-
     }
 
     @Test
     public void test2() {
-        counter = 0;
         TreeNode treeNode1 = new TreeNode(1);
         TreeNode treeNode2 = new TreeNode(2);
         TreeNode treeNode3 = new TreeNode(3);

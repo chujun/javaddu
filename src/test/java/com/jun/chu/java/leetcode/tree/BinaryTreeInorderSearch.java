@@ -1,6 +1,7 @@
 package com.jun.chu.java.leetcode.tree;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -19,6 +20,13 @@ import java.util.Stack;
  * @date 2022/5/21
  */
 public class BinaryTreeInorderSearch {
+    private static int counter = 0;
+
+    @Before
+    public void before() {
+        counter = 0;
+    }
+
     @Test
     public void test() {
         TreeNode treeNode1 = new TreeNode(1);

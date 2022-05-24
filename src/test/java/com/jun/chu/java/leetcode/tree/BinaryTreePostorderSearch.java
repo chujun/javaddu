@@ -20,8 +20,11 @@ import java.util.Stack;
  * @date 2022/5/21
  */
 public class BinaryTreePostorderSearch {
+    private static int counter = 0;
+
     @Test
     public void test() {
+        counter = 0;
         TreeNode treeNode1 = new TreeNode(1);
         TreeNode treeNode2 = new TreeNode(2);
         TreeNode treeNode3 = new TreeNode(3);
@@ -29,11 +32,13 @@ public class BinaryTreePostorderSearch {
         treeNode2.left = treeNode3;
         List<Integer> result = postorderTraversalV10(treeNode1);
         Assert.assertEquals("[3, 2, 1]", result.toString());
+        Assert.assertEquals(4, counter);
 
     }
 
     @Test
     public void test2() {
+        counter = 0;
         TreeNode treeNode1 = new TreeNode(1);
         TreeNode treeNode2 = new TreeNode(2);
         TreeNode treeNode3 = new TreeNode(3);
@@ -45,6 +50,7 @@ public class BinaryTreePostorderSearch {
         treeNode2.right = treeNode3;
         List<Integer> result = postorderTraversalV10(treeNode1);
         Assert.assertEquals("[5, 3, 2, 4, 1]", result.toString());
+        Assert.assertEquals(7, counter);
 
     }
 
@@ -115,6 +121,9 @@ public class BinaryTreePostorderSearch {
     }
 
 
+    /**
+     * stack里存放的数据量=节点数量n+存在右子节点的节点数量w
+     */
     private void postorderTraversalV10(List<Integer> result, TreeNode treeNode) {
         Stack<TreeNode> stack = new Stack<>();
         TreeNode cur = treeNode;
@@ -123,6 +132,7 @@ public class BinaryTreePostorderSearch {
         while (cur != null || !stack.empty()) {
             while (null != cur) {
                 stack.push(cur);
+                counter++;
                 cur = cur.left;
             }
             TreeNode pop = stack.pop();
@@ -134,8 +144,9 @@ public class BinaryTreePostorderSearch {
                 //该从栈中取元素了
                 cur = null;
             } else {
-                //右节点还没有访问,中间节点重新二次入栈
-                stack.push(cur);
+                //右节点还没有访问,暂时先不访问节点数值,所以中间节点需要重新二次入栈
+                stack.push(cur);//这行不加上的话，你会发现结果少了部分中间节点(存在右节点的节点)的遍历
+                counter++;
                 cur = cur.right;
             }
         }

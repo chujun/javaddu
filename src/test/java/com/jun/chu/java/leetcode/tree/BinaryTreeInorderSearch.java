@@ -27,7 +27,7 @@ public class BinaryTreeInorderSearch {
         TreeNode treeNode3 = new TreeNode(3);
         treeNode1.right = treeNode2;
         treeNode2.left = treeNode3;
-        List<Integer> result = preorderTraversalForMorris(treeNode1);
+        List<Integer> result = inorderTraversalForMorris(treeNode1);
         Assert.assertEquals("[1, 3, 2]", result.toString());
     }
 
@@ -38,7 +38,7 @@ public class BinaryTreeInorderSearch {
         TreeNode treeNode3 = new TreeNode(3);
         treeNode1.right = treeNode2;
         treeNode2.left = treeNode3;
-        List<Integer> result = preorderTraversalForMorris(treeNode1);
+        List<Integer> result = inorderTraversalForMorris(treeNode1);
         Assert.assertEquals("[1, 3, 2]", result.toString());
     }
 
@@ -181,9 +181,9 @@ public class BinaryTreeInorderSearch {
         }
     }
 
-    private List<Integer> preorderTraversalForMorris(TreeNode treeNode) {
+    private List<Integer> inorderTraversalForMorris(TreeNode treeNode) {
         List<Integer> result = new ArrayList<>();
-        preorderTraversalForMorris(result, treeNode);
+        inorderTraversalForMorris(result, treeNode);
         return result;
     }
 
@@ -192,7 +192,7 @@ public class BinaryTreeInorderSearch {
      * 针对中序遍历访问数据时机:
      * 根节点不存在左子节点时访问节点数据
      */
-    private void preorderTraversalForMorris(List<Integer> result, TreeNode treeNode) {
+    private void inorderTraversalForMorris(List<Integer> result, TreeNode treeNode) {
         if (null == treeNode) {
             return;
         }

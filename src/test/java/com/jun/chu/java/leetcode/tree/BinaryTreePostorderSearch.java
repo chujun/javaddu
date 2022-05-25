@@ -54,7 +54,32 @@ public class BinaryTreePostorderSearch {
         List<Integer> result = postorderTraversalV10(treeNode1);
         Assert.assertEquals("[5, 3, 2, 4, 1]", result.toString());
         Assert.assertEquals(7, counter);
+    }
 
+    @Test
+    public void testPostorderTraversalForMorris() {
+        TreeNode treeNode1 = new TreeNode(1);
+        TreeNode treeNode2 = new TreeNode(2);
+        TreeNode treeNode3 = new TreeNode(3);
+        treeNode1.right = treeNode2;
+        treeNode2.left = treeNode3;
+        List<Integer> result = postorderTraversalForMorris(treeNode1);
+        Assert.assertEquals("[3, 2, 1]", result.toString());
+    }
+
+    @Test
+    public void test2PostorderTraversalForMorris() {
+        TreeNode treeNode1 = new TreeNode(1);
+        TreeNode treeNode2 = new TreeNode(2);
+        TreeNode treeNode3 = new TreeNode(3);
+        TreeNode treeNode4 = new TreeNode(4);
+        TreeNode treeNode5 = new TreeNode(5);
+        treeNode1.left = treeNode2;
+        treeNode1.right = treeNode4;
+        treeNode2.left = treeNode5;
+        treeNode2.right = treeNode3;
+        List<Integer> result = postorderTraversalForMorris(treeNode1);
+        Assert.assertEquals("[5, 3, 2, 4, 1]", result.toString());
     }
 
 
@@ -193,5 +218,66 @@ public class BinaryTreePostorderSearch {
                 result.add(pop.val);
             }
         }
+    }
+
+    private List<Integer> postorderTraversalForMorris(TreeNode treeNode) {
+        List<Integer> result = new ArrayList<>();
+        postorderTraversalForMorris(result, treeNode);
+        return result;
+    }
+
+    /**
+     * <p>
+     * 针对后序遍历访问数据时机:
+     * 根断开临时链接时(逆序输出路径:左子节点到左子节点的最右叶子节点)
+     * 遍历结束后(逆序输出路径:根节点到最右叶子节点）
+     * [遍历Morris解法](https://leetcode.cn/problems/binary-tree-preorder-traversal/solution/leetcodesuan-fa-xiu-lian-dong-hua-yan-shi-xbian-2/)
+     */
+    private void postorderTraversalForMorris(List<Integer> result, TreeNode treeNode) {
+        if (null == treeNode) {
+            return;
+        }
+        TreeNode root = treeNode;
+        TreeNode cur;
+        while (null != root) {
+            cur = root.left;
+            //左子节点存在
+            if (null != cur) {
+                //如果根节点的左子节点存在,一直遍历寻找左子节点的最右叶子节点(C右)
+                //结束条件(a.right指针为null.没有建立临时链接 b.right指针指向根节点，已经建立了临时链接）
+                while (null != cur.right && cur.right != root) {
+                    cur = cur.right;
+                }
+                if (null == cur.right) {
+                    //right指针为null.没有建立临时链接
+                    //节点right(原本指针为null)指向根节点，创建临时链接
+                    cur.right = root;
+                    root = root.left;
+                    continue;
+                } else {
+                    //right指针指向根节点，已经建立了临时链接
+                    //断开到根节点的这个临时链接
+                    cur.right = null;
+                    addRevertedPath(root.left, result);
+                }
+            } else {
+                //左子节点不存在
+            }
+            root = root.right;
+        }
+        addRevertedPath(treeNode, result);
+    }
+
+    /**
+     * 不停遍历节点到最右叶子节点,逆向输出
+     */
+    private void addRevertedPath(TreeNode treeNode, final List<Integer> result) {
+
+        LinkedList<Integer> linkedList = new LinkedList<>();
+        do {
+            linkedList.addFirst(treeNode.val);
+            treeNode = treeNode.right;
+        } while (null != treeNode);
+        result.addAll(linkedList);
     }
 }

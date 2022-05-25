@@ -27,7 +27,7 @@ public class BinaryTreeInorderSearch {
         TreeNode treeNode3 = new TreeNode(3);
         treeNode1.right = treeNode2;
         treeNode2.left = treeNode3;
-        List<Integer> result = inorderTraversalForUnifyStyle(treeNode1);
+        List<Integer> result = preorderTraversalForMorris(treeNode1);
         Assert.assertEquals("[1, 3, 2]", result.toString());
     }
 
@@ -38,7 +38,7 @@ public class BinaryTreeInorderSearch {
         TreeNode treeNode3 = new TreeNode(3);
         treeNode1.right = treeNode2;
         treeNode2.left = treeNode3;
-        List<Integer> result = inorderTraversalForUnifyStyle(treeNode1);
+        List<Integer> result = preorderTraversalForMorris(treeNode1);
         Assert.assertEquals("[1, 3, 2]", result.toString());
     }
 
@@ -178,6 +178,52 @@ public class BinaryTreeInorderSearch {
                 TreeNode data = stack.pop();
                 result.add(data.val);
             }
+        }
+    }
+
+    private List<Integer> preorderTraversalForMorris(TreeNode treeNode) {
+        List<Integer> result = new ArrayList<>();
+        preorderTraversalForMorris(result, treeNode);
+        return result;
+    }
+
+    /**
+     * <p>
+     * 针对中序遍历访问数据时机:
+     * 根节点不存在左子节点时访问节点数据
+     */
+    private void preorderTraversalForMorris(List<Integer> result, TreeNode treeNode) {
+        if (null == treeNode) {
+            return;
+        }
+        TreeNode root = treeNode;
+        TreeNode cur;
+        while (null != root) {
+
+            cur = root.left;
+            //左子节点存在
+            if (null != cur) {
+                //如果根节点的左子节点存在,一直遍历寻找左子节点的最右叶子节点(C右)
+                //结束条件(a.right指针为null.没有建立临时链接 b.right指针指向根节点，已经建立了临时链接）
+                while (null != cur.right && cur.right != root) {
+                    cur = cur.right;
+                }
+                if (null == cur.right) {
+                    //right指针为null.没有建立临时链接
+                    //节点right(原本指针为null)指向根节点，创建临时链接
+                    cur.right = root;
+                    root = root.left;
+                    continue;
+                } else {
+                    //right指针指向根节点，已经建立了临时链接
+                    //断开到根节点的这个临时链接
+                    cur.right = null;
+                }
+            } else {
+                //左子节点不存在
+            }
+            result.add(root.val);
+            root = root.right;
         }
     }
 

@@ -293,6 +293,7 @@ public class BinaryTreePreorderSearch {
         TreeNode root = treeNode;
         TreeNode cur;
         while (null != root) {
+
             cur = root.left;
             //左子节点存在
             if (null != cur) {

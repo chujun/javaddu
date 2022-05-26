@@ -13,6 +13,9 @@ import java.io.IOException;
  */
 @UtilityClass
 public class ProxyClassUtils {
+    /**
+     * 可以查看代理类生成的内容
+     */
     public static void generateProxyClass(String path, String proxyClassName, Class<?>[] interfaces) {
         byte[] bytes = ProxyGenerator.generateProxyClass(proxyClassName, interfaces);
         try {

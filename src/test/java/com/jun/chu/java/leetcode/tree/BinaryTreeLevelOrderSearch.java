@@ -15,7 +15,7 @@ import java.util.Queue;
  */
 public class BinaryTreeLevelOrderSearch {
     @Test
-    public void test(){
+    public void testForList() {
         TreeNode treeNode1 = new TreeNode(1);
         TreeNode treeNode2 = new TreeNode(2);
         TreeNode treeNode3 = new TreeNode(3);
@@ -25,30 +25,73 @@ public class BinaryTreeLevelOrderSearch {
         treeNode1.right = treeNode4;
         treeNode2.left = treeNode5;
         treeNode2.right = treeNode3;
-        List<Integer> result = levelOrder(treeNode1);
+        List<Integer> result = levelOrderTraversalForList(treeNode1);
         Assert.assertEquals("[1, 2, 4, 5, 3]", result.toString());
     }
-    public List<Integer> levelOrder(TreeNode treeNode) {
-        List<Integer> result = new ArrayList<>();
+
+    @Test
+    public void test() {
+        TreeNode treeNode1 = new TreeNode(1);
+        TreeNode treeNode2 = new TreeNode(2);
+        TreeNode treeNode3 = new TreeNode(3);
+        TreeNode treeNode4 = new TreeNode(4);
+        TreeNode treeNode5 = new TreeNode(5);
+        treeNode1.left = treeNode2;
+        treeNode1.right = treeNode4;
+        treeNode2.left = treeNode5;
+        treeNode2.right = treeNode3;
+        List<List<Integer>> list = levelOrderTraversal(treeNode1);
+        Assert.assertEquals("[[1], [2, 4], [5, 3]]", list.toString());
+    }
+
+
+    private List<List<Integer>> levelOrderTraversal(TreeNode treeNode) {
+        List<List<Integer>> result = new ArrayList<>();
         levelOrderTraversal(result, treeNode);
         return result;
     }
 
-    private void levelOrderTraversalForRecursive(List<Integer> result, TreeNode treeNode) {
+    /**
+     * BFS，广度遍历搜索,
+     * 对每一层进行遍历,每一层遍历该层节点数，而非一个个地遍历
+     */
+    private void levelOrderTraversal(List<List<Integer>> result, TreeNode treeNode) {
         if (null == treeNode) {
             return;
         }
-        //TODO:cj to be done
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(treeNode);
 
-        if (null != treeNode.left) {
-            result.add(treeNode.left.val);
-        }
-        if (null != treeNode.right) {
-            result.add(treeNode.right.val);
+        while (!queue.isEmpty()) {
+            //记录当前这一层有多少个节点
+            int size = queue.size();
+            List<Integer> itemList = new LinkedList<>();
+            while (size > 0) {
+                TreeNode poll = queue.poll();
+                itemList.add(poll.val);
+                if (null != poll.left) {
+                    queue.offer(poll.left);
+                }
+                if (null != poll.right) {
+                    queue.offer(poll.right);
+                }
+                size--;
+            }
+            result.add(itemList);
         }
     }
 
-    private void levelOrderTraversal(List<Integer> result, TreeNode treeNode) {
+
+    public List<Integer> levelOrderTraversalForList(TreeNode treeNode) {
+        List<Integer> result = new ArrayList<>();
+        levelOrderTraversalForList(result, treeNode);
+        return result;
+    }
+
+    /**
+     * 注意返回值不同
+     */
+    private void levelOrderTraversalForList(List<Integer> result, TreeNode treeNode) {
         if (null == treeNode) {
             return;
         }

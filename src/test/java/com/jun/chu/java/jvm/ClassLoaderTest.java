@@ -16,6 +16,7 @@ public class ClassLoaderTest {
      */
     @Test
     public void test() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        System.out.println(this.getClass().getClassLoader());
         ClassLoader myClassLoader = new ClassLoader() {
             @Override
             public Class<?> loadClass(final String name) throws ClassNotFoundException {
@@ -36,9 +37,13 @@ public class ClassLoaderTest {
             }
         };
         Object obj = myClassLoader.loadClass("com.jun.chu.java.jvm.ClassLoaderTest").newInstance();
-        System.out.println(obj.getClass());
+        System.out.println(obj.getClass() + "," + obj.getClass().getClassLoader());
         Assert.assertEquals(obj.getClass().toString(), ClassLoaderTest.class.toString());
         Assert.assertFalse(obj instanceof ClassLoaderTest);
+        Object o = myClassLoader.loadClass("java.lang.Object").newInstance();
+        //返回null表示Object对象是被Bootstrap类加载器加载的
+        System.out.println(o.getClass().getClassLoader());
+        Assert.assertTrue(o instanceof Object);
     }
 
 }

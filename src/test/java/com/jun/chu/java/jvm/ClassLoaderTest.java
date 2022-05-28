@@ -37,6 +37,7 @@ public class ClassLoaderTest {
         };
         Object obj = myClassLoader.loadClass("com.jun.chu.java.jvm.ClassLoaderTest").newInstance();
         System.out.println(obj.getClass());
+        Assert.assertEquals(obj.getClass().toString(), ClassLoaderTest.class.toString());
         Assert.assertFalse(obj instanceof ClassLoaderTest);
     }
 

@@ -18,6 +18,7 @@ public class BigDecimalTest {
         double d = 0.1;
         System.out.println(d);
         Assert.assertEquals(0, a.compareTo(b));
+        //这个是不精准的
         System.out.println(new BigDecimal(0.1));
     }
 

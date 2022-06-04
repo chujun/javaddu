@@ -121,6 +121,45 @@ public class InvertBinaryTree {
 
 
     /**
+     * 中序遍历使用栈
+     */
+    private void invertTreeInorderUsingStack(TreeNode treeNode) {
+        if (null == treeNode) {
+            return;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode cur = treeNode;
+        while (null != cur || !stack.isEmpty()) {
+            if (null != cur) {
+                stack.push(cur);
+                cur = cur.left;
+                while (null != cur) {
+                    stack.push(cur);
+                    cur = cur.left;
+                }
+            } else {
+
+            }
+            TreeNode node = stack.pop();
+            System.out.println(node.val);
+            //其实这个rightPoint指针可以省略掉，但是通过中序遍历算法理解起来更一致
+            TreeNode rightPoint = node.right;
+            //处理节点
+            swapLeftAndRightTreeNode(node);
+            if (null != rightPoint) {
+                cur = rightPoint;
+            }
+        }
+    }
+
+    /**
+     * 后续遍历
+     */
+    private void invertTreePostorderUsingStack(TreeNode treeNode) {
+
+    }
+
+    /**
      * 前序遍历使用栈，根节点先入栈方式,非递归方式
      */
     private void invertTreePreorderUsingStack(TreeNode treeNode) {

@@ -55,7 +55,7 @@ public class InvertBinaryTree {
     }
 
     public TreeNode invertTree(TreeNode root) {
-        invertTreePreorderRecursive(root);
+        invertTreePostorderRecursive(root);
         return root;
     }
 
@@ -87,6 +87,21 @@ public class InvertBinaryTree {
         swapLeftAndRightTreeNode(treeNode);
         //右
         invertTreeInorderRecursive(treeNode.left);
+    }
+
+    /**
+     * 后序遍历
+     */
+    private void invertTreePostorderRecursive(TreeNode treeNode) {
+        if (null == treeNode) {
+            return;
+        }
+        //左
+        invertTreeInorderRecursive(treeNode.left);
+        //右
+        invertTreeInorderRecursive(treeNode.right);
+        //中
+        swapLeftAndRightTreeNode(treeNode);
     }
 
     private void swapLeftAndRightTreeNode(TreeNode treeNode) {

@@ -3,10 +3,14 @@ package com.jun.chu.java.leetcode.tree;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayDeque;
 import java.util.List;
+import java.util.Queue;
+import java.util.Stack;
 
 /**
  * [翻转二叉树](https://leetcode.cn/problems/invert-binary-tree/)
+ * 对每一个遍历到的节点，进行的节点操作是翻转左右节点而非简单的取值
  *
  * @author chujun
  * @date 2022/6/4
@@ -55,12 +59,23 @@ public class InvertBinaryTree {
     }
 
     public TreeNode invertTree(TreeNode root) {
-        invertTreePostorderRecursive(root);
+        if (null == root) {
+            return null;
+        }
+        invertTreePreorderUsingStack(root);
         return root;
     }
 
     /**
      * 前序遍历
+     * <p>
+     * 复杂度分析
+     * <p>
+     * 时间复杂度：O(N)，其中 N为二叉树节点的数目。我们会遍历二叉树中的每一个节点，对每个节点而言，我们在常数时间内交换其两棵子树。
+     * <p>
+     * 空间复杂度：O(N)。使用的空间由递归栈的深度决定，它等于当前节点在二叉树中的高度。
+     * 在平均情况下，二叉树的高度与节点个数为对数关系，即 O(logN)。
+     * 而在最坏情况下，树形成链状，空间复杂度为 O(N)。
      */
     private void invertTreePreorderRecursive(TreeNode treeNode) {
         if (null == treeNode) {
@@ -102,6 +117,53 @@ public class InvertBinaryTree {
         invertTreeInorderRecursive(treeNode.right);
         //中
         swapLeftAndRightTreeNode(treeNode);
+    }
+
+
+    /**
+     * 前序遍历使用栈，根节点先入栈方式,非递归方式
+     */
+    private void invertTreePreorderUsingStack(TreeNode treeNode) {
+        if (null == treeNode) {
+            return;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(treeNode);
+        while (!stack.isEmpty()) {
+            TreeNode cur = stack.pop();
+            System.out.println(cur.val);
+            swapLeftAndRightTreeNode(cur);
+            if (null != cur.left) {
+                stack.push(cur.left);
+            }
+            if (null != cur.right) {
+                stack.push(cur.right);
+            }
+        }
+    }
+
+    /**
+     * 广度优先算法，层序遍历
+     */
+    private void invertTreeLevelOrder(TreeNode treeNode) {
+        if (null == treeNode) {
+            return;
+        }
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.add(treeNode);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode cur = queue.remove();
+                swapLeftAndRightTreeNode(cur);
+                if (null != cur.right) {
+                    queue.add(cur.right);
+                }
+                if (null != cur.left) {
+                    queue.add(cur.left);
+                }
+            }
+        }
     }
 
     private void swapLeftAndRightTreeNode(TreeNode treeNode) {

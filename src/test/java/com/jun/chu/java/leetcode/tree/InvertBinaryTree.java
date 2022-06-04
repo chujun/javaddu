@@ -62,7 +62,7 @@ public class InvertBinaryTree {
         if (null == root) {
             return null;
         }
-        invertTreePostorderUsingStack(root);
+        invertTreePostorderUnifyStyle(root);
         return root;
     }
 
@@ -202,6 +202,99 @@ public class InvertBinaryTree {
                 //中节点二次入栈
                 stack.push(cur);
                 cur = cur.right;
+            }
+        }
+    }
+
+    /**
+     * 统一风格非递归:前序遍历
+     */
+    private void invertTreePreorderUnifyStyle(TreeNode treeNode) {
+        if (null == treeNode) {
+            return;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(treeNode);
+        TreeNode cur;
+        while (!stack.empty()) {
+            cur = stack.pop();
+            if (null != cur) {
+                //右
+                if (null != cur.right) {
+                    stack.push(cur.right);
+                }
+                //左
+                if (null != cur.left) {
+                    stack.push(cur.left);
+                }
+                //中
+                stack.push(cur);
+                stack.push(null);
+            } else {
+                cur = stack.pop();
+                swapLeftAndRightTreeNode(cur);
+            }
+        }
+    }
+
+    /**
+     * 统一风格非递归:中序遍历
+     */
+    private void invertTreeInorderUnifyStyle(TreeNode treeNode) {
+        if (null == treeNode) {
+            return;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(treeNode);
+        TreeNode cur;
+        while (!stack.empty()) {
+            cur = stack.pop();
+            if (null != cur) {
+                //右
+                if (null != cur.right) {
+                    stack.push(cur.right);
+                }
+                //中
+                stack.push(cur);
+                stack.push(null);
+                //左
+                if (null != cur.left) {
+                    stack.push(cur.left);
+                }
+            } else {
+                cur = stack.pop();
+                swapLeftAndRightTreeNode(cur);
+            }
+        }
+    }
+
+    /**
+     * 统一风格非递归:后序遍历
+     */
+    private void invertTreePostorderUnifyStyle(TreeNode treeNode) {
+        if (null == treeNode) {
+            return;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(treeNode);
+        TreeNode cur;
+        while (!stack.empty()) {
+            cur = stack.pop();
+            if (null != cur) {
+                //中
+                stack.push(cur);
+                stack.push(null);
+                //右
+                if (null != cur.right) {
+                    stack.push(cur.right);
+                }
+                //左
+                if (null != cur.left) {
+                    stack.push(cur.left);
+                }
+            } else {
+                cur = stack.pop();
+                swapLeftAndRightTreeNode(cur);
             }
         }
     }

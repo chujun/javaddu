@@ -263,7 +263,7 @@ public class BinaryTreePreorderSearch {
      * 1. 如果根节点的左子节点存在,一直遍历寻找左子节点的最右叶子节点(C右)
      * 结束条件(a.right指针为null.没有建立临时链接 b.right指针指向根节点，已经建立了临时链接）
      * 1.1如果(C右)节点不存在，则左子节点本身就是最右叶子节点(C右)
-     * 1.2如果(C右)节点不存在,则(C右)节点right(原本指针为null)指向根节点，创建临时链接.
+     * 1.2如果(C右)节点存在,则(C右)节点right(原本指针为null)指向根节点，创建临时链接.
      * 然后遍历根节点的左子节点(根节点重新指向根节点的左子节点)
      * <p>
      * 2. 如果根节点的左子节点不存在,继续遍历根节点的右节点
@@ -302,6 +302,7 @@ public class BinaryTreePreorderSearch {
                 while (null != cur.right && cur.right != root) {
                     cur = cur.right;
                 }
+                //出while循环的两种情况分析
                 if (null == cur.right) {
                     //right指针为null.没有建立临时链接
                     result.add(root.val);

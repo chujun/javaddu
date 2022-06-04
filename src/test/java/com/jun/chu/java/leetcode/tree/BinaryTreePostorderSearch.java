@@ -232,7 +232,7 @@ public class BinaryTreePostorderSearch {
     /**
      * <p>
      * 针对后序遍历访问数据时机:
-     * 根断开临时链接时(逆序输出路径:左子节点到左子节点的最右叶子节点)
+     * 根断开临时链接时(逆序输出路径:左子节点到左子节点的最右叶子节点) 这儿需要看图才明白为什么这样子
      * 遍历结束后(逆序输出路径:根节点到最右叶子节点）
      * [遍历Morris解法](https://leetcode.cn/problems/binary-tree-preorder-traversal/solution/leetcodesuan-fa-xiu-lian-dong-hua-yan-shi-xbian-2/)
      */

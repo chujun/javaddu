@@ -150,7 +150,9 @@ public class BinaryTreePostorderSearch {
 
 
     /**
-     * stack里存放的数据量=节点数量n+存在右子节点的节点数量w
+     * stack里存放的数据量=节点数量n+存在右子节点的节点数量
+     * 根节点的左节点访问完后，如果根节点存在右子节点先将根节点二次压入栈中,
+     * 判断出是二次入栈的根节点，则不继续遍历右节点了(不然就形成死循环了)
      */
     private void postorderTraversalV10(List<Integer> result, TreeNode treeNode) {
         Stack<TreeNode> stack = new Stack<>();
@@ -171,6 +173,7 @@ public class BinaryTreePostorderSearch {
                 result.add(pop.val);
                 prevVisitedNode = cur;
                 //该从栈中取元素了
+                //cur重置为null，否则一直死循环遍历该节点
                 cur = null;
             } else {
                 //右节点还没有访问,暂时先不访问节点数值,所以这部分中间节点需要重新二次入栈

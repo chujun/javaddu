@@ -62,7 +62,7 @@ public class InvertBinaryTree {
         if (null == root) {
             return null;
         }
-        invertTreePreorderUsingStack(root);
+        invertTreePostorderUsingStack(root);
         return root;
     }
 
@@ -121,6 +121,28 @@ public class InvertBinaryTree {
 
 
     /**
+     * 前序遍历使用栈，根节点先入栈方式,非递归方式
+     */
+    private void invertTreePreorderUsingStack(TreeNode treeNode) {
+        if (null == treeNode) {
+            return;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(treeNode);
+        while (!stack.isEmpty()) {
+            TreeNode cur = stack.pop();
+            System.out.println(cur.val);
+            swapLeftAndRightTreeNode(cur);
+            if (null != cur.left) {
+                stack.push(cur.left);
+            }
+            if (null != cur.right) {
+                stack.push(cur.right);
+            }
+        }
+    }
+
+    /**
      * 中序遍历使用栈
      */
     private void invertTreeInorderUsingStack(TreeNode treeNode) {
@@ -153,33 +175,37 @@ public class InvertBinaryTree {
     }
 
     /**
-     * 后续遍历
+     * 后续遍历非递归方式
      */
     private void invertTreePostorderUsingStack(TreeNode treeNode) {
-
-    }
-
-    /**
-     * 前序遍历使用栈，根节点先入栈方式,非递归方式
-     */
-    private void invertTreePreorderUsingStack(TreeNode treeNode) {
         if (null == treeNode) {
             return;
         }
         Stack<TreeNode> stack = new Stack<>();
-        stack.push(treeNode);
-        while (!stack.isEmpty()) {
-            TreeNode cur = stack.pop();
-            System.out.println(cur.val);
-            swapLeftAndRightTreeNode(cur);
-            if (null != cur.left) {
-                stack.push(cur.left);
+        TreeNode cur = treeNode;
+        //上一次访问过的节点
+        TreeNode preVisitedRightNode = null;
+        while (!stack.isEmpty() || null != cur) {
+            while (null != cur) {
+                stack.push(cur);
+                cur = cur.left;
             }
-            if (null != cur.right) {
-                stack.push(cur.right);
+            cur = stack.pop();
+            //cur不是二次入栈的中节点
+            if (null == cur.right || cur.right == preVisitedRightNode) {
+                //System.out.println(cur.val); 等中节点访问完再交换左右节点
+                swapLeftAndRightTreeNode(cur);
+                preVisitedRightNode = cur;
+                //cur重置为null，否则一直死循环遍历该节点
+                cur = null;
+            } else {
+                //中节点二次入栈
+                stack.push(cur);
+                cur = cur.right;
             }
         }
     }
+
 
     /**
      * 广度优先算法，层序遍历

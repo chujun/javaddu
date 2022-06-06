@@ -21,4 +21,21 @@ public class TreeNode {
         this.left = left;
         this.right = right;
     }
+
+    public static TreeNode initTree() {
+        TreeNode treeNode1 = new TreeNode(1);
+        TreeNode treeNode2 = new TreeNode(2);
+        TreeNode treeNode3 = new TreeNode(3);
+        TreeNode treeNode4 = new TreeNode(4);
+        TreeNode treeNode6 = new TreeNode(6);
+        TreeNode treeNode7 = new TreeNode(7);
+        TreeNode treeNode9 = new TreeNode(9);
+        treeNode4.left = treeNode2;
+        treeNode4.right = treeNode7;
+        treeNode2.left = treeNode1;
+        treeNode2.right = treeNode3;
+        treeNode7.left = treeNode6;
+        treeNode7.right = treeNode9;
+        return treeNode4;
+    }
 }

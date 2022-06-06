@@ -1,5 +1,6 @@
 package com.jun.chu.java.mulithread;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -16,8 +17,8 @@ public class InheritableThreadLocalDemo {
         inheritableThreadLocal.set("父类数据:inheritableThreadLocal");
 
         new Thread(() -> {
-            System.out.println("子线程获取父类ThreadLocal数据：" + ThreadLocal.get());
-            System.out.println("子线程获取父类inheritableThreadLocal数据：" + inheritableThreadLocal.get());
+            Assert.assertNull(ThreadLocal.get());
+            Assert.assertEquals("父类数据:inheritableThreadLocal", inheritableThreadLocal.get());
         }).start();
     }
 
@@ -30,8 +31,8 @@ public class InheritableThreadLocalDemo {
         inheritableThreadLocal.set("父类数据:inheritableThreadLocal");
 
         new Thread(() -> {
-            System.out.println("子线程获取父类ThreadLocal数据：" + ThreadLocal.get());
-            System.out.println("子线程获取父类inheritableThreadLocal数据：" + inheritableThreadLocal.get());
+            Assert.assertNull(ThreadLocal.get());
+            Assert.assertEquals("父类数据:inheritableThreadLocal", inheritableThreadLocal.get());
         }).start();
     }
 }

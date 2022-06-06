@@ -97,4 +97,18 @@ public class CompletableFutureTest {
         }
 
     }
+
+    @Test
+    public void test5() throws ExecutionException, InterruptedException {
+        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> "hello!")
+            .thenCompose(s -> CompletableFuture.supplyAsync(() -> s + "world!"));
+        assertEquals("hello!world!", future.get());
+
+        CompletableFuture<String> completableFuture = CompletableFuture.supplyAsync(() -> "hello!")
+            //并行没有先后顺序
+            .thenCombine(CompletableFuture.supplyAsync(() -> "world!"), (s1, s2) -> s1 + s2)
+            //存在先后顺序
+            .thenCompose(s -> CompletableFuture.supplyAsync(() -> s + "nice!"));
+        assertEquals("hello!world!nice!", completableFuture.get());
+    }
 }

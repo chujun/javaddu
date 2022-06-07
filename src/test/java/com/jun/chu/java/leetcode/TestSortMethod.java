@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -52,6 +53,11 @@ public class TestSortMethod {
     @Test
     public void testCountSort() {
         testSort(TestSortMethod::countSort);
+    }
+
+    @Test
+    public void testBucketSort() {
+        testSort(TestSortMethod::bucketSort);
     }
 
     private <T extends Comparable<T>> void testSort(Consumer<List> consumer) {
@@ -320,6 +326,65 @@ public class TestSortMethod {
             }
         }
         return maxValue;
+    }
+
+    /**
+     * 桶排序
+     */
+    public static void bucketSort(List<Integer> list) {
+        //一般默认为5个
+        bucketSort(list, 5);
+    }
+
+    public static void bucketSort(List<Integer> list, int bucketSize) {
+        if (list.size() == 0) {
+            return;
+        }
+
+        //获取最大值和最小值
+        Integer minValue = list.get(0);
+        Integer maxValue = minValue;
+        for (Integer value : list) {
+            if (greatThan(minValue, value)) {
+                minValue = value;
+            } else if (greatThan(value, maxValue)) {
+                maxValue = value;
+            }
+        }
+        //确定桶数量
+        int bucketCount = (int) Math.floor((maxValue - minValue) / bucketSize) + 1;
+        int[][] buckets = new int[bucketCount][0];
+
+        // 利用映射函数将数据分配到各个桶中
+        for (int i = 0; i < list.size(); i++) {
+            int index = (int) Math.floor((list.get(i) - minValue) / bucketSize);
+            buckets[index] = arrAppend(buckets[index], list.get(i));
+        }
+
+        int arrIndex = 0;
+        for (int[] bucket : buckets) {
+            if (bucket.length <= 0) {
+                continue;
+            }
+            // 对每个桶进行排序，这里使用了插入排序
+            List<Integer> toBeSortList = OriginJDKUtil.newCopyList(bucket);
+            insertionSort(toBeSortList);
+            for (Integer value : toBeSortList) {
+                list.set(arrIndex++, value);
+            }
+        }
+    }
+
+    /**
+     * 自动扩容，并保存数据
+     *
+     * @param arr
+     * @param value
+     */
+    private static int[] arrAppend(int[] arr, int value) {
+        arr = Arrays.copyOf(arr, arr.length + 1);
+        arr[arr.length - 1] = value;
+        return arr;
     }
 
     private static <T> void swap(List<T> list, int index, int index2) {

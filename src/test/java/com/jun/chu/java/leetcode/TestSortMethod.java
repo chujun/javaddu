@@ -60,6 +60,11 @@ public class TestSortMethod {
         testSort(TestSortMethod::bucketSort);
     }
 
+    @Test
+    public void testRadixSort() {
+        testSort(TestSortMethod::radixSort);
+    }
+
     private <T extends Comparable<T>> void testSort(Consumer<List> consumer) {
         testSort(consumer, "[1, 3, 5, 5, 7, 8, 10, 23, 35, 64]", initList());
         testSort(consumer, "[3, 5, 5, 7, 8, 10, 10, 23, 35, 45, 54, 64]", initList2());
@@ -330,6 +335,10 @@ public class TestSortMethod {
 
     /**
      * 桶排序
+     * 桶排序是计数排序的升级版。
+     * 映射函数:利用了函数的映射关系，高效与否的关键就在于这个映射函数的确定
+     * 算法工作原理:
+     * 假设输入数据服从均匀分布，将数据分到有限数量的桶里，每个桶再分别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序）。
      */
     public static void bucketSort(List<Integer> list) {
         //一般默认为5个
@@ -373,6 +382,81 @@ public class TestSortMethod {
                 list.set(arrIndex++, value);
             }
         }
+    }
+
+    /**
+     * 基数排序
+     */
+    public static void radixSort(List<Integer> list) {
+        int[] array = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            array[i] = list.get(i);
+        }
+        array = radixSort(array);
+        for (int i = 0; i < list.size(); i++) {
+            list.set(i, array[i]);
+        }
+    }
+
+    public static int[] radixSort(int[] sourceArray) {
+        // 对 arr 进行拷贝，不改变参数内容
+        int[] arr = Arrays.copyOf(sourceArray, sourceArray.length);
+
+        int maxDigit = getMaxDigit(arr);
+        return radixSort(arr, maxDigit);
+    }
+
+    private static int[] radixSort(int[] arr, int maxDigit) {
+        int mod = 10;
+        int dev = 1;
+
+        for (int i = 0; i < maxDigit; i++, dev *= 10, mod *= 10) {
+            // 考虑负数的情况，这里扩展一倍队列数，其中 [0-9]对应负数，[10-19]对应正数 (bucket + 10)
+            int[][] counter = new int[mod * 2][0];
+
+            for (int j = 0; j < arr.length; j++) {
+                int bucket = ((arr[j] % mod) / dev) + mod;
+                counter[bucket] = arrAppend(counter[bucket], arr[j]);
+            }
+
+            int pos = 0;
+            for (int[] bucket : counter) {
+                for (int value : bucket) {
+                    arr[pos++] = value;
+                }
+            }
+        }
+
+        return arr;
+    }
+
+    /**
+     * 获取最高位数
+     */
+    private static int getMaxDigit(int[] arr) {
+        int maxValue = getMaxValue(arr);
+        return getNumLenght(maxValue);
+    }
+
+    private static int getMaxValue(int[] arr) {
+        int maxValue = arr[0];
+        for (int value : arr) {
+            if (maxValue < value) {
+                maxValue = value;
+            }
+        }
+        return maxValue;
+    }
+
+    private static int getNumLenght(long num) {
+        if (num == 0) {
+            return 1;
+        }
+        int lenght = 0;
+        for (long temp = num; temp != 0; temp /= 10) {
+            lenght++;
+        }
+        return lenght;
     }
 
     /**

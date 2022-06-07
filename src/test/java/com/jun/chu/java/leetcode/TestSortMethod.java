@@ -28,6 +28,11 @@ public class TestSortMethod {
         testSort(TestSortMethod::insertionSort);
     }
 
+    @Test
+    public void testShellSort() {
+        testSort(TestSortMethod::shellSort);
+    }
+
     private <T extends Comparable<T>> void testSort(Consumer<List> consumer) {
         testSort(consumer, "[1, 3, 5, 5, 7, 8, 10, 23, 35, 64]", initList());
         testSort(consumer, "[3, 5, 5, 7, 8, 10, 10, 23, 35, 45, 54, 64]", initList2());
@@ -104,6 +109,28 @@ public class TestSortMethod {
                 //在合适位置出入待排序元素
                 list.set(preIndex + 1, tobeSorted);
             }
+        }
+    }
+
+    /**
+     * 希尔排序
+     * 插入排序的改进版,又叫"缩小增量排序"
+     */
+    public static <T extends Comparable<T>> void shellSort(List<T> list) {
+        //增量gap，并逐步缩小增量
+        int size = list.size();
+        for (int gap = size / 2; gap > 0; gap = gap / 2) {
+            //从第gap个元素，逐个对其所在组进行直接插入排序操作
+            for (int i = gap; i < size; i++) {
+                int j = i;
+                T current = list.get(i);
+                while (j - gap >= 0 && greatThan(list.get(j - gap), current)) {
+                    list.set(j, list.get(j - gap));
+                    j = j - gap;
+                }
+                list.set(j, current);
+            }
+            System.out.println(gap);
         }
     }
 

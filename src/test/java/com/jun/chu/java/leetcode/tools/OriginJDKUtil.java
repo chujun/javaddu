@@ -1,6 +1,7 @@
 package com.jun.chu.java.leetcode.tools;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -59,5 +60,9 @@ public class OriginJDKUtil {
             dest.add(num);
         }
         return dest;
+    }
+
+    public static <T> boolean isEmpty(Collection<T> collection) {
+        return null == collection || collection.isEmpty();
     }
 }

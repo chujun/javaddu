@@ -254,7 +254,7 @@ public class TestSortMethod {
     }
 
     /**
-     * 调整大顶堆（仅是调整过程，建立在大顶堆已构建的基础上）
+     * 调整大顶堆的目的是为了满足堆的定义（仅是调整过程，建立在大顶堆已构建的基础上）
      * 节点下标为i的话--->左节点下标:2i+1,右节点下标:2i+2
      */
     private static <T extends Comparable<T>> void adjustHeap(List<T> list,
@@ -273,6 +273,7 @@ public class TestSortMethod {
                 list.set(i, list.get(k));
                 i = k;
             } else {
+                //父节点大于左右节点，满足堆定义
                 break;
             }
         }

@@ -49,6 +49,11 @@ public class TestSortMethod {
         testSort(TestSortMethod::heapSort);
     }
 
+    @Test
+    public void testCountSort() {
+        testSort(TestSortMethod::countSort);
+    }
+
     private <T extends Comparable<T>> void testSort(Consumer<List> consumer) {
         testSort(consumer, "[1, 3, 5, 5, 7, 8, 10, 23, 35, 64]", initList());
         testSort(consumer, "[3, 5, 5, 7, 8, 10, 10, 23, 35, 45, 54, 64]", initList2());
@@ -279,6 +284,42 @@ public class TestSortMethod {
         }
         //将temp值放到最终的位置
         list.set(i, temp);
+    }
+
+    /**
+     * 计数排序，只适合整数
+     */
+    public static void countSort(List<Integer> list) {
+        Integer maxValue = getMaxValue(list);
+        countSort(list, maxValue);
+    }
+
+    public static void countSort(List<Integer> list, Integer maxValue) {
+        int bucketLen = maxValue + 1;
+        //计数统计数组
+        int[] bucket = new int[bucketLen];
+
+        for (Integer value : list) {
+            bucket[value]++;
+        }
+
+        int sortedIndex = 0;
+        for (int j = 0; j < bucketLen; j++) {
+            while (bucket[j] > 0) {
+                list.set(sortedIndex++, j);
+                bucket[j]--;
+            }
+        }
+    }
+
+    private static Integer getMaxValue(List<Integer> list) {
+        Integer maxValue = list.get(0);
+        for (Integer value : list) {
+            if (greatThan(value, maxValue)) {
+                maxValue = value;
+            }
+        }
+        return maxValue;
     }
 
     private static <T> void swap(List<T> list, int index, int index2) {

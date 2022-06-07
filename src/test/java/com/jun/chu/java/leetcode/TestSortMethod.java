@@ -99,6 +99,7 @@ public class TestSortMethod {
                 list.set(preIndex + 1, list.get(preIndex));
                 preIndex--;
             }
+            //仍在原来位置上的就不需要调整位置了
             if (i != preIndex) {
                 //在合适位置出入待排序元素
                 list.set(preIndex + 1, tobeSorted);

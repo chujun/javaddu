@@ -2,9 +2,11 @@ package com.jun.chu.java.leetcode;
 
 import com.google.common.collect.Lists;
 import com.jun.chu.java.leetcode.tools.OriginJDKUtil;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * @author chujun
@@ -13,16 +15,31 @@ import java.util.List;
 public class TestSortMethod {
     @Test
     public void testBubbleSort() {
-        List<Integer> list = initList();
-        bubbleSort(list);
-        System.out.println(list.toString());
+        testSort(TestSortMethod::bubbleSort);
     }
 
     @Test
     public void testSelectionSort() {
-        List<Integer> list = initList();
-        selectionSort(list);
-        System.out.println(list.toString());
+        testSort(TestSortMethod::selectionSort);
+    }
+
+    @Test
+    public void testInsertionSort() {
+        testSort(TestSortMethod::insertionSort);
+    }
+
+    private <T extends Comparable<T>> void testSort(Consumer<List> consumer) {
+        testSort(consumer, "[1, 3, 5, 5, 7, 8, 10, 23, 35, 64]", initList());
+        testSort(consumer, "[3, 5, 5, 7, 8, 10, 10, 23, 35, 45, 54, 64]", initList2());
+        testSort(consumer, "[1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10]", initList3());
+        testSort(consumer, "[1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10]", initList4());
+    }
+
+    private <T extends Comparable<T>> void testSort(Consumer<List> consumer,
+                                                    String excepted,
+                                                    List<T> list) {
+        consumer.accept(list);
+        Assert.assertEquals(excepted, list.toString());
     }
 
     /**
@@ -57,11 +74,35 @@ public class TestSortMethod {
             for (int j = i + 1; j < len; j++) {
                 // 寻找最小的数
                 if (greatThan(list.get(minIndex), list.get(j))) {
-                    // 将最小数的索引保存
+                    //将最小数的索引保存
                     minIndex = j;
                 }
             }
             swap(list, i, minIndex);
+        }
+    }
+
+    /**
+     * 插入排序
+     * 算法核心思想:构建有序序列,待排序元素从后往前与有序序列比较,插入到合适位置。
+     */
+    public static <T extends Comparable<T>> void insertionSort(List<T> list) {
+        int len = list.size();
+        int preIndex;
+        //待排序元素
+        T tobeSorted;
+        for (int i = 1; i < len; i++) {
+            preIndex = i - 1;
+            tobeSorted = list.get(i);
+            while (preIndex >= 0 && greatThan(list.get(preIndex), tobeSorted)) {
+                //大的元素往有序序列后面移动
+                list.set(preIndex + 1, list.get(preIndex));
+                preIndex--;
+            }
+            if (i != preIndex) {
+                //在合适位置出入待排序元素
+                list.set(preIndex + 1, tobeSorted);
+            }
         }
     }
 
@@ -77,5 +118,17 @@ public class TestSortMethod {
 
     private static List<Integer> initList() {
         return Lists.newArrayList(1, 23, 5, 7, 8, 10, 3, 5, 64, 35);
+    }
+
+    private static List<Integer> initList2() {
+        return Lists.newArrayList(54, 23, 45, 5, 10, 7, 8, 10, 3, 5, 64, 35);
+    }
+
+    private static List<Integer> initList3() {
+        return Lists.newArrayList(1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10);
+    }
+
+    private static List<Integer> initList4() {
+        return Lists.newArrayList(10, 9, 8, 7, 6, 5, 5, 4, 3, 2, 1);
     }
 }

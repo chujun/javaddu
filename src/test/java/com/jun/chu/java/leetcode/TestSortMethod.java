@@ -39,6 +39,11 @@ public class TestSortMethod {
         testSort(TestSortMethod::mergeSortUse);
     }
 
+    @Test
+    public void testQuickSort() {
+        testSort(TestSortMethod::quickSort);
+    }
+
     private <T extends Comparable<T>> void testSort(Consumer<List> consumer) {
         testSort(consumer, "[1, 3, 5, 5, 7, 8, 10, 23, 35, 64]", initList());
         testSort(consumer, "[3, 5, 5, 7, 8, 10, 10, 23, 35, 45, 54, 64]", initList2());
@@ -166,19 +171,57 @@ public class TestSortMethod {
         List<T> result = new ArrayList<>();
         while (left.size() > 0 && right.size() > 0) {
             if (greatThan(right.get(0), left.get(0))) {
-                result.add(right.remove(0));
+                result.add(left.remove(0));
             } else {
-                result.add(left.get(0));
+                result.add(right.remove(0));
             }
         }
 
-        while (left.size() > 0)
+        if (left.size() > 0) {
             result.addAll(left);
+        }
 
-        while (right.size() > 0)
+        if (right.size() > 0) {
             result.addAll(right);
+        }
 
         return result;
+    }
+
+    public static <T extends Comparable<T>> void quickSort(List<T> list) {
+        quickSort(list, 0, list.size() - 1);
+    }
+
+    /**
+     * 快速排序
+     * 算法核心思想:把序列分成左右两个序列,其中左序列的元素都比右序列的元素小，分治法递归处理完所有子序列。
+     */
+    public static <T extends Comparable<T>> void quickSort(List<T> list, int left, int right) {
+        int partitionIndex;
+        if (left < right) {
+            partitionIndex = partition(list, left, right);
+            quickSort(list, left, partitionIndex - 1);
+            quickSort(list, partitionIndex + 1, right);
+        }
+    }
+
+    /**
+     * 分区操作，比基准值小的在左边序列，比基准值大的在右边序列
+     */
+    private static <T extends Comparable<T>> int partition(List<T> list,
+                                                           int left,
+                                                           int right) {
+        // 设定基准值（pivot）
+        int pivot = left;
+        int index = pivot + 1;
+        for (int i = index; i <= right; i++) {
+            if (greatThan(list.get(pivot), list.get(i))) {
+                swap(list, i, index);
+                index++;
+            }
+        }
+        swap(list, pivot, index - 1);
+        return index - 1;
     }
 
     private static <T> void swap(List<T> list, int index, int index2) {

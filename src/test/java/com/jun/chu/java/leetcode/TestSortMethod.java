@@ -5,6 +5,7 @@ import com.jun.chu.java.leetcode.tools.OriginJDKUtil;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -31,6 +32,11 @@ public class TestSortMethod {
     @Test
     public void testShellSort() {
         testSort(TestSortMethod::shellSort);
+    }
+
+    @Test
+    public void testMergeSortUse() {
+        testSort(TestSortMethod::mergeSortUse);
     }
 
     private <T extends Comparable<T>> void testSort(Consumer<List> consumer) {
@@ -132,6 +138,47 @@ public class TestSortMethod {
             }
             System.out.println(gap);
         }
+    }
+
+    public static <T extends Comparable<T>> void mergeSortUse(List<T> list) {
+        List<T> mergedList = mergeSort(list);
+        for (int i = 0; i < list.size(); i++) {
+            list.set(i, mergedList.get(i));
+        }
+    }
+
+    /**
+     * 归并排序
+     * 算法核心:采用分治法,将已有序的子序列合并，得到完全有序的序列
+     */
+    public static <T extends Comparable<T>> List<T> mergeSort(List<T> list) {
+        int len = list.size();
+        if (len < 2) {
+            return list;
+        }
+        int middle = len / 2;
+        List<T> left = new ArrayList<>(list.subList(0, middle));
+        List<T> right = new ArrayList<>(list.subList(middle, len));
+        return mergeSort(mergeSort(left), mergeSort(right));
+    }
+
+    public static <T extends Comparable<T>> List<T> mergeSort(List<T> left, List<T> right) {
+        List<T> result = new ArrayList<>();
+        while (left.size() > 0 && right.size() > 0) {
+            if (greatThan(right.get(0), left.get(0))) {
+                result.add(right.remove(0));
+            } else {
+                result.add(left.get(0));
+            }
+        }
+
+        while (left.size() > 0)
+            result.addAll(left);
+
+        while (right.size() > 0)
+            result.addAll(right);
+
+        return result;
     }
 
     private static <T> void swap(List<T> list, int index, int index2) {

@@ -44,6 +44,11 @@ public class TestSortMethod {
         testSort(TestSortMethod::quickSort);
     }
 
+    @Test
+    public void testHeapSort() {
+        testSort(TestSortMethod::heapSort);
+    }
+
     private <T extends Comparable<T>> void testSort(Consumer<List> consumer) {
         testSort(consumer, "[1, 3, 5, 5, 7, 8, 10, 23, 35, 64]", initList());
         testSort(consumer, "[3, 5, 5, 7, 8, 10, 10, 23, 35, 45, 54, 64]", initList2());
@@ -222,6 +227,57 @@ public class TestSortMethod {
         }
         swap(list, pivot, index - 1);
         return index - 1;
+    }
+
+    /**
+     * 算法核心思想:
+     * 待排序序列构建一个初始堆(例如大顶堆),将堆顶元素和待排序序列最后位置的元素交换,然后再调整堆,然后再不断交换堆顶元素和待排序序列元素交换位置,直到排序完成。
+     * <p>
+     * 算法描述
+     * 1. 将初始待排序关键字序列(R1,R2….Rn)构建成大顶堆，此堆为初始的无序区。
+     * 2. 将堆顶元素R[1]与最后一个元素R[n]交换，此时得到新的无序区(R1,R2,……Rn-1)和新的有序区(Rn),且满足R[1,2…n-1]<=R[n]；
+     * 3. 由于交换后新的堆顶R[1]可能违反堆的性质，因此需要对当前无序区(R1,R2,……Rn-1)调整为新堆，然后再次将R[1]与无序区最后一个元素交换，得到新的无序区(R1,R2….Rn-2)和新的有序区(Rn-1,Rn)。不断重复此过程直到有序区的元素个数为n-1，则整个排序过程完成。
+     */
+    public static <T extends Comparable<T>> void heapSort(List<T> list) {
+        //1.构建大顶堆
+        for (int i = list.size() / 2 - 1; i >= 0; i--) {
+            //从第一个非叶子结点从下至上，从右至左调整结构
+            adjustHeap(list, i, list.size());
+        }
+        //2.调整堆结构+交换堆顶元素与堆尾部元素
+        for (int j = list.size() - 1; j > 0; j--) {
+            swap(list, 0, j);//将堆顶元素与末尾元素进行交换
+            //堆的长度逐步减少
+            adjustHeap(list, 0, j);//重新对堆进行调整
+        }
+
+    }
+
+    /**
+     * 调整大顶堆（仅是调整过程，建立在大顶堆已构建的基础上）
+     * 节点下标为i的话--->左节点下标:2i+1,右节点下标:2i+2
+     */
+    private static <T extends Comparable<T>> void adjustHeap(List<T> list,
+                                                             int i,
+                                                             int heapSize) {
+        T temp = list.get(i);//先取出当前元素i
+        //从i结点的左子结点开始，也就是2i+1处开始
+        for (int k = i * 2 + 1; k < heapSize; k = k * 2 + 1) {
+            //取左右子节点大的元素下标
+            if (k + 1 < heapSize && greatThan(list.get(k + 1), list.get(k))) {
+                //如果左子结点小于右子结点，k指向右子结点
+                k++;
+            }
+            //如果子节点大于父节点，将子节点值赋给父节点（不用进行交换）
+            if (greatThan(list.get(k), temp)) {
+                list.set(i, list.get(k));
+                i = k;
+            } else {
+                break;
+            }
+        }
+        //将temp值放到最终的位置
+        list.set(i, temp);
     }
 
     private static <T> void swap(List<T> list, int index, int index2) {

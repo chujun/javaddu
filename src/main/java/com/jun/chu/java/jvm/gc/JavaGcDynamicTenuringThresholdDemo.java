@@ -17,7 +17,7 @@ package com.jun.chu.java.jvm.gc;
  * <p>
  * 自定义的代码中，我们使用堆内分配数组和栈内分配数组的方式来分别模拟不可被GC的和可被GC的资源。
  */
-public class JavaGcDynamicTenuringThresholdTest {
+public class JavaGcDynamicTenuringThresholdDemo {
     /*
     -verbose:gc
 -Xmx200M

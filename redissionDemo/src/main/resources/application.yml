@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: springboot-redisson
+  redis:
+    redisson:
+      config: |
+        singleServerConfig:
+          password: null
+          address: "redis://localhost:6379"
+          database: 1
+        threads: 0
+        nettyThreads: 0
+        codec: !<org.redisson.codec.JsonJacksonCodec> {}
+        transportMode: "NIO"
+
+server:
+  port: 9888

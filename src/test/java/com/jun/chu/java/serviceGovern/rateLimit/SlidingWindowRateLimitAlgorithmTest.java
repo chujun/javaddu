@@ -12,7 +12,7 @@ public class SlidingWindowRateLimitAlgorithmTest {
         SlidingWindowRateLimitAlgorithm slidingWindowRateLimitAlgorithm =
             new SlidingWindowRateLimitAlgorithm(10, 10);
         for (int i = 0; i < 1000; i++) {
-            System.out.println(slidingWindowRateLimitAlgorithm.slidingWindowsTryAcquire());
+            System.out.println(slidingWindowRateLimitAlgorithm.slidingWindowsTryAcquire() + "，" + slidingWindowRateLimitAlgorithm.getTotalStoredSize());
             Thread.sleep(100);
         }
     }

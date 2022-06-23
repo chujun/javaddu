@@ -3,10 +3,11 @@ package com.jun.chu.java.leetcode.linkedlist;
 import org.junit.Test;
 
 /**
- * link1 8->4->7
- * link2 7->7
+ * link1  8->4->7
+ * link2  7->7
  * result:5->2->8
- * 链表每个数字个位数,进位向前
+ * 两个链表相同位置数字相加,进位
+ * 链表每个数字都是个位数,进位向前
  * @author chujun
  * @date 2022/6/21
  */

@@ -49,6 +49,7 @@ public class LeakyBucketRateLimitAlgorithm {
             long currentTime = System.currentTimeMillis();
             //流出的水量 =(当前时间-上次刷新时间)* 出水率
             System.out.println("currentTime-refreshTime:" + (currentTime - refreshTime));
+            //注意这儿还是存在少量无法组成一个水滴,小数被舍弃掉了，不是特别精准
             long outWater = (long) ((currentTime - refreshTime) / 1000.0 * rateConfig);
             // 当前水量 = 之前的桶内水量-流出的水量
 

@@ -39,7 +39,7 @@ public class SlidingWindowRateLimitAlgorithm {
     /**
      * 滑动窗口时间算法实现
      */
-    boolean slidingWindowsTryAcquire() {
+    public boolean slidingWindowsTryAcquire() {
         //获取当前时间在哪个小周期窗口:小周期窗口开始时间点
         long currentSubCycleWindowStartTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) / subCyclePerMinConfig * subCyclePerMinConfig;
         //当前窗口总请求数

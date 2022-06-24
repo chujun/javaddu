@@ -3,6 +3,7 @@ package com.jun.chu.java.serviceGovern.rateLimit;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
+ * 漏桶算法
  * @author chujun
  * @date 2022/6/24
  */
@@ -42,7 +43,7 @@ public class LeakyBucketRateLimitAlgorithm {
      *
      * @return
      */
-    boolean leakyBucketLimitTryAcquire() {
+    public boolean leakyBucketLimitTryAcquire() {
         lock.lock();
         try {
             //获取系统当前时间

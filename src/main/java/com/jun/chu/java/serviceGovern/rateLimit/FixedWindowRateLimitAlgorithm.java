@@ -31,7 +31,7 @@ public class FixedWindowRateLimitAlgorithm {
      *
      * @return
      */
-    boolean fixedWindowsTryAcquire() {
+    public boolean fixedWindowsTryAcquire() {
         //获取系统当前时间
         long currentTime = System.currentTimeMillis();
         //检查是否在时间窗口内

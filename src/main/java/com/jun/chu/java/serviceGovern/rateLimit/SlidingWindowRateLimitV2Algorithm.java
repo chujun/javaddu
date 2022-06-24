@@ -14,7 +14,7 @@ import java.util.TreeMap;
  */
 public class SlidingWindowRateLimitV2Algorithm {
     /**
-     * 单位划分的小周期（单位时间是1分钟，10s一个小格子窗口，一共6个格子）
+     * 单位划分的小周期（默认单位时间是1分钟，10s一个小格子窗口，一共6个格子）
      */
     private int subCyclePerWindowConfig = 10;
 
@@ -68,7 +68,7 @@ public class SlidingWindowRateLimitV2Algorithm {
      */
     private int countCurrentWindow(long currentSubCycleWindowStartTime) {
         //计算窗口开始位置
-        long startTime = currentSubCycleWindowStartTime - subCyclePerWindowConfig * (60 / subCyclePerWindowConfig - 1);
+        long startTime = currentSubCycleWindowStartTime - subCyclePerWindowConfig * (windowSecondConfig / subCyclePerWindowConfig - 1);
         int count = 0;
 
         //遍历存储的计数器
@@ -80,7 +80,7 @@ public class SlidingWindowRateLimitV2Algorithm {
                 iterator.remove();
             } else {
                 //累加当前窗口的所有计数器之和
-                count = count + entry.getValue();
+                count += entry.getValue();
             }
         }
         return count;

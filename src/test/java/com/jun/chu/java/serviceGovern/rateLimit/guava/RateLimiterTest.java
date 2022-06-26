@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author chujun
@@ -19,6 +20,17 @@ public class RateLimiterTest {
         for (int i = 1; i < 10; i = i + 2) {
             double waitTime = limiter.acquire(i);
             System.out.println("cutTime=" + System.currentTimeMillis() + " acq:" + i + " waitTime:" + waitTime);
+        }
+    }
+
+    @Test
+    public void testWarmup() {
+        // 1s 放 5 个令牌到桶里也就是 0.2s 放 1个令牌到桶里
+        // 预热时间为3s,也就说刚开始的 3s 内发牌速率会逐渐提升到 0.2s 放 1 个令牌到桶里
+        RateLimiter rateLimiter = RateLimiter.create(5, 3, TimeUnit.SECONDS);
+        for (int i = 0; i < 20; i++) {
+            double sleepingTime = rateLimiter.acquire(1);
+            System.out.printf("get 1 tokens: %sds%n", sleepingTime);
         }
     }
 

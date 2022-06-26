@@ -60,7 +60,7 @@ public class CreateDemo2
             }, "RunnableThread" + threadNo++);
             thread.start();
         }
-        //方法2.3：使用实现lambor表达式创建和启动线程
+        //方法2.3：使用实现lambada表达式创建和启动线程
         for (int i = 0; i < 2; i++)
         {
             thread = new Thread(() ->

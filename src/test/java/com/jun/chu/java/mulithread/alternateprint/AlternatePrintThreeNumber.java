@@ -32,8 +32,9 @@ public class AlternatePrintThreeNumber {
                 }
                 lock.lock();
                 try {
-                    conditionA.await();
                     conditionB.signalAll();
+                    conditionA.await();
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {
@@ -41,6 +42,13 @@ public class AlternatePrintThreeNumber {
                 }
             }
             end.countDown();
+            lock.lock();
+            try {
+                conditionB.signalAll();
+                conditionC.signalAll();
+            } finally {
+                lock.unlock();
+            }
         });
         Thread b = new Thread(() -> {
             try {
@@ -52,8 +60,9 @@ public class AlternatePrintThreeNumber {
                 System.out.println("b");
                 lock.lock();
                 try {
-                    conditionB.await();
                     conditionC.signalAll();
+                    conditionB.await();
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {
@@ -72,8 +81,9 @@ public class AlternatePrintThreeNumber {
                 System.out.println("c");
                 lock.lock();
                 try {
-                    conditionC.await();
                     conditionA.signalAll();
+                    conditionC.await();
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {

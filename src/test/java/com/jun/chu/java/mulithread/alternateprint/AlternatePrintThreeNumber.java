@@ -11,7 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * 要求使用三个线程,交替打印出"abcabcabcabc"100次
  *
  * @author chujun
- * @date 2022/6/26
+ * @date 2022/6/26AutoConfigurationImportSelector
  */
 public class AlternatePrintThreeNumber {
     private Lock lock = new ReentrantLock();

@@ -12,7 +12,7 @@ import org.junit.Test;
  */
 public class SpiralMatrixTwo {
     /**
-     * 核心算法思想:循环不变量
+     * 核心算法思想
      */
     public int[][] generateMatrix(int n) {
         //0:表示方向向右,1:表示方向向下,2:表示方向向左,3:表示方向向上

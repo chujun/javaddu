@@ -9,6 +9,7 @@
         <module>disruptor</module>
         <module>mydisruptor</module>
         <module>transactionIsolation</module>
+        <module>protobuffer</module>
     </modules>
     <packaging>pom</packaging>
 

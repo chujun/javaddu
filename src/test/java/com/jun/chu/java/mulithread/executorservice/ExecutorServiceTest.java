@@ -16,7 +16,7 @@ import java.util.concurrent.locks.LockSupport;
 public class ExecutorServiceTest {
     private int threadPoolSize=3;
     private ExecutorService executorService=new ThreadPoolExecutor(threadPoolSize, threadPoolSize, 60L, TimeUnit.SECONDS,
-        new LinkedBlockingQueue<Runnable>(threadPoolSize*10),(r, executor) -> {
+        new LinkedBlockingQueue<Runnable>(threadPoolSize*5),(r, executor) -> {
         try {
             executor.getQueue().put(r);
         } catch (InterruptedException e) {
@@ -29,7 +29,7 @@ public class ExecutorServiceTest {
     @Test
     public void test(){
         //当count等于100时，超过线程池最大任务数会出现死循环现象。
-        for(int count=0;count<10;count++){
+        for(int count=0;count<25;count++){
             System.out.println("create task"+count);
             execute(count);
         }
@@ -63,8 +63,10 @@ public class ExecutorServiceTest {
     }
     private boolean canPull(){
         ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor)executorService;
+        System.out.println("remainingCapacity"+threadPoolExecutor.getQueue().remainingCapacity()+",isEmpty"+threadPoolExecutor.getQueue().isEmpty());
         if(threadPoolExecutor.getQueue().isEmpty() ||
             (threadPoolExecutor.getQueue().remainingCapacity()>0)){
+
             return true;
         }
         return false;

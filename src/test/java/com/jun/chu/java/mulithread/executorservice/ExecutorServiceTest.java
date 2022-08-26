@@ -29,7 +29,7 @@ public class ExecutorServiceTest {
     @Test
     public void test(){
         //当count等于100时，超过线程池最大任务数会出现死循环现象。
-        for(int count=0;count<25;count++){
+        for(int count=0;count<21;count++){
             System.out.println("create task"+count);
             execute(count);
         }
@@ -40,7 +40,7 @@ public class ExecutorServiceTest {
             long emptyTimes = 0;
             //高并发下这儿会存在死循环问题
             while (!canPull()){
-                System.out.println("线程池队列已满,线程yield"+count);
+                System.out.println(Thread.currentThread().getName()+":线程池队列已满,线程yield"+count);
                 applyWait(emptyTimes ++);
             }
             System.out.println("execute task"+count);

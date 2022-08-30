@@ -25,6 +25,7 @@
         <jmh.version>1.3.3</jmh.version>
         <disruptor.version>3.4.4</disruptor.version>
         <jackson.version>2.9.0</jackson.version>
+        <kafka-clients.version>0.11.0.2</kafka-clients.version>
     </properties>
 
     <dependencyManagement>
@@ -151,6 +152,12 @@
             <artifactId>jmh-generator-annprocess</artifactId>
             <version>${jmh.version}</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>${kafka-clients.version}</version>
         </dependency>
 
 

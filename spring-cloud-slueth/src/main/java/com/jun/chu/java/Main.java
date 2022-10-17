@@ -12,7 +12,6 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.cloud.sleuth.instrument.async.LazyTraceExecutor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,13 +36,26 @@ public class Main {
     @Autowired
     private Executor executor;
 
-    @RequestMapping("/")
+    @RequestMapping("/home")
     public String home() {
         LOG.info("Handling home");
         privateMethod("s");
         executor.execute(() -> privateMethod("thread s"));
         executor.execute(() -> privateMethod("thread s2"));
         return "Hello World";
+    }
+
+    @RequestMapping("/test-feign-client")
+    public String testFeignClient() {
+        LOG.info("test feign client");
+        return "success";
+    }
+
+
+    @RequestMapping("/test-rest-template")
+    public String testRestTemplate() {
+        LOG.info("test rest template");
+        return "success";
     }
 
     private void privateMethod(final String s) {
@@ -91,6 +103,7 @@ public class Main {
 
         @Autowired
         private SampleCallback sampleCallback;
+
         @Bean
         public MqttClient createMqttClient() {
             String topic = "testtopic/1";

@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.Tracer;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -25,9 +24,13 @@ public class SampleCallback implements MqttCallback {
 
     public void messageArrived(String topic, MqttMessage message) {
         Span span = tracer.createSpan("messageArrived");
-        LOG.info("Received message: \n  topic：" + topic + "\n  Qos：" + message.getQos() + "\n  payload：" + new String(message.getPayload()));
-        memoryService.save(topic,message);
-        tracer.close(span);
+        try {
+            LOG.info("Received message: \n  topic：" + topic + "\n  Qos：" + message.getQos() + "\n  payload：" + new String(message.getPayload()));
+            memoryService.save(topic, message);
+        } finally {
+            tracer.close(span);
+        }
+
 
     }
 

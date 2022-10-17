@@ -12,7 +12,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class MemoryService {
     private static Logger LOG = LoggerFactory.getLogger(MemoryService.class);
-    public void save(final String topic, MqttMessage message){
-        LOG.info("topic:{},message {}",topic,message);
+
+    public void save(final String topic, MqttMessage message) {
+        LOG.info("topic:{},message {}", topic, message);
     }
 }

@@ -93,9 +93,10 @@ public class Main {
         private SampleCallback sampleCallback;
         @Bean
         public MqttClient createMqttClient() {
-            String topic = "test/topic";
+            String topic = "testtopic/1";
             int qos = 2;
-            String broker = "tcp://192.168.142.141:1883";
+            //切换到自己搭建的emqx服务器地址
+            String broker = "tcp://192.168.142.142:1883";
             String clientId = MqttClient.generateClientId();
             MemoryPersistence persistence = new MemoryPersistence();
             MqttConnectOptions connOpts = new MqttConnectOptions();

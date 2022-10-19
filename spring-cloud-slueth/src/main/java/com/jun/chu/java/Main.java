@@ -12,29 +12,47 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.sleuth.instrument.async.LazyTraceExecutor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Role;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.AsyncConfigurerSupport;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.Executor;
 
 /**
- * @author ${USER}
- * @date ${DATE}
+ * spring-cloud-slueth链路id实验范围:
+ * 1.支持对http请求日志添加traceid
+ * 2.跨线程传递traceid
+ * 3.MQTT接收消息创建新traceid
+ * 4.feignclient服务调用支持链路id传递
+ * 5.resttemplate服务调用支持链路id传递
+ * 两个服务启动
+ * 主服务以 -Dserver.port=8080 端口启动
+ * 从服务以-Dserver.port=8090 端口启动
  */
 @SpringBootApplication
 @RestController
+@EnableFeignClients
 public class Main {
 
     private static Logger LOG = LoggerFactory.getLogger(Main.class);
     @Autowired
     private Executor executor;
+
+    @Autowired
+    private DemoFeignClient demoFeignClient;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @RequestMapping("/home")
     public String home() {
@@ -42,21 +60,31 @@ public class Main {
         privateMethod("s");
         executor.execute(() -> privateMethod("thread s"));
         executor.execute(() -> privateMethod("thread s2"));
-        return "Hello World";
+        return "success home";
     }
 
     @RequestMapping("/test-feign-client")
     public String testFeignClient() {
         LOG.info("test feign client");
-        return "success";
+        String result = demoFeignClient.home();
+        LOG.info("result:{}",result);
+        return "success test-feign-client";
     }
-
 
     @RequestMapping("/test-rest-template")
     public String testRestTemplate() {
         LOG.info("test rest template");
-        return "success";
+        ResponseEntity<String> entity = restTemplate.getForEntity("http://localhost:8090/home", String.class);
+        LOG.info("result:{}", entity);
+        return "success test-rest-template";
     }
+
+    @FeignClient(name = "serviceA", url = "http://localhost:8090")
+    static interface DemoFeignClient {
+        @RequestMapping("home")
+        String home();
+    }
+
 
     private void privateMethod(final String s) {
         LOG.info("private {}", s);
@@ -80,6 +108,11 @@ public class Main {
 
         @Autowired
         BeanFactory beanFactory;
+
+        @Bean
+        public RestTemplate createRestTemplate() {
+            return new RestTemplate();
+        }
 
         @Override
         @Bean
@@ -109,7 +142,7 @@ public class Main {
             String topic = "testtopic/1";
             int qos = 2;
             //切换到自己搭建的emqx服务器地址
-            String broker = "tcp://192.168.142.142:1883";
+            String broker = "tcp://192.168.142.143:1883";
             String clientId = MqttClient.generateClientId();
             MemoryPersistence persistence = new MemoryPersistence();
             MqttConnectOptions connOpts = new MqttConnectOptions();

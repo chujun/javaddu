@@ -28,17 +28,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.Executor;
 
-/**
- * spring-cloud-slueth链路id实验范围:
- * 1.支持对http请求日志添加traceid
- * 2.跨线程传递traceid
- * 3.MQTT接收消息创建新traceid
- * 4.feignclient服务调用支持链路id传递
- * 5.resttemplate服务调用支持链路id传递
- * 两个服务启动
- * 主服务以 -Dserver.port=8080 端口启动
- * 从服务以-Dserver.port=8090 端口启动
- */
 @SpringBootApplication
 @RestController
 @EnableFeignClients

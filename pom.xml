@@ -12,6 +12,7 @@
         <module>protobuffer</module>
         <module>spring-boot-test</module>
         <module>spring-cloud-slueth</module>
+        <module>spring-el-demo</module>
     </modules>
     <packaging>pom</packaging>
 

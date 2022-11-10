@@ -229,6 +229,74 @@ public class SpringELTest {
 
     }
 
+    @Test
+    public void testListSumWith() {
+        //Collection Projection集合映射?.与累加
+        String template = "#{#systemA.amount == T(com.jun.chu.java.ListOperation).sum(#systemA.systemBs?.![amount])}";//设置文字模板,其中#{}表示表达式的起止，#user是表达式字符串，表示引用一个变量。
+        ExpressionParser parser = new SpelExpressionParser();//创建表达式解析器
+
+        //通过evaluationContext.setVariable可以在上下文中设定变量。
+        EvaluationContext context = new StandardEvaluationContext();
+        SystemA systemA = new SystemA();
+        systemA.setField1("1");
+        systemA.setField2("field2");
+        systemA.setAmount(100);
+
+        SystemB systemB1 = new SystemB();
+        systemB1.setAmount(30);
+        SystemB systemB2 = new SystemB();
+        systemB2.setAmount(50);
+        SystemB systemB3 = new SystemB();
+        systemB3.setAmount(20);
+        //systemA.setSystemBs(Lists.newArrayList(systemB1, systemB2, systemB3));
+
+        context.setVariable("systemA", systemA);
+
+
+        //解析表达式，如果表达式是一个模板表达式，需要为解析传入模板解析器上下文。
+        Expression expression = parser.parseExpression(template, new TemplateParserContext());
+
+        //使用Expression.getValue()获取表达式的值，这里传入了Evalution上下文，第二个参数是类型参数，表示返回值的类型。
+        Assert.assertFalse(expression.getValue(context, Boolean.class));
+
+    }
+
+    @Test
+    public void testOperator() {
+        //Collection Projection集合映射?.与累加
+        String template = "#{#systemA?.amount == 100 * #systemB?.amount }";//设置文字模板,其中#{}表示表达式的起止，#user是表达式字符串，表示引用一个变量。
+        ExpressionParser parser = new SpelExpressionParser();//创建表达式解析器
+
+        //通过evaluationContext.setVariable可以在上下文中设定变量。
+        EvaluationContext context = new StandardEvaluationContext();
+        SystemA systemA = new SystemA();
+        systemA.setField1("1");
+        systemA.setField2("field2");
+        systemA.setAmount(300);
+
+        SystemB systemB = new SystemB();
+        systemB.setAmount(3);
+
+        context.setVariable("systemA", systemA);
+        context.setVariable("systemB", systemB);
+
+
+        //解析表达式，如果表达式是一个模板表达式，需要为解析传入模板解析器上下文。
+        Expression expression = parser.parseExpression(template, new TemplateParserContext());
+
+        //使用Expression.getValue()获取表达式的值，这里传入了Evalution上下文，第二个参数是类型参数，表示返回值的类型。
+        Assert.assertTrue(expression.getValue(context, Boolean.class));
+
+        //测试值为null场景
+        systemB.setAmount(null);
+        try {
+            Assert.assertFalse(expression.getValue(context, Boolean.class));
+            Assert.fail();
+        } catch (SpelEvaluationException e) {
+            Assert.assertEquals("EL1030E: The operator 'MULTIPLY' is not supported between objects of type 'java.lang.Integer' and 'null'", e.getMessage());
+        }
+    }
+
 
     private static ExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();
 

@@ -1,5 +1,6 @@
 package com.jun.chu.java;
 
+import com.google.common.collect.Lists;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.expression.EvaluationContext;
@@ -68,7 +69,7 @@ public class SpringELTest {
     }
 
     @Test
-    public void testRootObject(){
+    public void testRootObject() {
         // Create and set a calendar
         GregorianCalendar c = new GregorianCalendar();
         c.set(1856, 7, 9);
@@ -79,11 +80,11 @@ public class SpringELTest {
         ExpressionParser parser = new SpelExpressionParser();
 
         Expression exp = parser.parseExpression("name"); // Parse name as an expression
-        Assert.assertEquals("Nikola Tesla",exp.getValue(tesla,String.class));
+        Assert.assertEquals("Nikola Tesla", exp.getValue(tesla, String.class));
 
 
         exp = parser.parseExpression("name == 'Nikola Tesla'");
-        Assert.assertTrue(exp.getValue(tesla,Boolean.class));
+        Assert.assertTrue(exp.getValue(tesla, Boolean.class));
     }
 
     @Test
@@ -135,10 +136,9 @@ public class SpringELTest {
     }
 
     @Test
-    public void testListAmountSum() {
-        //TODO:cj to be done
-        //测试SpringEL解析器
-        String template = "#{#systemA.amount == #systemA.systemBs.field2}";//设置文字模板,其中#{}表示表达式的起止，#user是表达式字符串，表示引用一个变量。
+    public void testCollectionProjection() {
+        //4.3.17. Collection Projection集合映射
+        String template = "#{#systemA.systemBs.![amount]}";//设置文字模板,其中#{}表示表达式的起止，#user是表达式字符串，表示引用一个变量。
         ExpressionParser parser = new SpelExpressionParser();//创建表达式解析器
 
         //通过evaluationContext.setVariable可以在上下文中设定变量。
@@ -146,6 +146,16 @@ public class SpringELTest {
         SystemA systemA = new SystemA();
         systemA.setField1("1");
         systemA.setField2("field2");
+        systemA.setAmount(100);
+
+        SystemB systemB1 = new SystemB();
+        systemB1.setAmount(30);
+        SystemB systemB2 = new SystemB();
+        systemB2.setAmount(50);
+        SystemB systemB3 = new SystemB();
+        systemB3.setAmount(20);
+        systemA.setSystemBs(Lists.newArrayList(systemB1, systemB2, systemB3));
+
         context.setVariable("systemA", systemA);
 
 
@@ -153,8 +163,72 @@ public class SpringELTest {
         Expression expression = parser.parseExpression(template, new TemplateParserContext());
 
         //使用Expression.getValue()获取表达式的值，这里传入了Evalution上下文，第二个参数是类型参数，表示返回值的类型。
-        Assert.assertFalse(expression.getValue(context, Boolean.class));
+        Assert.assertEquals("[30, 50, 20]", expression.getValue(context, List.class).toString());
     }
+
+    @Test
+    public void testStaticMethod() {
+        //4.3.17. Collection Projection集合映射
+        String template = "#{T(com.jun.chu.java.ListOperation).sum(#systemA.systemBs.![amount])}";//设置文字模板,其中#{}表示表达式的起止，#user是表达式字符串，表示引用一个变量。
+        ExpressionParser parser = new SpelExpressionParser();//创建表达式解析器
+
+        //通过evaluationContext.setVariable可以在上下文中设定变量。
+        EvaluationContext context = new StandardEvaluationContext();
+        SystemA systemA = new SystemA();
+        systemA.setField1("1");
+        systemA.setField2("field2");
+        systemA.setAmount(100);
+
+        SystemB systemB1 = new SystemB();
+        systemB1.setAmount(30);
+        SystemB systemB2 = new SystemB();
+        systemB2.setAmount(50);
+        SystemB systemB3 = new SystemB();
+        systemB3.setAmount(20);
+        systemA.setSystemBs(Lists.newArrayList(systemB1, systemB2, systemB3));
+
+        context.setVariable("systemA", systemA);
+
+
+        //解析表达式，如果表达式是一个模板表达式，需要为解析传入模板解析器上下文。
+        Expression expression = parser.parseExpression(template, new TemplateParserContext());
+
+        //使用Expression.getValue()获取表达式的值，这里传入了Evalution上下文，第二个参数是类型参数，表示返回值的类型。
+        Assert.assertEquals(100, expression.getValue(context, Integer.class).intValue());
+    }
+
+    @Test
+    public void testListSum() {
+        //4.3.17. Collection Projection集合映射
+        String template = "#{#systemA.amount == T(com.jun.chu.java.ListOperation).sum(#systemA.systemBs.![amount])}";//设置文字模板,其中#{}表示表达式的起止，#user是表达式字符串，表示引用一个变量。
+        ExpressionParser parser = new SpelExpressionParser();//创建表达式解析器
+
+        //通过evaluationContext.setVariable可以在上下文中设定变量。
+        EvaluationContext context = new StandardEvaluationContext();
+        SystemA systemA = new SystemA();
+        systemA.setField1("1");
+        systemA.setField2("field2");
+        systemA.setAmount(100);
+
+        SystemB systemB1 = new SystemB();
+        systemB1.setAmount(30);
+        SystemB systemB2 = new SystemB();
+        systemB2.setAmount(50);
+        SystemB systemB3 = new SystemB();
+        systemB3.setAmount(20);
+        systemA.setSystemBs(Lists.newArrayList(systemB1, systemB2, systemB3));
+
+        context.setVariable("systemA", systemA);
+
+
+        //解析表达式，如果表达式是一个模板表达式，需要为解析传入模板解析器上下文。
+        Expression expression = parser.parseExpression(template, new TemplateParserContext());
+
+        //使用Expression.getValue()获取表达式的值，这里传入了Evalution上下文，第二个参数是类型参数，表示返回值的类型。
+        Assert.assertTrue(expression.getValue(context, Boolean.class));
+
+    }
+
 
     private static ExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();
 

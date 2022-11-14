@@ -1,5 +1,6 @@
 package com.jun.chu.java;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -68,5 +69,17 @@ public class Inventor {
 
     public String[] getInventions() {
         return inventions;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Inventor{");
+        sb.append("name='").append(name).append('\'');
+        sb.append(", nationality='").append(nationality).append('\'');
+        sb.append(", inventions=").append(Arrays.toString(inventions));
+        sb.append(", birthdate=").append(birthdate);
+        sb.append(", placeOfBirth=").append(placeOfBirth);
+        sb.append('}');
+        return sb.toString();
     }
 }

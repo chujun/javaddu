@@ -297,6 +297,76 @@ public class SpringELTest {
         }
     }
 
+    @Test
+    public void testDefinedFunction() throws NoSuchMethodException {
+        String template = "#{#reverseString('hello')}";
+        ExpressionParser parser = new SpelExpressionParser();
+
+        EvaluationContext context = new StandardEvaluationContext();
+        //自定义新函数,可以解决静态方法引入包名的问题T(com.jun.chu.SpringELTest.MyStringUtils)
+        context.setVariable("reverseString", MyStringUtils.class.getDeclaredMethod("reverseString", String.class));
+        Expression expression = parser.parseExpression(template, new TemplateParserContext());
+
+        Assert.assertEquals("olleh", expression.getValue(context, String.class));
+    }
+
+    @Test
+    public void testCollectionSelectionForFirstSelect() {
+        String template = "#{#alist.^[name>'p']}";
+        ExpressionParser parser = new SpelExpressionParser();
+
+        EvaluationContext context = new StandardEvaluationContext();
+        List<Inventor> list = Lists.newArrayList();
+        list.add(new Inventor("z", "zh"));
+        list.add(new Inventor("b", "zh"));
+        list.add(new Inventor("c", "zh"));
+        list.add(new Inventor("r", "zh"));
+        context.setVariable("alist", list);
+        Expression expression = parser.parseExpression(template, new TemplateParserContext());
+        List<Inventor> value = expression.getValue(context, List.class);
+        System.out.println(value);
+        Assert.assertEquals("z", value.get(0).getName());
+    }
+
+    @Test
+    public void testCollectionSelectionForLastSelect() {
+        String template = "#{#alist.$[name>'p']}";
+        ExpressionParser parser = new SpelExpressionParser();
+
+        EvaluationContext context = new StandardEvaluationContext();
+        List<Inventor> list = Lists.newArrayList();
+        list.add(new Inventor("z", "zh"));
+        list.add(new Inventor("b", "zh"));
+        list.add(new Inventor("c", "zh"));
+        list.add(new Inventor("r", "zh"));
+        list.add(new Inventor("t", "zh"));
+        context.setVariable("alist", list);
+        Expression expression = parser.parseExpression(template, new TemplateParserContext());
+        List<Inventor> value = expression.getValue(context, List.class);
+        System.out.println(value);
+        Assert.assertEquals("t", value.get(0).getName());
+    }
+
+    public static class MyStringUtils {
+        public static String reverseString(String input) {
+            StringBuilder backwards = new StringBuilder(input.length());
+            for (int i = 0; i < input.length(); i++) {
+                backwards.append(input.charAt(input.length() - 1 - i));
+            }
+            return backwards.toString();
+        }
+    }
+
+    @Test
+    public void testExpressionTemplating(){
+        //#{T(java.lang.Math).random} 后面方法必须要带上(),不能省略
+        String template = "random number is #{T(java.lang.Math).random()} and and #{55}";
+        ExpressionParser parser = new SpelExpressionParser();
+        Expression expression = parser.parseExpression(template, new TemplateParserContext());
+        String value = expression.getValue(String.class);
+        System.out.println(value);
+    }
+
 
     private static ExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();
 

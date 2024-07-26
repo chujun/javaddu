@@ -8,8 +8,8 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
 /**
+ * nio用ByteBuffer读文件数据
  * 文件通道FileChannel
- *
  * @author chujun
  * @date 2024/7/26
  */
@@ -22,19 +22,21 @@ public class TestByteBufferD01 {
             //准备缓存区
             ByteBuffer buffer = ByteBuffer.allocate(10);
             while (true) {
+                //从channel中读取数据，写入buffer
                 int len = channel.read(buffer);
-                log.debug("读取到的字节 {}",len);
-                if (-1 == len) {
+                log.debug("读取到的字节数 {}",len);
+                if (-1 == len) {//读取不到内容了
                     break;
                 }
                 //读buffer内容
-                //切换至读模式
+
+                //buffer切换至读模式
                 buffer.flip();
-                while (buffer.hasRemaining()) {
+                while (buffer.hasRemaining()) {//buffer是否还有剩余未读数据
                     byte b = buffer.get();
                     log.debug("实际字节 {}",(char) b);
                 }
-                //切换至写模式
+                //buffer切换至写模式clear/compact
                 buffer.clear();
             }
 

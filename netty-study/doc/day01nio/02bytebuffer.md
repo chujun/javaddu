@@ -74,4 +74,26 @@ clear():切换至写模式
 compact():把未读的数据向前压缩,然后切换至写模式
 
 
+#字符串与ByteBuffer互转
+## 字符串转ByteBuffer
+1. ByteBuffer.put(new byte[])
+```
+ByteBuffer byteBuffer0 = ByteBuffer.allocate(16);
+        byteBuffer0.put("hello0".getBytes(StandardCharsets.UTF_8));
+```   
+2. Charset的encode方法
+```
+ByteBuffer byteBuffer1 = StandardCharsets.UTF_8.encode("hello1");
+```   
+3. ByteBuffer的wrap(new byte[])方法
+```
+ByteBuffer byteBuffer2 = ByteBuffer.wrap("hello3".getBytes());
+```
+## ByteBuffer转字符串
+```
+String s2 = StandardCharsets.UTF_8.decode(byteBuffer2).toString();
+```
+
+# 典型应用场景demo
+
   

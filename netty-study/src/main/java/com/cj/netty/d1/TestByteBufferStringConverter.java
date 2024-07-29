@@ -15,7 +15,7 @@ import static com.cj.netty.util.ByteBufferUtil.debugAll;
  * @date 2024/7/27
  */
 @Slf4j
-public class TestByteBufferString {
+public class TestByteBufferStringConverter {
     public static void main(String[] args) {
         //1.字符串转ByteBuffer
         ByteBuffer byteBuffer0 = ByteBuffer.allocate(16);

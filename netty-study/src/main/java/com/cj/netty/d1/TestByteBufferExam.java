@@ -11,7 +11,7 @@ import static com.cj.netty.util.ByteBufferUtil.debugAll;
 
 /**
  * ByteBuffer综合示例
- * 需求背景:粘包,半包
+ * 需求背景:网络传输过程中存在粘包,半包
  * 原始数据为3条
  * Hello World\n
  * I'm zhangsan\n
@@ -32,6 +32,7 @@ public class TestByteBufferExam {
     public static void main(String[] args) {
         ByteBuffer source = ByteBuffer.allocate(32);
         source.put("Hello World\nI'm zhangsan\nHo".getBytes(StandardCharsets.UTF_8));
+        debugAll(source);
         split(source);
         source.put("w are you\n".getBytes(StandardCharsets.UTF_8));
         split(source);
@@ -43,9 +44,10 @@ public class TestByteBufferExam {
 
         int length = 0;
 
-        log.debug("\\n:{}", '\n');
+        log.debug("\\n:{}", Integer.toHexString('\n'));
         for (int i = 0; i < source.limit(); i++) {
             if (source.get(i) != (byte) '\n') {
+                //这儿存在遍历,效率比较低
                 length++;
             } else {
                 //把完成消息存入新ByteBuffer,新ByteBuffer长度计算
@@ -62,7 +64,7 @@ public class TestByteBufferExam {
             }
         }
 
-        //切换到写模式,不能从头写
+        //切换到写模式,不能从头写,所以不用clear
         source.compact();
 
     }

@@ -3,6 +3,7 @@ package com.cj.netty.d1;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,7 +15,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Files文件目录遍历树
  * 需求:例如统计一个目录下所有目录数和文件数
- *
+ *  find . -type f|wc -l
+ *  find . -type d|wc -l
+ *  find . -type f -name "*.jar"|wc -l
  * @author chujun
  * @date 2024/7/30
  */
@@ -24,7 +27,9 @@ public class TestFilesWalkTree {
     private static final AtomicInteger fileCount = new AtomicInteger(0);
     private static final AtomicInteger jarCount = new AtomicInteger(0);
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, NoSuchMethodException {
+        Method toString = String.class.getMethod("toString");
+        System.out.println(toString);
         //访问者设计模式
         Files.walkFileTree(Paths.get("/Library/Java/JavaVirtualMachines/jdk1.8.0_211.jdk/Contents/Home"),
             new SimpleFileVisitor<Path>() {
@@ -40,7 +45,7 @@ public class TestFilesWalkTree {
                     fileCount.incrementAndGet();
                     //log.debug("fileName:{}", file.getFileName());
                     if (file.toString().endsWith(".jar")) {
-                        log.debug("jar file:{}", file);
+                        log.warn("jar file:{}", file);
                         jarCount.incrementAndGet();
                     }
                     return super.visitFile(file, attrs);
